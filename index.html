@@ -1719,7 +1719,14 @@
       });
     }
 
-    // Tab switching
+    function requireDataSdk() {
+      if (!window.dataSdk || typeof window.dataSdk.create !== 'function') {
+      throw new Error('Data SDK failed to load');
+    }
+      return window.dataSdk;
+}
+   
+   // Tab switching
     function initializeTabs() {
       const buttons = document.querySelectorAll('.sidebar-item');
       buttons.forEach(btn => {
@@ -1813,9 +1820,9 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
     console.log('Saving goal payload:', payload);
 
     if (!window.dataSdk || typeof window.dataSdk.create !== 'function') {
-  throw new Error('Data SDK failed to load');
-}
-   const result = await window.dataSdk.create(payload);
+      throw new Error('Data SDK failed to load');
+    }
+   const result = await requireDataSdk().create(payload);
     console.log('Goal save result:', result);
 
     if (result && result.isOk) {
@@ -1905,7 +1912,7 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
       isLoading = true;
       showLoading(btn, 'Adding...');
 
-      const result = await window.dataSdk.create({
+      const result = await requireDataSdk().create({
         type: 'cost',
         cost_item: costItem,
         item_cost: amount
@@ -1966,7 +1973,7 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
       isLoading = true;
       showLoading(btn, 'Adding...');
 
-      const result = await window.dataSdk.create({
+      const result = await requireDataSdk().create({
         type: 'savings',
         amount: parseFloat(document.getElementById('savings-amount').value),
         date: document.getElementById('savings-date').value,
@@ -2015,7 +2022,7 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
       isLoading = true;
       showLoading(btn, 'Adding...');
 
-      const result = await window.dataSdk.create({
+      const result = await requireDataSdk().create({
         type: 'fund',
         source_name: document.getElementById('fund-source').value,
         amount: parseFloat(document.getElementById('fund-amount').value)
@@ -2067,7 +2074,7 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
       isLoading = true;
       showLoading(btn, 'Adding...');
 
-      const result = await window.dataSdk.create({
+      const result = await requireDataSdk().create({
         type: 'expense',
         expense_name: document.getElementById('expense-name').value,
         amount: parseFloat(document.getElementById('expense-amount').value),
@@ -2128,7 +2135,7 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
       isLoading = true;
       showLoading(btn, 'Creating...');
 
-      const result = await window.dataSdk.create({
+      const result = await requireDataSdk().create({
         type: 'grid',
         goal_amount: goalAmount,
         amount_per_box: perBox,
@@ -2322,7 +2329,7 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
       isLoading = true;
       showLoading(btn, 'Adding...');
 
-      const result = await window.dataSdk.create({
+      const result = await requireDataSdk().create({
         type: 'physician',
         physicianName: document.getElementById('physician-name').value,
         specialty: document.getElementById('physician-specialty').value || '',
@@ -2463,7 +2470,7 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
       isLoading = true;
       showLoading(btn, 'Saving...');
 
-      const result = await window.dataSdk.create({
+      const result = await requireDataSdk().create({
         type: 'travel-trip',
         travel_destination: document.getElementById('travel-destination-input').value,
         travel_procedure_name: document.getElementById('travel-procedure-name').value,
@@ -2490,7 +2497,7 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
       isLoading = true;
       showLoading(btn, 'Adding...');
 
-      const result = await window.dataSdk.create({
+      const result = await requireDataSdk().create({
         type: 'travel-expense',
         travel_expense_category: document.getElementById('travel-expense-category').value,
         travel_expense_description: document.getElementById('travel-expense-description').value,
@@ -2608,7 +2615,7 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
       btn.disabled = true;
       btn.textContent = 'Adding...';
 
-      const result = await window.dataSdk.create({
+      const result = await requireDataSdk().create({
         type: 'medication',
         medicationName: medName,
         medicationType: medType,
@@ -2701,7 +2708,7 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
       isLoading = true;
       showLoading(btn, 'Adding...');
 
-      const result = await window.dataSdk.create({
+      const result = await requireDataSdk().create({
         type: 'receipt',
         receipt_category: document.getElementById('receipt-category').value,
         receipt_amount: parseFloat(document.getElementById('receipt-amount').value),
@@ -2985,7 +2992,7 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
       isLoading = true;
       showLoading(btn, 'Adding...');
 
-      const result = await window.dataSdk.create({
+      const result = await requireDataSdk().create({
         type: 'custom-question',
         question_text: questionText
       });
@@ -3193,7 +3200,7 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
         completed: 0
       };
 
-      const result = await window.dataSdk.create(newDoc);
+      const result = await requireDataSdk().create(newDoc);
       console.log('vault create result', result);
       
       isLoading = false;
