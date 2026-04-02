@@ -2399,7 +2399,7 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
                 <div>
                   <h4 class="font-heading font-bold text-lg text-primary">${p.physicianName || 'Physician'}</h4>
                   ${p.specialty ? `<p class="font-body text-sm text-secondary">${p.specialty}</p>` : ''}
-                  ${p.rating ? `<div class="flex items-center gap-1 mt-1"><span class="font-body text-xs text-secondary">Rating:</span><span class="font-body text-sm font-semibold" style="color: #f59e0b;">${'â˜…'.repeat(p.rating)}${'â˜†'.repeat(5-p.rating)}</span></div>` : ''}
+                  ${p.rating ? `<div class="flex items-center gap-1 mt-1"><span class="font-body text-xs text-secondary">Rating:</span><span class="font-body text-sm font-semibold" style="color: #f59e0b;">${'★'.repeat(p.rating)}${'â˜†'.repeat(5-p.rating)}</span></div>` : ''}
                 </div>
                 <button class="delete-physician btn-secondary px-2 py-1 rounded text-xs" data-id="${p.__backendId}">Delete</button>
               </div>
@@ -3177,7 +3177,7 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
             row.innerHTML = `
               <div class="flex items-center gap-3 flex-shrink-0">
                 <input type="checkbox" class="vault-complete-checkbox" ${doc.completed ? 'checked' : ''} data-id="${doc.__backendId}">
-                <span class="vault-important-star ${importantClass}" data-id="${doc.__backendId}" title="Toggle important" style="cursor: pointer; font-size: 18px; ${doc.important ? 'color: #667eea;' : 'color: #cbd5e1;'}">â˜…</span>
+                <span class="vault-important-star ${importantClass}" data-id="${doc.__backendId}" title="Toggle important" style="cursor: pointer; font-size: 18px; ${doc.important ? 'color: #667eea;' : 'color: #cbd5e1;'}">★</span>
               </div>
               <div class="flex-1 min-w-0">
                 <h4 class="font-body font-medium ${completedClass} text-primary">${escapeHtml(doc.name)}</h4>
