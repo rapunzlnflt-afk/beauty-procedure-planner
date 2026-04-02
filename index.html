@@ -1751,9 +1751,10 @@
       updateDocumentVault();
     }
 
-    // Goal
-    function updateGoal() {
-  const goal = getDataByType('goal')[0];
+   // Goal
+function updateGoal() {
+  const goals = getDataByType('goal');
+  const goal = goals[goals.length - 1];
   const savings = getDataByType('savings');
   const totalSaved = savings.reduce((sum, s) => sum + (s.amount || 0), 0);
 
@@ -1779,9 +1780,7 @@
   document.getElementById('display-remaining').textContent = formatCurrency(Math.max(0, goalAmount - saved));
 }
 
-
-
-  document.getElementById('goal-form').addEventListener('submit', async (e) => {
+document.getElementById('goal-form').addEventListener('submit', async (e) => {
   e.preventDefault();
   if (isLoading) return;
 
@@ -1799,7 +1798,7 @@
 
     if (result.isOk) {
       e.target.reset();
-      updateGoal();
+      updateAllDisplays();
     } else {
       showErrorMessage('Failed to save goal. Please try again.');
     }
