@@ -5,8 +5,96 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Beauty Procedure Savings Planner</title>
   <script src="https://cdn.tailwindcss.com/3.4.17" type="text/javascript"></script>
-  <script src="/_sdk/element_sdk.js"></script>
-  <script src="/_sdk/data_sdk.js"></script>
+  <script>
+(function () {
+  const STORAGE_KEY = 'beautyPlannerData_v1';
+  let changeHandler = null;
+
+  function loadAll() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      const parsed = raw ? JSON.parse(raw) : [];
+      return Array.isArray(parsed) ? parsed : [];
+    } catch (e) {
+      console.error('Failed to load stored data:', e);
+      return [];
+    }
+  }
+
+  function saveAll(data) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  }
+
+  function emitChange() {
+    const data = loadAll();
+    if (typeof changeHandler === 'function') {
+      changeHandler(data);
+    }
+  }
+
+  function makeId() {
+    return 'id_' + Date.now() + '_' + Math.random().toString(36).slice(2, 9);
+  }
+
+  window.dataSdk = {
+    async init(handler) {
+      changeHandler = handler;
+      const data = loadAll();
+      if (typeof changeHandler === 'function') {
+        changeHandler(data);
+      }
+      return { isOk: true, data };
+    },
+
+    async create(record) {
+      try {
+        const all = loadAll();
+        const newRecord = {
+          ...record,
+          backendId: record.backendId || makeId()
+        };
+        all.push(newRecord);
+        saveAll(all);
+        emitChange();
+        return { isOk: true, data: newRecord };
+      } catch (error) {
+        console.error('create failed:', error);
+        return { isOk: false, error };
+      }
+    },
+
+    async update(record) {
+      try {
+        const all = loadAll();
+        const index = all.findIndex(item => item.backendId === record.backendId);
+        if (index === -1) {
+          return { isOk: false, error: { message: 'Record not found' } };
+        }
+        all[index] = { ...all[index], ...record };
+        saveAll(all);
+        emitChange();
+        return { isOk: true, data: all[index] };
+      } catch (error) {
+        console.error('update failed:', error);
+        return { isOk: false, error };
+      }
+    },
+
+    async delete(record) {
+      try {
+        const all = loadAll();
+        const filtered = all.filter(item => item.backendId !== record.backendId);
+        saveAll(filtered);
+        emitChange();
+        return { isOk: true };
+      } catch (error) {
+        console.error('delete failed:', error);
+        return { isOk: false, error };
+      }
+    }
+  };
+})();
+</script>
  <script>
   console.log('elementSdk:', window.elementSdk);
   console.log('dataSdk:', window.dataSdk);
@@ -1646,17 +1734,33 @@
     };
 
     async function initializeApp() {
-  if (!window.dataSdk || typeof window.dataSdk.init !== 'function') {
-    console.error('Data SDK missing:', window.dataSdk);
-    showErrorMessage('Data SDK failed to load. Refresh the page and try again.');
-    return;
-  }
+  try {
+    if (!window.dataSdk || typeof window.dataSdk.init !== 'function') {
+      console.error('Data SDK missing:', window.dataSdk);
+      showErrorMessage('Data storage failed to load. Refresh the page and try again.');
+      return;
+    }
 
-  const result = await window.dataSdk.init(dataHandler);
-  console.log('SDK init result:', result);
+    const result = await window.dataSdk.init(dataHandler);
+    console.log('SDK init result:', result);
 
-  if (!result || !result.isOk) {
-    showErrorMessage('Could not initialize app data.');
+    if (!result || !result.isOk) {
+      showErrorMessage('Could not initialize app data in this browser.');
+      return;
+    }
+  } catch (err) {
+    console.error('App initialization failed:', err);
+
+    const message =
+      err && (
+        err.name === 'SecurityError' ||
+        err.name === 'QuotaExceededError' ||
+        /localStorage|storage|quota|access/i.test(err.message || '')
+      )
+        ? 'This browser is blocking local storage, so your planner cannot save data right now. Try turning off private browsing, allowing site storage, or using another browser.'
+        : 'Something went wrong while starting the planner. Refresh the page and try again.';
+
+    showErrorMessage(message);
   }
 }
    
