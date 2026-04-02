@@ -1781,55 +1781,69 @@
 
 
 
-    document.getElementById('goal-form').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      if (isLoading) return;
+   document.getElementById('goal-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  if (isLoading) return;
 
-      const btn = e.target.querySelector('button[type="submit"]');
-      isLoading = true;
-      showLoading(btn, 'Saving...');
+  const btn = e.target.querySelector('button[type="submit"]');
+  isLoading = true;
+  showLoading(btn, 'Saving...');
 
-      const result = await window.dataSdk.create({
-        type: 'goal',
-        procedure_name: document.getElementById('goal-procedure').value,
-        target_date: document.getElementById('goal-target-date').value,
-        goal_amount: parseFloat(document.getElementById('goal-amount').value)
-      });
+  try {
+    const result = await window.dataSdk.create({
+      type: 'goal',
+      procedure_name: document.getElementById('goal-procedure').value,
+      target_date: document.getElementById('goal-target-date').value,
+      goal_amount: parseFloat(document.getElementById('goal-amount').value)
+    });
 
-      isLoading = false;
-      hideLoading(btn);
+    if (result.isOk) {
+      // your existing thumbnail logic
+      const photoType = document.getElementById('photo-type').value;
+      const gridId = `${photoType}-grid`;
+      const grid = document.getElementById(gridId);
 
-      if (result.isOk) {
-        const photoType = document.getElementById('photo-type').value;
-        const gridId = `${photoType}-grid`;
-        const grid = document.getElementById(gridId);
+      if (grid && currentPhotoData) {
+        const empty = grid.querySelector('.empty-state');
+        if (empty) empty.remove();
 
-        if (grid && currentPhotoData) {
-          const empty = grid.querySelector('.empty-state');
-          if (empty) empty.remove();
+        const wrapper = document.createElement('div');
+        wrapper.className = 'overflow-hidden rounded-lg photo-thumbnail cursor-pointer hover:opacity-75 transition-opacity';
+        wrapper.dataset.photoId = result.data.__backendId || 'temp';
 
-          const wrapper = document.createElement('div');
-          wrapper.className = 'overflow-hidden rounded-lg photo-thumbnail cursor-pointer hover:opacity-75 transition-opacity';
-          wrapper.dataset.photoId = result.data.__backendId || 'temp';
+        const img = document.createElement('img');
+        img.src = currentPhotoData;
+        img.className = 'w-full h-full object-cover rounded-lg';
 
-          const img = document.createElement('img');
-          img.src = currentPhotoData;
-          img.className = 'w-full h-full object-cover rounded-lg';
+        wrapper.appendChild(img);
+        grid.appendChild(wrapper);
 
-          wrapper.appendChild(img);
-          grid.appendChild(wrapper);
-          
-          // Add click listener to new thumbnail
-          wrapper.addEventListener('click', function() {
-            const photoId = this.dataset.photoId;
-            const photos = getDataByType('photo-entry');
-            const photo = photos.find(p => p.__backendId === photoId);
-            if (photo && this.querySelector('img')) {
-              const imageData = this.querySelector('img').src;
-              showPhotoDetailsModal(photo, imageData);
-            }
-          });
-        }
+        wrapper.addEventListener('click', function () {
+          const photoId = this.dataset.photoId;
+          const photos = getDataByType('photo-entry');
+          const photo = photos.find(p => p.__backendId === photoId);
+          if (photo && this.querySelector('img')) {
+            const imageData = this.querySelector('img').src;
+            showPhotoDetailsModal(photo, imageData);
+          }
+        });
+      }
+
+      // refresh UI if you have this helper
+      if (typeof updateAllDisplays === 'function') {
+        updateAllDisplays();
+      }
+    } else {
+      showErrorMessage('Failed to save goal. Please try again.');
+    }
+  } catch (err) {
+    console.error(err);
+    showErrorMessage('Something went wrong while saving. Please try again.');
+  } finally {
+    isLoading = false;
+    hideLoading(btn);
+  }
+});
 
         currentPhotoData = null;
         fileInput.value = '';
