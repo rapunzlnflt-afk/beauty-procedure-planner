@@ -712,7 +712,7 @@
       <div class="flex justify-between items-start mb-4">
        <div>
         <h3 class="font-heading text-2xl font-bold text-primary" id="travel-display-destination">Destination</h3>
-        <p class="font-body text-sm text-secondary mt-1"><span id="travel-display-dates">N/A</span> â€¢ <span id="travel-display-clinic">Clinic</span> â€¢ <span id="travel-display-procedure">Procedure</span></p>
+        <p class="font-body text-sm text-secondary mt-1"><span id="travel-display-dates">N/A</span>  •  <span id="travel-display-clinic">Clinic</span>  •  <span id="travel-display-procedure">Procedure</span></p>
        </div><button id="travel-edit-trip-btn" class="btn-secondary px-3 py-2 rounded text-xs font-medium">Edit Details</button>
       </div>
       <div class="mb-4">
@@ -2529,7 +2529,7 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
                 <div class="flex justify-between items-start p-2 bg-white rounded border border-gray-200">
                   <div class="flex-1">
                     <p class="font-body text-sm text-primary font-medium">${escapeHtml(e.travel_expense_description)}</p>
-                    <p class="font-body text-xs text-secondary">${e.travel_expense_date} â€¢ ${e.travel_expense_currency}</p>
+                    <p class="font-body text-xs text-secondary">${e.travel_expense_date}  •  ${e.travel_expense_currency}</p>
                   </div>
                   <div class="flex items-center gap-3 ml-3">
                     <p class="font-heading font-bold text-primary whitespace-nowrap">${formatCurrency(e.travel_expense_amount)}</p>
@@ -2892,7 +2892,7 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
           <div style="background: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-color-2) 100%); color: white; padding: 1.5rem; border-radius: 8px 8px 0 0; display: flex; justify-content: space-between; align-items: center;">
             <div>
               <h3 class="font-heading font-bold text-lg">Photo Details</h3>
-              <p class="font-body text-xs opacity-90 mt-1">${entry.type.charAt(0).toUpperCase() + entry.type.slice(1)} â€¢ ${entry.date || 'No date'}</p>
+              <p class="font-body text-xs opacity-90 mt-1">${entry.type.charAt(0).toUpperCase() + entry.type.slice(1)}  •  ${entry.date || 'No date'}</p>
             </div>
             <button class="modal-close" style="background: none; border: none; color: white; font-size: 28px; cursor: pointer; padding: 0; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;">X</button>
           </div>
@@ -3827,9 +3827,9 @@ document.addEventListener('DOMContentLoaded', function () {
               <p class="font-body text-sm text-secondary mb-3">Unable to load image from this link</p>
               <p class="font-body text-xs text-secondary mb-3">The link may be:</p>
               <ul class="font-body text-xs text-secondary space-y-1 mb-3">
-                <li>â€¢ Expired or revoked</li>
-                <li>â€¢ Not publicly accessible</li>
-                <li>â€¢ From an unsupported service</li>
+                <li> •  Expired or revoked</li>
+                <li> •  Not publicly accessible</li>
+                <li> •  From an unsupported service</li>
               </ul>
               <a href="${entry.link}" target="_blank" rel="noopener noreferrer" class="font-body text-xs underline inline-block" style="color: var(--accent-color);">Try opening in new tab â†’</a>
             </div>
