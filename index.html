@@ -1741,7 +1741,7 @@
       return;
     }
 
-    const result = await window.dataSdk.init(dataHandler);
+    const result = await window.dataSdk.init(dataHandler.onDataChanged.bind(dataHandler));
     console.log('SDK init result:', result);
 
     if (!result || !result.isOk) {
