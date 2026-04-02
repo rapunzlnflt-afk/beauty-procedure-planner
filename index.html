@@ -3122,9 +3122,6 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
       }
     });
 
-    document.getElementById('export-consultation-btn').addEventListener('click', () => {
-      window.print();
-    });
 
     // Document Vault Functions
     function updateDocumentVault() {
@@ -3334,34 +3331,6 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
     document.getElementById('receipt-date').valueAsDate = new Date();
     document.getElementById('calc-start-date').valueAsDate = new Date();
     document.getElementById('photo-date').valueAsDate = new Date();
-
-    // Travel print button
-    document.getElementById('travel-print-btn').addEventListener('click', (e) => {
-      e.preventDefault();
-      window.print();
-    });
-
-    // Photo modal handlers
-    function showPhotoModal(entry) {
-      const modal = document.getElementById('photo-modal');
-      const imgElement = document.getElementById('photo-modal-img');
-      if (entry && entry.image) {
-        imgElement.src = entry.image;
-      }
-      modal.classList.remove('hidden');
-    }
-
-    document.getElementById('photo-modal').addEventListener('click', (e) => {
-      if (e.target.id === 'photo-modal') {
-        document.getElementById('photo-modal').classList.add('hidden');
-      }
-    });
-
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') {
-        document.getElementById('photo-modal').classList.add('hidden');
-      }
-    });
 
     // QR Code functionality
     const qrData = {
