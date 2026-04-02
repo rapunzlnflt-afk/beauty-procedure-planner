@@ -3311,13 +3311,6 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
       hideLoading(submitBtn);
 
       if (result.isOk) {
-        // Optional: merge the new item into allData if result.value exists
-        if (result.data) {
-          allData = [...allData, result.data];
-        }
-
-        // Force the vault UI to refresh so the new doc appears
-        updateDocumentVault();
 
         const form = document.getElementById('vault-add-document-form');
         form.reset();
