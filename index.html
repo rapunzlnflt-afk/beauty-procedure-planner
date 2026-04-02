@@ -2781,7 +2781,7 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
             <p class="font-heading font-bold text-primary text-xl mb-1">${formatCurrency(r.receipt_amount)}</p>
             <p class="font-body text-xs text-secondary mb-3">${r.receipt_date || 'No date'}</p>
             ${r.receipt_notes ? `<p class="font-body text-xs text-secondary leading-relaxed mb-3">${r.receipt_notes}</p>` : ''}
-            ${r.receipt_image_link ? `<div class="pt-3 border-t border-gray-200"><a href="${r.receipt_image_link}" target="_blank" rel="noopener noreferrer" class="font-body text-xs font-medium inline-flex items-center gap-1 px-2 py-1 rounded transition-all hover:opacity-75" style="background-color: #f3f4f6; color: var(--accent-color);">ðŸ“Ž View Receipt Image</a></div>` : ''}
+            ${r.receipt_image_link ? `<div class="pt-3 border-t border-gray-200"><a href="${r.receipt_image_link}" target="_blank" rel="noopener noreferrer" class="font-body text-xs font-medium inline-flex items-center gap-1 px-2 py-1 rounded transition-all hover:opacity-75" style="background-color: #f3f4f6; color: var(--accent-color);">View Receipt Image</a></div>` : ''}
             <button class="delete-receipt absolute bottom-3 right-3 flex items-center justify-center font-bold transition-all duration-300 hover:scale-110" style="color: #dc2626; background: none; border: none; padding: 0; width: 24px; height: 24px; font-size: 20px; line-height: 1; cursor: pointer;" data-id="${r.__backendId}" title="Delete receipt">X</button>
           </div>
         `).join('');
