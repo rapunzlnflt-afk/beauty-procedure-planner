@@ -1753,35 +1753,35 @@
 
     // Goal
     function updateGoal() {
-      const goal = getDataByType('goal')[0];
-      const savings = getDataByType('savings');
-      const totalSaved = savings.reduce((sum, s) => sum + (s.amount || 0), 0);
+  const goal = getDataByType('goal')[0];
+  const savings = getDataByType('savings');
+  const totalSaved = savings.reduce((sum, s) => sum + (s.amount || 0), 0);
 
-      if (!goal) {
-        document.getElementById('goal-form').classList.remove('hidden');
-        document.getElementById('goal-display').classList.add('hidden');
-        return;
-      }
+  if (!goal) {
+    document.getElementById('goal-form').classList.remove('hidden');
+    document.getElementById('goal-display').classList.add('hidden');
+    return;
+  }
 
-      document.getElementById('goal-form').classList.add('hidden');
-      document.getElementById('goal-display').classList.remove('hidden');
+  document.getElementById('goal-form').classList.add('hidden');
+  document.getElementById('goal-display').classList.remove('hidden');
 
-      const goalAmount = goal.goal_amount || 0;
-      const saved = Math.min(totalSaved, goalAmount);
-      const percent = goalAmount > 0 ? Math.round((saved / goalAmount) * 100) : 0;
+  const goalAmount = goal.goalamount || 0;
+  const saved = Math.min(totalSaved, goalAmount);
+  const percent = goalAmount > 0 ? Math.round((saved / goalAmount) * 100) : 0;
 
-      document.getElementById('display-procedure').textContent = goal.procedure_name || 'Procedure';
-      document.getElementById('display-date').textContent = goal.target_date ? formatDate(goal.target_date) : 'N/A';
-      document.getElementById('display-percent').textContent = percent + '%';
-      document.getElementById('display-progress').style.width = percent + '%';
-      document.getElementById('display-goal').textContent = formatCurrency(goalAmount);
-      document.getElementById('display-saved').textContent = formatCurrency(saved);
-      document.getElementById('display-remaining').textContent = formatCurrency(Math.max(0, goalAmount - saved));
-    }
+  document.getElementById('display-procedure').textContent = goal.procedurename || 'Procedure';
+  document.getElementById('display-date').textContent = goal.targetdate ? formatDate(goal.targetdate) : 'N/A';
+  document.getElementById('display-percent').textContent = percent + '%';
+  document.getElementById('display-progress').style.width = percent + '%';
+  document.getElementById('display-goal').textContent = formatCurrency(goalAmount);
+  document.getElementById('display-saved').textContent = formatCurrency(saved);
+  document.getElementById('display-remaining').textContent = formatCurrency(Math.max(0, goalAmount - saved));
+}
 
 
 
-   document.getElementById('goal-form').addEventListener('submit', async (e) => {
+  document.getElementById('goal-form').addEventListener('submit', async (e) => {
   e.preventDefault();
   if (isLoading) return;
 
@@ -1792,47 +1792,14 @@
   try {
     const result = await window.dataSdk.create({
       type: 'goal',
-      procedure_name: document.getElementById('goal-procedure').value,
-      target_date: document.getElementById('goal-target-date').value,
-      goal_amount: parseFloat(document.getElementById('goal-amount').value)
+      procedurename: document.getElementById('goal-procedure').value,
+      targetdate: document.getElementById('goal-target-date').value,
+      goalamount: parseFloat(document.getElementById('goal-amount').value)
     });
 
     if (result.isOk) {
-      // your existing thumbnail logic
-      const photoType = document.getElementById('photo-type').value;
-      const gridId = `${photoType}-grid`;
-      const grid = document.getElementById(gridId);
-
-      if (grid && currentPhotoData) {
-        const empty = grid.querySelector('.empty-state');
-        if (empty) empty.remove();
-
-        const wrapper = document.createElement('div');
-        wrapper.className = 'overflow-hidden rounded-lg photo-thumbnail cursor-pointer hover:opacity-75 transition-opacity';
-        wrapper.dataset.photoId = result.data.__backendId || 'temp';
-
-        const img = document.createElement('img');
-        img.src = currentPhotoData;
-        img.className = 'w-full h-full object-cover rounded-lg';
-
-        wrapper.appendChild(img);
-        grid.appendChild(wrapper);
-
-        wrapper.addEventListener('click', function () {
-          const photoId = this.dataset.photoId;
-          const photos = getDataByType('photo-entry');
-          const photo = photos.find(p => p.__backendId === photoId);
-          if (photo && this.querySelector('img')) {
-            const imageData = this.querySelector('img').src;
-            showPhotoDetailsModal(photo, imageData);
-          }
-        });
-      }
-
-      // refresh UI if you have this helper
-      if (typeof updateAllDisplays === 'function') {
-        updateAllDisplays();
-      }
+      e.target.reset();
+      updateGoal();
     } else {
       showErrorMessage('Failed to save goal. Please try again.');
     }
@@ -1844,19 +1811,7 @@
     hideLoading(btn);
   }
 });
-
-        currentPhotoData = null;
-        fileInput.value = '';
-        document.getElementById('notes').value = '';
-        document.getElementById('photo-type').value = 'before';
-        document.getElementById('photo-date').valueAsDate = new Date();
-        uploadPlaceholder.classList.remove('hidden');
-        previewContainer.classList.add('hidden');
-      } else {
-        showErrorMessage('Failed to save photo entry. Please try again.');
-      }
-    });
-
+       
     document.getElementById('edit-goal-btn').addEventListener('click', () => {
       document.getElementById('goal-form').classList.remove('hidden');
       document.getElementById('goal-display').classList.add('hidden');
