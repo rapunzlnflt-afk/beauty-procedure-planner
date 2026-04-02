@@ -1751,10 +1751,9 @@
       updateDocumentVault();
     }
 
-   // Goal
+  // Goal
 function updateGoal() {
-  const goals = getDataByType('goal');
-  const goal = goals[goals.length - 1];
+  const goal = getDataByType('goal')[0];
   const savings = getDataByType('savings');
   const totalSaved = savings.reduce((sum, s) => sum + (s.amount || 0), 0);
 
