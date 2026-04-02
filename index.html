@@ -1557,172 +1557,213 @@
     }
 
     function printConsultationQuestions() {
-      const customQuestions = getDataByType('custom-question');
-      const printWindow = window.open('', '', 'height=800,width=900');
-      
-      let html = `
-        <!DOCTYPE html>
-        <html>
-        <head>
-          <title>Consultation Questions</title>
-          <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Karla:wght@400;500;600&display=swap" rel="stylesheet">
-          <style>
-            * { margin: 0; padding: 0; box-sizing: border-box; }
-            body { font-family: 'Karla', Arial, sans-serif; color: #2d3748; background: white; }
-            .container { max-width: 8.5in; margin: 0 auto; padding: 0.35in; }
-            .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 0.2in 0.15in; margin: -0.35in -0.35in 0.2in -0.35in; border-radius: 4px; }
-            h1 { font-family: 'Montserrat', sans-serif; font-size: 24px; font-weight: 800; margin-bottom: 0.04in; letter-spacing: -0.5px; }
-            .subtitle { font-size: 11px; opacity: 0.95; margin: 0; }
-            .section { margin-bottom: 0.18in; page-break-inside: avoid; }
-            .section-header { display: flex; align-items: center; gap: 0.08in; margin-bottom: 0.08in; }
-            .section-icon { width: 0.18in; height: 0.18in; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 3px; flex-shrink: 0; }
-            .section-title { font-family: 'Montserrat', sans-serif; font-size: 11px; font-weight: 700; color: #2d3748; text-transform: uppercase; letter-spacing: 0.5px; margin: 0; }
-            .questions-list { display: grid; grid-template-columns: 1fr 1fr; gap: 0.1in 0.12in; }
-            .single-col { grid-template-columns: 1fr; }
-            .question-item { page-break-inside: avoid; display: flex; gap: 0.08in; align-items: flex-start; }
-            .checkbox { width: 0.16in; height: 0.16in; min-width: 0.16in; border: 1.5px solid #667eea; border-radius: 2px; margin-top: 0.01in; flex-shrink: 0; }
-            .q-text { font-size: 13px; line-height: 1.5; color: #2d3748; }
-            .notes-section { margin-top: 0.18in; page-break-inside: avoid; }
-            .notes-header { display: flex; align-items: center; gap: 0.08in; margin-bottom: 0.1in; }
-            .notes-icon { width: 0.18in; height: 0.18in; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 3px; }
-            .notes-title { font-family: 'Montserrat', sans-serif; font-size: 11px; font-weight: 700; color: #2d3748; text-transform: uppercase; letter-spacing: 0.5px; margin: 0; }
-            .notes-lines { display: flex; flex-direction: column; gap: 0.09in; }
-            .note-line { border-bottom: 1px solid #cbd5e1; height: 0.22in; }
-            .footer { margin-top: 0.15in; padding-top: 0.1in; border-top: 2px solid #e2e8f0; font-size: 9.5px; color: #718096; line-height: 1.4; }
-            .footer p { margin: 0; margin-bottom: 0.04in; }
-            .footer strong { color: #2d3748; }
-            @media print {
-              body { margin: 0; padding: 0; }
-              .container { padding: 0.3in; }
-              .header { margin: -0.3in -0.3in 0.2in -0.3in; }
-            }
-          </style>
-        </head>
-        <body>
-          <div class="container">
-            <div class="header">
+  const customQuestions = getDataByType('custom-question');
+  const physicians = getDataByType('physician');
+  const goals = getDataByType('goal');
+  const goal = goals[goals.length - 1];
+  const printWindow = window.open('', '', 'height=900,width=900');
+  const today = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+
+  let html = `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <title>Consultation Questions</title>
+      <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Karla:wght@400;500;600&display=swap" rel="stylesheet">
+      <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Karla', Arial, sans-serif; color: #2d3748; background: white; }
+        .container { max-width: 8.5in; margin: 0 auto; padding: 0.35in; }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 0.22in 0.2in; margin: -0.35in -0.35in 0.2in -0.35in; }
+        .header-top { display: flex; justify-content: space-between; align-items: flex-start; }
+        h1 { font-family: 'Montserrat', sans-serif; font-size: 26px; font-weight: 800; letter-spacing: -0.5px; }
+        .subtitle { font-size: 11px; opacity: 0.9; margin-top: 4px; }
+        .date-badge { font-size: 10px; opacity: 0.85; text-align: right; }
+        .info-bar { display: flex; gap: 0.15in; margin-bottom: 0.18in; }
+        .info-box { flex: 1; background: #f7fafc; border-left: 3px solid #667eea; padding: 0.1in 0.12in; border-radius: 0 4px 4px 0; }
+        .info-label { font-size: 9px; color: #718096; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 3px; }
+        .info-value { font-family: 'Montserrat', sans-serif; font-size: 12px; font-weight: 700; color: #2d3748; }
+        .section { margin-bottom: 0.16in; page-break-inside: avoid; }
+        .section-header { display: flex; align-items: center; gap: 0.08in; margin-bottom: 0.08in; }
+        .section-icon { width: 0.18in; height: 0.18in; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 3px; flex-shrink: 0; }
+        .section-title { font-family: 'Montserrat', sans-serif; font-size: 11px; font-weight: 700; color: #2d3748; text-transform: uppercase; letter-spacing: 0.5px; }
+        .questions-list { display: grid; grid-template-columns: 1fr 1fr; gap: 0.08in 0.12in; }
+        .single-col { grid-template-columns: 1fr; }
+        .question-item { page-break-inside: avoid; display: flex; gap: 0.07in; align-items: flex-start; padding: 0.05in 0; }
+        .checkbox { width: 0.15in; height: 0.15in; min-width: 0.15in; border: 1.5px solid #667eea; border-radius: 2px; margin-top: 0.02in; flex-shrink: 0; }
+        .q-text { font-size: 12.5px; line-height: 1.45; color: #2d3748; }
+        .notes-section { margin-top: 0.15in; page-break-inside: avoid; }
+        .notes-header { display: flex; align-items: center; gap: 0.08in; margin-bottom: 0.1in; }
+        .notes-icon { width: 0.18in; height: 0.18in; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 3px; }
+        .notes-title { font-family: 'Montserrat', sans-serif; font-size: 11px; font-weight: 700; color: #2d3748; text-transform: uppercase; letter-spacing: 0.5px; }
+        .notes-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 0.2in; }
+        .notes-lines { display: flex; flex-direction: column; gap: 0.1in; }
+        .note-line { border-bottom: 1px solid #cbd5e1; height: 0.24in; }
+        .footer { margin-top: 0.12in; padding-top: 0.08in; border-top: 2px solid #e2e8f0; font-size: 9px; color: #718096; line-height: 1.4; display: flex; gap: 0.15in; }
+        .footer-item { flex: 1; }
+        .footer strong { color: #4a5568; }
+        @media print {
+          body { margin: 0; }
+          .container { padding: 0.3in; }
+          .header { margin: -0.3in -0.3in 0.18in -0.3in; }
+        }
+      </style>
+    </head>
+    <body>
+      <div class="container">
+        <div class="header">
+          <div class="header-top">
+            <div>
               <h1>Consultation Questions</h1>
               <p class="subtitle">Bring this to your appointment and check off each question as you ask it</p>
             </div>
-      `;
-
-      const sections = [
-        {
-          title: 'About the Procedure',
-          questions: [
-            'How many of these procedures have you performed?',
-            'What technique will you use and why?',
-            'How long will the procedure take?',
-            'What results can I realistically expect?'
-          ]
-        },
-        {
-          title: 'Risks & Complications',
-          questions: [
-            'What are the potential risks and complications?',
-            'How do you handle complications if they arise?',
-            'What signs should I watch for after surgery?'
-          ]
-        },
-        {
-          title: 'Recovery',
-          questions: [
-            'What is the typical recovery timeline?',
-            'When can I return to work/normal activities?',
-            'What kind of pain or discomfort should I expect?',
-            'What aftercare will I need?'
-          ]
-        },
-        {
-          title: 'Cost & Logistics',
-          questions: [
-            'What is included in the quoted price?',
-            'Are there any additional fees I should expect?',
-            'What is your revision policy?',
-            'How many follow-up appointments are included?'
-          ]
-        }
-      ];
-
-      sections.forEach(section => {
-        const isTwoCol = section.questions.length >= 3;
-        html += `
-          <div class="section">
-            <div class="section-header">
-              <div class="section-icon"></div>
-              <h3 class="section-title">${section.title}</h3>
-            </div>
-            <div class="questions-list ${!isTwoCol ? 'single-col' : ''}">
-        `;
-        section.questions.forEach(q => {
-          html += `
-            <div class="question-item">
-              <div class="checkbox"></div>
-              <div class="q-text">${escapeHtml(q)}</div>
-            </div>
-          `;
-        });
-        html += `
+            <div class="date-badge">
+              <div style="font-size:11px;font-weight:600;">${today}</div>
+              ${goal ? `<div style="margin-top:3px;opacity:0.85;">${escapeHtml(goal.procedurename || '')}</div>` : ''}
             </div>
           </div>
-        `;
-      });
+        </div>
+  `;
 
-      if (customQuestions.length > 0) {
-        html += `
-          <div class="section">
-            <div class="section-header">
-              <div class="section-icon"></div>
-              <h3 class="section-title">Your Custom Questions</h3>
-            </div>
-            <div class="questions-list single-col">
-        `;
-        customQuestions.forEach(q => {
-          html += `
-            <div class="question-item">
-              <div class="checkbox"></div>
-              <div class="q-text">${escapeHtml(q.question_text)}</div>
-            </div>
-          `;
-        });
-        html += `
-            </div>
-          </div>
-        `;
-      }
-
+  // Physician info bar
+  if (physicians.length > 0) {
+    html += `<div class="info-bar">`;
+    physicians.slice(0, 3).forEach(p => {
       html += `
-            <div class="notes-section">
-              <div class="notes-header">
-                <div class="notes-icon"></div>
-                <h3 class="notes-title">Notes from Consultation</h3>
-              </div>
-              <div class="notes-lines">
-                <div class="note-line"></div>
-                <div class="note-line"></div>
-                <div class="note-line"></div>
-                <div class="note-line"></div>
-                <div class="note-line"></div>
-                <div class="note-line"></div>
-              </div>
-            </div>
-
-            <div class="footer">
-              <p><strong>• Preparation Tip:</strong> Review your questions the night before to feel confident and organized.</p>
-              <p><strong>• During Your Appointment:</strong> Check off questions as you ask them and take notes on responses in the space above.</p>
-              <p><strong>• Follow-Up:</strong> Keep this checklist with your procedure documents for your records.</p>
-            </div>
-          </div>
-        </body>
-        </html>
+        <div class="info-box">
+          <div class="info-label">Physician</div>
+          <div class="info-value">${escapeHtml(p.physicianName || 'Physician')}</div>
+          ${p.specialty ? `<div style="font-size:10px;color:#4a5568;margin-top:2px;">${escapeHtml(p.specialty)}</div>` : ''}
+          ${p.location ? `<div style="font-size:10px;color:#718096;">${escapeHtml(p.location)}</div>` : ''}
+          ${p.consultationCost ? `<div style="font-size:10px;color:#667eea;margin-top:2px;">Consult: $${Number(p.consultationCost).toFixed(2)}</div>` : ''}
+          ${p.procedureCost ? `<div style="font-size:10px;color:#667eea;">Quoted: $${Number(p.procedureCost).toFixed(2)}</div>` : ''}
+        </div>
       `;
+    });
+    html += `</div>`;
+  }
 
-      printWindow.document.write(html);
-      printWindow.document.close();
-      setTimeout(() => {
-        printWindow.print();
-      }, 250);
+  const sections = [
+    {
+      title: 'About the Procedure',
+      questions: [
+        'How many of these procedures have you performed?',
+        'What technique will you use and why?',
+        'How long will the procedure take?',
+        'What results can I realistically expect?'
+      ]
+    },
+    {
+      title: 'Risks & Complications',
+      questions: [
+        'What are the potential risks and complications?',
+        'How do you handle complications if they arise?',
+        'What signs should I watch for after surgery?'
+      ]
+    },
+    {
+      title: 'Recovery',
+      questions: [
+        'What is the typical recovery timeline?',
+        'When can I return to work/normal activities?',
+        'What kind of pain or discomfort should I expect?',
+        'What aftercare will I need?'
+      ]
+    },
+    {
+      title: 'Cost & Logistics',
+      questions: [
+        'What is included in the quoted price?',
+        'Are there any additional fees I should expect?',
+        'What is your revision policy?',
+        'How many follow-up appointments are included?'
+      ]
     }
+  ];
+
+  sections.forEach(section => {
+    const isTwoCol = section.questions.length >= 3;
+    html += `
+      <div class="section">
+        <div class="section-header">
+          <div class="section-icon"></div>
+          <h3 class="section-title">${section.title}</h3>
+        </div>
+        <div class="questions-list ${!isTwoCol ? 'single-col' : ''}">
+    `;
+    section.questions.forEach(q => {
+      html += `
+        <div class="question-item">
+          <div class="checkbox"></div>
+          <div class="q-text">${escapeHtml(q)}</div>
+        </div>
+      `;
+    });
+    html += `</div></div>`;
+  });
+
+  if (customQuestions.length > 0) {
+    html += `
+      <div class="section">
+        <div class="section-header">
+          <div class="section-icon"></div>
+          <h3 class="section-title">Your Custom Questions</h3>
+        </div>
+        <div class="questions-list single-col">
+    `;
+    customQuestions.forEach(q => {
+      html += `
+        <div class="question-item">
+          <div class="checkbox"></div>
+          <div class="q-text">${escapeHtml(q.question_text)}</div>
+        </div>
+      `;
+    });
+    html += `</div></div>`;
+  }
+
+  html += `
+    <div class="notes-section">
+      <div class="notes-header">
+        <div class="notes-icon"></div>
+        <h3 class="notes-title">Notes from Consultation</h3>
+      </div>
+      <div class="notes-grid">
+        <div class="notes-lines">
+          <div class="note-line"></div>
+          <div class="note-line"></div>
+          <div class="note-line"></div>
+          <div class="note-line"></div>
+          <div class="note-line"></div>
+          <div class="note-line"></div>
+          <div class="note-line"></div>
+        </div>
+        <div class="notes-lines">
+          <div class="note-line"></div>
+          <div class="note-line"></div>
+          <div class="note-line"></div>
+          <div class="note-line"></div>
+          <div class="note-line"></div>
+          <div class="note-line"></div>
+          <div class="note-line"></div>
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+      <div class="footer-item"><strong>Prep:</strong> Review questions the night before your appointment.</div>
+      <div class="footer-item"><strong>During:</strong> Check off each question and note answers above.</div>
+      <div class="footer-item"><strong>After:</strong> Keep this with your procedure documents for reference.</div>
+    </div>
+  </div>
+  </body></html>
+  `;
+
+  printWindow.document.write(html);
+  printWindow.document.close();
+  setTimeout(() => {
+    printWindow.print();
+  }, 250);
+}
     let allData = [];
     let isLoading = false;
 
