@@ -1753,7 +1753,8 @@
 
   // Goal
 function updateGoal() {
-  const goal = getDataByType('goal')[0];
+  const goals = getDataByType('goal');
+const goal = goals[goals.length - 1];
   const savings = getDataByType('savings');
   const totalSaved = savings.reduce((sum, s) => sum + (s.amount || 0), 0);
 
@@ -1788,22 +1789,31 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
   showLoading(btn, 'Saving...');
 
   try {
-    const result = await window.dataSdk.create({
+    const payload = {
       type: 'goal',
-      procedurename: document.getElementById('goal-procedure').value,
+      procedurename: document.getElementById('goal-procedure').value.trim(),
       targetdate: document.getElementById('goal-target-date').value,
-      goalamount: parseFloat(document.getElementById('goal-amount').value)
-    });
+      goalamount: parseFloat(document.getElementById('goal-amount').value || '0')
+    };
 
-    if (result.isOk) {
+    console.log('Saving goal payload:', payload);
+
+    const result = await window.dataSdk.create(payload);
+    console.log('Goal save result:', result);
+
+    if (result && result.isOk) {
       e.target.reset();
       updateAllDisplays();
     } else {
-      showErrorMessage('Failed to save goal. Please try again.');
+      showErrorMessage(
+        result?.error?.message ||
+        result?.message ||
+        'Failed to save goal. Please try again.'
+      );
     }
   } catch (err) {
-    console.error(err);
-    showErrorMessage('Something went wrong while saving. Please try again.');
+    console.error('Goal save error:', err);
+    showErrorMessage(err?.message || 'Something went wrong while saving. Please try again.');
   } finally {
     isLoading = false;
     hideLoading(btn);
