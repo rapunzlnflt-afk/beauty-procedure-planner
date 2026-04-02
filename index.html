@@ -14,7 +14,7 @@
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
       const parsed = raw ? JSON.parse(raw) : [];
-      return Array.isArray(parsed) ? parsed : [];
+      return Array.isArray(parsed) ? parsed.map(r => ({ ...r, __backendId: r.__backendId || r.backendId })) : [];
     } catch (e) {
       console.error('Failed to load stored data:', e);
       return [];
@@ -51,7 +51,7 @@
         const all = loadAll();
         const newRecord = {
           ...record,
-          backendId: record.backendId || makeId()
+          backendId: record.backendId || makeId(), __backendId: record.backendId || makeId()
         };
         all.push(newRecord);
         saveAll(all);
