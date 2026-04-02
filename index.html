@@ -2697,7 +2697,7 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
       if (medications.length >= 999) {
         const msg = document.getElementById('med-form-message');
         msg.textContent = 'Maximum limit of 999 medications reached. Please delete some first.';
-        msg.style.color = '#dc2626';
+        msg.style.color = '#460bdf';
         msg.classList.remove('hidden');
         return;
       }
@@ -2708,7 +2708,7 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
       if (!medName || !medType) {
         const msg = document.getElementById('med-form-message');
         msg.textContent = 'Please fill in medication name and type.';
-        msg.style.color = '#dc2626';
+        msg.style.color = '#460bdf';
         msg.classList.remove('hidden');
         return;
       }
@@ -2782,7 +2782,7 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
             <p class="font-body text-xs text-secondary mb-3">${r.receipt_date || 'No date'}</p>
             ${r.receipt_notes ? `<p class="font-body text-xs text-secondary leading-relaxed mb-3">${r.receipt_notes}</p>` : ''}
             ${r.receipt_image_link ? `<div class="pt-3 border-t border-gray-200"><a href="${r.receipt_image_link}" target="_blank" rel="noopener noreferrer" class="font-body text-xs font-medium inline-flex items-center gap-1 px-2 py-1 rounded transition-all hover:opacity-75" style="background-color: #f3f4f6; color: var(--accent-color);">View Receipt Image</a></div>` : ''}
-            <button class="delete-receipt absolute bottom-3 right-3 flex items-center justify-center font-bold transition-all duration-300 hover:scale-110" style="color: #dc2626; background: none; border: none; padding: 0; width: 24px; height: 24px; font-size: 20px; line-height: 1; cursor: pointer;" data-id="${r.__backendId}" title="Delete receipt">X</button>
+            <button class="delete-receipt absolute bottom-3 right-3 flex items-center justify-center font-bold transition-all duration-300 hover:scale-110" style="color: #460bdf; background: none; border: none; padding: 0; width: 24px; height: 24px; font-size: 20px; line-height: 1; cursor: pointer;" data-id="${r.__backendId}" title="Delete receipt">X</button>
           </div>
         `).join('');
 
@@ -3917,7 +3917,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const messageDiv = document.createElement('div');
     messageDiv.className = 'fixed top-4 right-4 rounded-lg shadow-lg p-4 z-50 max-w-sm';
     messageDiv.style.background = isError 
-      ? 'linear-gradient(135deg, #dc2626 0%, #991b1b 100%)'
+      ? 'linear-gradient(135deg, #460bdf 0%, #991b1b 100%)'
       : 'linear-gradient(135deg, #16a34a 0%, #15803d 100%)';
     messageDiv.style.color = 'white';
     messageDiv.innerHTML = `<p class="font-body text-sm font-medium">${message}</p>`;
