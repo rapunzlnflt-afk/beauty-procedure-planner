@@ -2894,7 +2894,7 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
               <h3 class="font-heading font-bold text-lg">Photo Details</h3>
               <p class="font-body text-xs opacity-90 mt-1">${entry.type.charAt(0).toUpperCase() + entry.type.slice(1)} â€¢ ${entry.date || 'No date'}</p>
             </div>
-            <button class="modal-close" style="background: none; border: none; color: white; font-size: 28px; cursor: pointer; padding: 0; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;">Ã—</button>
+            <button class="modal-close" style="background: none; border: none; color: white; font-size: 28px; cursor: pointer; padding: 0; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;">X</button>
           </div>
           <div class="p-6">
             <img src="${entry.image}" alt="Photo" class="w-full rounded-lg mb-4 max-h-96 object-cover">
@@ -3594,7 +3594,7 @@ document.addEventListener('DOMContentLoaded', function () {
             <h3 class="font-heading font-bold text-base">Edit Photo</h3>
             <p class="font-body text-xs opacity-90 mt-0.5" id="modal-type-display">${entry.type.charAt(0).toUpperCase() + entry.type.slice(1)}</p>
           </div>
-          <button class="modal-close" style="background: none; border: none; color: white; font-size: 24px; cursor: pointer; padding: 0; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;">Ã—</button>
+          <button class="modal-close" style="background: none; border: none; color: white; font-size: 24px; cursor: pointer; padding: 0; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;">X</button>
         </div>
         <div class="p-4">
           ${entry.image ? `<img src="${entry.image}" alt="Photo" class="w-full rounded-lg mb-3 max-h-40 object-cover">` : (entry.link ? `<div class="w-full h-40 rounded-lg mb-3 flex items-center justify-center" style="background-color: #edf2f7;"><a href="${entry.link}" target="_blank" rel="noopener noreferrer" class="font-body text-sm underline" style="color: var(--accent-color);">Open Link</a></div>` : '')}
@@ -3814,7 +3814,7 @@ document.addEventListener('DOMContentLoaded', function () {
       <div class="bg-white rounded-lg shadow-2xl max-w-md w-full">
         <div style="background: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-color-2) 100%); color: white; padding: 1rem; border-radius: 8px 8px 0 0; display: flex; justify-content: space-between; align-items: center;">
           <h3 class="font-heading font-bold text-base">Photo Preview</h3>
-          <button class="modal-close" style="background: none; border: none; color: white; font-size: 24px; cursor: pointer; padding: 0; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;">Ã—</button>
+          <button class="modal-close" style="background: none; border: none; color: white; font-size: 24px; cursor: pointer; padding: 0; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;">X</button>
         </div>
         <div class="p-4 text-center">
           <div id="link-image-container" style="position: relative; min-height: 200px; display: flex; align-items: center; justify-content: center;">
