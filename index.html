@@ -142,7 +142,7 @@
     .challenge-box { aspect-ratio: 1; background-color: #e2e8f0; border: 2px solid #cbd5e1; border-radius: 4px; transition: all 0.3s ease; }
     .challenge-box.filled { background: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-color-2) 100%); border-color: var(--accent-color); box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3); }
 
-           .tab-content:not(.hidden) { display: block !important; }
+           .tab-content { display: none !important; } .tab-content.active-tab { display: block !important; }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js" type="text/javascript"></script>
  </head>
@@ -157,7 +157,7 @@
     </nav>
    </aside>
    <main class="flex-1 p-4">
-    <section id="tab-overview" class="tab-content">
+    <section id="tab-overview" class="tab-content active-tab">
      <h2 class="font-heading text-2xl font-bold text-primary mb-4">Overview</h2>
      <div class="card p-4">
       <h3 class="font-heading text-lg font-semibold text-primary mb-3">Set Your Beauty Goal</h3>
@@ -1884,11 +1884,11 @@
         btn.addEventListener('click', function(e) {
           e.preventDefault();
           const tabName = this.getAttribute('data-tab');
-          document.querySelectorAll('.tab-content').forEach(tab => tab.classList.add('hidden'));
+          document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active-tab'));
           buttons.forEach(b => b.classList.remove('active'));
           const targetTab = document.getElementById(`tab-${tabName}`);
           if (targetTab) {
-            targetTab.classList.remove('hidden'); const mc=document.querySelector('.flex-1.overflow-y-auto');if(mc)mc.scrollTop=0; window.scrollTo(0,0);
+            targetTab.classList.add('active-tab'); const mc=document.querySelector('.flex-1.overflow-y-auto');if(mc)mc.scrollTop=0; window.scrollTo(0,0);
             this.classList.add('active');
           }
 
