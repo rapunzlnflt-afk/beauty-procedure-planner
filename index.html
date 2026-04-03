@@ -2302,8 +2302,7 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
     document.getElementById('print-challenge-btn').addEventListener('click', () => {
       const grid = getDataByType('grid')[0];
       if (!grid) return;
-      window.print();
-    });
+    printSavingsGrid(grid);    });
 
     document.getElementById('travel-print-btn').addEventListener('click', () => {
       const tripDetails = getDataByType('travel-trip')[0];
