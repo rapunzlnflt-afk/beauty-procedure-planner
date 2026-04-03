@@ -2639,7 +2639,12 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
       e.preventDefault();
       if (isLoading) return;
 
-      const btn = e.target.querySelector('button[type="submit"]');
+       document.getElementById('travel-edit-trip-btn').addEventListener('click', () => {
+    document.getElementById('travel-trip-form').classList.remove('hidden');
+    document.getElementById('travel-trip-display').classList.add('hidden');
+  });
+ 
+     const btn = e.target.querySelector('button[type="submit"]');
       isLoading = true;
       showLoading(btn, 'Adding...');
 
@@ -3385,8 +3390,7 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
       'aa': 'https://www.aa.com/AAdvantage',
       'united': 'https://www.united.com/en/us/fly/mileageplus.html',
       'delta': 'https://www.delta.com/skymiles',
-      'southwest': 'https://www.southwest.com/rapid-rewards',
-      'jetblue': 'https://www.jetblue.com/trueblue',
+    'southwest': 'https://www.southwest.com/rapid-rewards',      'jetblue': 'https://www.jetblue.com/trueblue',
       'lufthansa': 'https://www.lufthansa.com/us/en/miles-and-more',
       'worldnomads': 'https://www.worldnomads.com',
       'allianz': 'https://www.allianzassistance.com',
