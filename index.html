@@ -2209,6 +2209,9 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
           if (fund) await window.dataSdk.delete(fund);
         });
       });
+       const totalIncome2 = funds.reduce((sum, f) => sum + (f.amount || 0), 0);
+  const si2 = document.getElementById('summary-income'); if(si2) si2.textContent = '$' + totalIncome2.toFixed(2);
+  const snet2 = document.getElementById('summary-net'); if(snet2){ const seEl = document.getElementById('summary-expenses'); const se = seEl ? parseFloat(seEl.textContent.replace('$',''))||0 : 0; snet2.textContent = '$' + (totalIncome2 - se).toFixed(2); }
     }
 
     document.getElementById('fund-form').addEventListener('submit', async (e) => {
