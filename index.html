@@ -3485,6 +3485,7 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
     document.getElementById('edit-savings-plan-btn').addEventListener('click', () => {
       document.getElementById('calculator-results').classList.add('hidden');
       document.getElementById('budget-fund-calculator').classList.remove('hidden');
+             localStorage.removeItem('sinkingFundPlan');
     });
 
     // Override the original calculator form submission to hide the calculator card
@@ -3524,7 +3525,33 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
       document.getElementById('breakdown-time').textContent = months + ' month' + (months !== 1 ? 's' : '');
       document.getElementById('calculator-results').classList.remove('hidden');
       document.getElementById('budget-fund-calculator').classList.add('hidden');
+             localStorage.setItem('sinkingFundPlan', JSON.stringify({ goal, current, startDate: document.getElementById('calc-start-date').value, targetDate: document.getElementById('calc-target-date').value, frequency, perPaycheck, monthlyAvg, weeklyAvg, dailyAvg, months, needed }));
     });
+   
+        function restoreSinkingFundPlan() {
+          try {
+            const saved = localStorage.getItem('sinkingFundPlan');
+            if (!saved) return;
+            const p = JSON.parse(saved);
+            document.getElementById('result-paycheck').textContent = formatCurrency(p.perPaycheck);
+            document.getElementById('result-monthly').textContent = formatCurrency(p.monthlyAvg);
+            document.getElementById('result-weekly').textContent = formatCurrency(p.weeklyAvg);
+            document.getElementById('result-daily').textContent = formatCurrency(p.dailyAvg);
+            document.getElementById('result-frequency-label').textContent = 'Based on ' + p.frequency + ' pay schedule';
+            document.getElementById('breakdown-goal').textContent = formatCurrency(p.goal);
+            document.getElementById('breakdown-current').textContent = formatCurrency(p.current);
+            document.getElementById('breakdown-needed').textContent = formatCurrency(p.needed);
+            document.getElementById('breakdown-time').textContent = p.months + ' month' + (p.months !== 1 ? 's' : '');
+            document.getElementById('calculator-results').classList.remove('hidden');
+            document.getElementById('budget-fund-calculator').classList.add('hidden');
+            if (p.goal) document.getElementById('calc-goal').value = p.goal;
+            if (p.current) document.getElementById('calc-current').value = p.current;
+            if (p.startDate) document.getElementById('calc-start-date').value = p.startDate;
+            if (p.targetDate) document.getElementById('calc-target-date').value = p.targetDate;
+            if (p.frequency) document.getElementById('calc-frequency').value = p.frequency;
+          } catch(e) { console.error('restore plan failed', e); }
+        }
+        restoreSinkingFundPlan();
   </script>
   <script>
 document.addEventListener('DOMContentLoaded', function () {
