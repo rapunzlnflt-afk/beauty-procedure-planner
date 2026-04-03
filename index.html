@@ -1922,6 +1922,13 @@
                   document.getElementById('calc-current').value = totalSaved;
                 }
               }
+                   if (tabName === 'medication-tracker') {
+            document.getElementById('med-tracker-date').valueAsDate = new Date();
+            const savedPatientName = localStorage.getItem('medPatientName');
+            if (savedPatientName) {
+              document.getElementById('med-patient-name').value = savedPatientName;
+            }
+          }
         });
       });
     }
@@ -2812,11 +2819,25 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
     });
 
     document.getElementById('med-tracker-date').valueAsDate = new Date();
+   
+          // Patient name persistence - load saved name and set up auto-save
+          const patientNameInput = document.getElementById('med-patient-name');
+          const savedPatientName = localStorage.getItem('medPatientName');
+          if (savedPatientName && patientNameInput) {
+            patientNameInput.value = savedPatientName;
+          }
+          if (patientNameInput && !patientNameInput.dataset.persistBound) {
+            patientNameInput.dataset.persistBound = 'true';
+            patientNameInput.addEventListener('input', function() {
+              localStorage.setItem('medPatientName', this.value);
+            });
+          }
 
     // Receipts
     function updateReceipts() {
       const receipts = getDataByType('receipt');
-      const container = document.getElementById('receipts-container');
+     
+          t container = document.getElementById('receipts-container');
       const limitWarning = document.getElementById('receipts-limit-warning');
       const countDisplay = document.getElementById('receipts-count');
       const total = receipts.reduce((sum, r) => sum + (r.receipt_amount || 0), 0);
