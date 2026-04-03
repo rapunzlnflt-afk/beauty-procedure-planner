@@ -395,11 +395,9 @@
             </div>
         
        </div>
-      </div>
       <div class="card p-5">
        <h3 class="font-heading text-lg font-semibold text-primary mb-4">Fixed Bills/Expenses</h3>
        <form id="expense-form" class="space-y-4 mb-4">
-        <div>
          <label for="expense-name" class="block font-body text-sm text-secondary mb-1">Expense Name</label><input type="text" id="expense-name" class="w-full" placeholder="e.g., Rent, Car Payment" required>
         </div>
         <div class="grid grid-cols-2 gap-4">
@@ -420,6 +418,26 @@
         </div>
        </div>
       </div>
+                </div>
+               <div class="card p-4 mb-6" style="background: linear-gradient(135deg, #f8f9ff 0%, #f0f4ff 100%); border: 1px solid #e8edf8;">
+            <div class="flex flex-wrap gap-4 items-center justify-between">
+              <div class="flex items-center gap-2">
+                <div class="w-3 h-3 rounded-full" style="background: var(--success-color);"></div>
+                <span class="font-body text-sm font-semibold text-primary">Monthly Income:</span>
+                <span id="summary-income" class="font-heading font-bold" style="color: var(--success-color);">$0.00</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <div class="w-3 h-3 rounded-full bg-red-400"></div>
+                <span class="font-body text-sm font-semibold text-primary">Monthly Expenses:</span>
+                <span id="summary-expenses" class="font-heading font-bold text-red-500">$0.00</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <div class="w-3 h-3 rounded-full" style="background: var(--accent-color);"></div>
+                <span class="font-body text-sm font-semibold text-primary">Net Available:</span>
+                <span id="summary-net" class="font-heading font-bold" style="color: var(--accent-color);">$0.00</span>
+              </div>
+            </div>
+          </div>
      <div class="card p-4 mb-6">
       <h3 class="font-heading text-sm font-semibold text-primary mb-2">Savings Tips</h3>
       <div class="space-y-2">
@@ -2186,6 +2204,7 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
       } else {
         totalEl.style.display = 'none';
       }
+                   const si = document.getElementById('summary-income'); if(si) si.textContent = '$' + totalIncome.toFixed(2);
     }
           if (fund) await window.dataSdk.delete(fund);
         });
@@ -2242,6 +2261,8 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
 
       const total = expenses.reduce((sum, e) => sum + (e.amount || 0), 0);
       document.getElementById('total-expenses').textContent = formatCurrency(total);
+       const seSum = document.getElementById('summary-expenses'); if(seSum) seSum.textContent = '$' + total.toFixed(2);
+  const snSum = document.getElementById('summary-net'); if(snSum){ const siEl = document.getElementById('summary-income'); const si = siEl ? parseFloat(siEl.textContent.replace('$',''))||0 : 0; snSum.textContent = '$' + (si - total).toFixed(2); }
     }
 
     document.getElementById('expense-form').addEventListener('submit', async (e) => {
