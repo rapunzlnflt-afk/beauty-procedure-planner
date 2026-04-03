@@ -2838,7 +2838,7 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
     function updateReceipts() {
       const receipts = getDataByType('receipt');
      
-          t container = document.getElementById('receipts-container');
+          const container = document.getElementById('receipts-container');
       const limitWarning = document.getElementById('receipts-limit-warning');
       const countDisplay = document.getElementById('receipts-count');
       const total = receipts.reduce((sum, r) => sum + (r.receipt_amount || 0), 0);
