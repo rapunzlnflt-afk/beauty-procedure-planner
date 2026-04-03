@@ -1947,11 +1947,11 @@ const goal = goals[goals.length - 1];
 
   if (!goal) {
     document.getElementById('goal-form').classList.remove('hidden');
-    document.getElementById('goal-display').tab.classList.remove('active-tab');
+    document.getElementById('goal-display').classList.add('hidden');
     return;
   }
 
-  document.getElementById('goal-form').tab.classList.remove('active-tab');
+  document.getElementById('goal-form').classList.add('hidden');
   document.getElementById('goal-display').classList.remove('hidden');
 
   const goalAmount = goal.goalamount || 0;
@@ -2012,7 +2012,7 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
        
     document.getElementById('edit-goal-btn').addEventListener('click', () => {
       document.getElementById('goal-form').classList.remove('hidden');
-      document.getElementById('goal-display').tab.classList.remove('active-tab');
+      document.getElementById('goal-display').classList.add('hidden');
     });
 
     // Cost breakdown
@@ -2055,7 +2055,7 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
       if (e.target.value === 'other') {
         customContainer.classList.remove('hidden');
       } else {
-        customContainer.tab.classList.remove('active-tab');
+        customContainer.classList.add('hidden');
       }
     });
 
@@ -2089,7 +2089,7 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
 
       if (result.isOk) {
         e.target.reset();
-        document.getElementById('custom-category-container').tab.classList.remove('active-tab');
+        document.getElementById('custom-category-container').classList.add('hidden');
       }
     });
 
@@ -2271,7 +2271,7 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
       const grid = getDataByType('grid')[0];
       if (!grid) {
         document.getElementById('no-grid-message').classList.remove('hidden');
-        document.getElementById('active-challenge').tab.classList.remove('active-tab');
+        document.getElementById('active-challenge').classList.add('hidden');
         return;
       }
 
@@ -2280,7 +2280,7 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
       const filledBoxes = Math.floor(totalSaved / (grid.amount_per_box || 1));
       const totalBoxes = grid.total_boxes || Math.ceil((grid.goal_amount || 0) / (grid.amount_per_box || 1));
 
-      document.getElementById('no-grid-message').tab.classList.remove('active-tab');
+      document.getElementById('no-grid-message').classList.add('hidden');
       document.getElementById('active-challenge').classList.remove('hidden');
       
       document.getElementById('active-per-box').textContent = formatCurrency(grid.amount_per_box || 0);
@@ -2491,7 +2491,7 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
       const totalSpent = expenses.reduce((sum, e) => sum + (e.travel_expense_amount || 0), 0);
 
       if (!tripDetails) {
-        if (document.getElementById('travel-trip-display')) document.getElementById('travel-trip-display').tab.classList.remove('active-tab');
+        if (document.getElementById('travel-trip-display')) document.getElementById('travel-trip-display').classList.add('hidden');
       } else {
         const displayDiv = document.getElementById('travel-trip-display');
         if (displayDiv) displayDiv.classList.remove('hidden');
@@ -2621,7 +2621,7 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
 
       if (result.isOk) {
         e.target.reset();
-        document.getElementById('travel-trip-form').tab.classList.remove('active-tab');
+        document.getElementById('travel-trip-form').classList.add('hidden');
       }
     });
 
@@ -2631,7 +2631,7 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
 
        document.getElementById('travel-edit-trip-btn').addEventListener('click', () => {
     document.getElementById('travel-trip-form').classList.remove('hidden');
-    document.getElementById('travel-trip-display').tab.classList.remove('active-tab');
+    document.getElementById('travel-trip-display').classList.add('hidden');
   });
  
      const btn = e.target.querySelector('button[type="submit"]');
@@ -2778,13 +2778,13 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
         msg.textContent = '• Medication added! Ready to add another.';
         msg.style.color = '#16a34a';
         msg.classList.remove('hidden');
-        setTimeout(() => msg.tab.classList.remove('active-tab'), 2500);
+        setTimeout(() => msg.classList.add('hidden'), 2500);
       }
     });
 
     document.getElementById('med-clear-btn').addEventListener('click', () => {
       document.getElementById('med-add-form').reset();
-      document.getElementById('med-form-message').tab.classList.remove('active-tab');
+      document.getElementById('med-form-message').classList.add('hidden');
     });
 
     document.getElementById('med-tracker-date').valueAsDate = new Date();
@@ -2800,7 +2800,7 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
       if (receipts.length >= 999) {
         limitWarning.classList.remove('hidden');
       } else {
-        limitWarning.tab.classList.remove('active-tab');
+        limitWarning.classList.add('hidden');
       }
 
       if (countDisplay) {
@@ -3003,7 +3003,7 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
           reader.onload = (event) => {
             selectedPhotoData = event.target.result;
             photoPreview.src = selectedPhotoData;
-            uploadPlaceholder.tab.classList.remove('active-tab');
+            uploadPlaceholder.classList.add('hidden');
             previewContainer.classList.remove('hidden');
           };
           reader.readAsDataURL(file);
@@ -3068,7 +3068,7 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
         document.getElementById('photo-type').value = 'before';
         document.getElementById('photo-date').valueAsDate = new Date();
         uploadPlaceholder.classList.remove('hidden');
-        previewContainer.tab.classList.remove('active-tab');
+        previewContainer.classList.add('hidden');
         photoPreview.src = '';
       });
     }
@@ -3094,7 +3094,7 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
       const customQuestionsCard = document.getElementById('custom-questions-display');
 
       if (customQuestions.length === 0) {
-        customQuestionsCard.tab.classList.remove('active-tab');
+        customQuestionsCard.classList.add('hidden');
         listContainer.innerHTML = '<p class="font-body text-sm text-secondary italic">No custom questions added yet.</p>';
       } else {
         customQuestionsCard.classList.remove('hidden');
@@ -3174,7 +3174,7 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
         const listEl = document.getElementById(cat.list);
         const emptyEl = document.getElementById(cat.empty);
         if (listEl) listEl.innerHTML = '';
-        if (emptyEl) emptyEl.tab.classList.remove('active-tab');
+        if (emptyEl) emptyEl.classList.add('hidden');
       });
 
       // Group documents by category
@@ -3198,7 +3198,7 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
         if (categoryDocs.length === 0) {
           emptyEl.classList.remove('hidden');
         } else {
-          emptyEl.tab.classList.remove('active-tab');
+          emptyEl.classList.add('hidden');
           categoryDocs.forEach(doc => {
             const row = document.createElement('div');
             row.className = 'p-4 flex flex-col md:flex-row md:items-center gap-3 hover:bg-gray-50 transition-all';
@@ -3235,7 +3235,7 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
         if (documents.length >= 999) {
           warning.classList.remove('hidden');
         } else {
-          warning.tab.classList.remove('active-tab');
+          warning.classList.add('hidden');
         }
       }
     }
@@ -3280,7 +3280,7 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
 
     document.getElementById('vault-cancel-delete').addEventListener('click', () => {
       vaultDeleteTarget = null;
-      document.getElementById('vault-delete-modal').tab.classList.remove('active-tab');
+      document.getElementById('vault-delete-modal').classList.add('hidden');
     });
 
     document.getElementById('vault-confirm-delete').addEventListener('click', async () => {
@@ -3294,14 +3294,14 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
         confirmBtn.disabled = false;
         confirmBtn.textContent = 'Delete';
         vaultDeleteTarget = null;
-        document.getElementById('vault-delete-modal').tab.classList.remove('active-tab');
+        document.getElementById('vault-delete-modal').classList.add('hidden');
       }
     });
 
     document.getElementById('vault-delete-modal').addEventListener('click', (e) => {
       if (e.target.id === 'vault-delete-modal') {
         vaultDeleteTarget = null;
-        document.getElementById('vault-delete-modal').tab.classList.remove('active-tab');
+        document.getElementById('vault-delete-modal').classList.add('hidden');
       }
     });
 
@@ -3459,7 +3459,7 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
 
     // Calculator visibility logic
     document.getElementById('edit-savings-plan-btn').addEventListener('click', () => {
-      document.getElementById('calculator-results').tab.classList.remove('active-tab');
+      document.getElementById('calculator-results').classList.add('hidden');
       document.getElementById('budget-fund-calculator').classList.remove('hidden');
     });
 
@@ -3499,7 +3499,7 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
       document.getElementById('breakdown-needed').textContent = formatCurrency(needed);
       document.getElementById('breakdown-time').textContent = months + ' month' + (months !== 1 ? 's' : '');
       document.getElementById('calculator-results').classList.remove('hidden');
-      document.getElementById('budget-fund-calculator').tab.classList.remove('active-tab');
+      document.getElementById('budget-fund-calculator').classList.add('hidden');
     });
   </script>
   <script>
@@ -3553,14 +3553,14 @@ document.addEventListener('DOMContentLoaded', function () {
     currentMode = mode;
     if (mode === 'upload') {
       uploadSection.classList.remove('hidden');
-      linkSection.tab.classList.remove('active-tab');
+      linkSection.classList.add('hidden');
       uploadModeBtn.style.background = 'linear-gradient(135deg, var(--accent-color) 0%, var(--accent-color-2) 100%)';
       uploadModeBtn.style.color = 'white';
       linkModeBtn.style.backgroundColor = '#edf2f7';
       linkModeBtn.style.color = 'var(--text-primary)';
       photoLinkInput.value = '';
     } else {
-      uploadSection.tab.classList.remove('active-tab');
+      uploadSection.classList.add('hidden');
       linkSection.classList.remove('hidden');
       linkModeBtn.style.background = 'linear-gradient(135deg, var(--accent-color) 0%, var(--accent-color-2) 100%)';
       linkModeBtn.style.color = 'white';
@@ -3568,7 +3568,7 @@ document.addEventListener('DOMContentLoaded', function () {
       uploadModeBtn.style.color = 'var(--text-primary)';
       fileInput.value = '';
       previewImg.src = '';
-      previewContainer.tab.classList.remove('active-tab');
+      previewContainer.classList.add('hidden');
       uploadPlaceholder.style.display = 'block';
     }
   }
@@ -3967,7 +3967,7 @@ document.addEventListener('DOMContentLoaded', function () {
     fileInput.value = '';
     previewImg.src = '';
     previewContainer.style.display = 'none';
-    previewContainer.tab.classList.remove('active-tab');
+    previewContainer.classList.add('hidden');
     if (uploadPlaceholder) {
       uploadPlaceholder.style.display = 'block';
     }
