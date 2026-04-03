@@ -1887,7 +1887,7 @@
           buttons.forEach(b => b.classList.remove('active'));
           const targetTab = document.getElementById(`tab-${tabName}`);
           if (targetTab) {
-            targetTab.classList.remove('hidden'); window.scrollTo(0, 0);
+            targetTab.classList.remove('hidden'); const mc=document.querySelector('.flex-1.overflow-y-auto');if(mc)mc.scrollTop=0;;
             this.classList.add('active');
           }
 
