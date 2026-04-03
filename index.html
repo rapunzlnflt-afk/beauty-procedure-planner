@@ -2514,6 +2514,7 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
 
       if (!tripDetails) {
         if (document.getElementById('travel-trip-display')) document.getElementById('travel-trip-display').classList.add('hidden');
+               const tFormShow = document.getElementById('travel-trip-form'); if(tFormShow) tFormShow.classList.remove('hidden');
       } else {
         const displayDiv = document.getElementById('travel-trip-display');
         if (displayDiv) displayDiv.classList.remove('hidden');
@@ -2521,6 +2522,7 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
         const tripBudget = tripDetails.travel_trip_budget || 0;
         const remaining = Math.max(0, tripBudget - totalSpent);
         const percent = tripBudget > 0 ? Math.round((totalSpent / tripBudget) * 100) : 0;
+               const tFormEl = document.getElementById('travel-trip-form'); if(tFormEl) tFormEl.classList.add('hidden');
 
         const els = {
           'travel-display-destination': tripDetails.travel_destination || 'Destination',
