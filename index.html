@@ -1884,6 +1884,21 @@
             targetTab.classList.remove('hidden');
             this.classList.add('active');
           }
+
+              // Initialize Budget & Fund calculator fields
+              if (tabName === 'budget-fund') {
+                const goalData = getDataByType('goal')[0];
+                const savingsData = getDataByType('savings');
+                
+                if (goalData) {
+                  document.getElementById('calc-goal').value = goalData.goal_amount || '';
+                }
+                
+                if (savingsData && savingsData.length > 0) {
+                  const totalSaved = savingsData.reduce((sum, s) => sum + (s.amount || 0), 0);
+                  document.getElementById('calc-current').value = totalSaved;
+                }
+              }
         });
       });
     }
