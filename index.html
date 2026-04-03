@@ -385,7 +385,13 @@
          </div>
         </div><button type="submit" class="btn-primary px-4 py-2 rounded font-body text-sm">Add Source</button>
        </form>
-       <div id="fund-list" class="space-y-2">
+       <div id="fund-list" class="space-y-2">></div>
+            <div id="monthly-income-total" class="mt-4 pt-4 border-t border-gray-200" style="display: none;">
+              <div class="flex justify-between items-center">
+                <span class="font-body text-sm font-semibold text-primary">Total Monthly Income:</span>
+                <span id="monthly-income-total-amount" class="font-heading text-xl font-bold text-primary">$0.00</span>
+              </div>
+            </div>
         <p class="font-body text-sm text-secondary italic">No funding sources added yet.</p>
        </div>
       </div>
@@ -2168,6 +2174,19 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
         btn.addEventListener('click', async () => {
           const id = btn.dataset.id;
           const fund = funds.find(f => f.__backendId === id);
+
+    // Update monthly income total
+    const totalIncome = funds.reduce((sum, f) => sum + (f.amount || 0), 0);
+    const totalEl = document.getElementById('monthly-income-total');
+    const totalAmountEl = document.getElementById('monthly-income-total-amount');
+    if (totalEl && totalAmountEl) {
+      if (funds.length > 1) {
+        totalAmountEl.textContent = '$' + totalIncome.toFixed(2);
+        totalEl.style.display = 'block';
+      } else {
+        totalEl.style.display = 'none';
+      }
+    }
           if (fund) await window.dataSdk.delete(fund);
         });
       });
