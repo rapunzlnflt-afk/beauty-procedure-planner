@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="en" class="h-full">
  <head>
@@ -386,7 +387,7 @@
          </div>
         </div><button type="submit" class="btn-primary px-4 py-2 rounded font-body text-sm">Add Source</button>
        </form>
-       <div id="fund-list" class="space-y-2">></div>
+       <div id="fund-list" class="space-y-2"></div>
             <div id="monthly-income-total" class="mt-4 pt-4 border-t border-gray-200">
               <div class="flex justify-between items-center">
                 <span class="font-body text-sm font-semibold text-primary">Total Monthly Income:</span>
@@ -1533,7 +1534,7 @@
             td { padding: 10px; border-bottom: 1px solid #e2e8f0; }
             tr:nth-child(even) { background-color: #f7fafc; }
             .footer { margin-top: 30px; font-size: 12px; color: #718096; border-top: 1px solid #cbd5e1; padding-top: 15px; }
-          1307
+          </style>
           
         </head>
         <body>
@@ -1651,7 +1652,7 @@
           .container { padding: 0.3in; }
           .header { margin: -0.3in -0.3in 0.18in -0.3in; }
         }
-      1296
+      </style>
       
     </head>
     <body>
@@ -1937,7 +1938,7 @@
                 const savingsData = getDataByType('savings');
                 
                 if (goalData) {
-                  document.getElementById('calc-goal').value = goalData.goal_amount || '';
+                  document.getElementById('calc-goal').value = goalData.goalamount || '';
                 }
                 
                 if (savingsData && savingsData.length > 0) {
@@ -2562,7 +2563,7 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
         consultationCost: parseFloat(document.getElementById('physician-consultation-cost').value) || 0,
         procedureCost: parseFloat(document.getElementById('physician-procedure-cost').value) || 0,
         rating: document.getElementById('physician-rating').value ? parseInt(document.getElementById('physician-rating').value) : 0,
-        notes: document.getElementById('physician-notes').value || ''
+        notes: document.getElementById('physicianNotes').value || ''
       });
 
       isLoading = false;
@@ -2714,15 +2715,14 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
       }
     });
 
+    document.getElementById('travel-edit-trip-btn').addEventListener('click', () => {
+      document.getElementById('travel-trip-form').classList.remove('hidden');
+      document.getElementById('travel-trip-display').classList.add('hidden');
+    });
     document.getElementById('travel-expense-form').addEventListener('submit', async (e) => {
       e.preventDefault();
       if (isLoading) return;
 
-       document.getElementById('travel-edit-trip-btn').addEventListener('click', () => {
-    document.getElementById('travel-trip-form').classList.remove('hidden');
-    document.getElementById('travel-trip-display').classList.add('hidden');
-  });
- 
      const btn = e.target.querySelector('button[type="submit"]');
       isLoading = true;
       showLoading(btn, 'Adding...');
@@ -2794,14 +2794,14 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
 
     let result;
     if (existing) {
-      result = await SDK.update({
+      result = await requireDataSdk().update({
         ...existing,
         type: 'medication-patient',
         patientName,
         trackerDate
       });
     } else {
-      result = await SDK.create({
+      result = await requireDataSdk().create({
         type: 'medication-patient',
         patientName,
         trackerDate
@@ -2812,15 +2812,7 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
       throw new Error('Could not save patient info.');
     }
 
-    updateMedicationPatientDisplay();
-    const originalUpdateAllUI = updateAllUI;
-  updateAllUI = function() {
-  originalUpdateAllUI();
-  updateSavingsTracker();
-  updateSavingsGrid();
-  updateMedicationPatientDisplay();
-};
-   updateAllUI();
+    updateAllDisplays();
   } catch (error) {
     console.error(error);
     showErrorMessage('Could not save patient info.');
@@ -2876,40 +2868,6 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
       });
     }
 
-  function getMedicationPatientInfo() {
-  const records = getDataByType('medication-patient');
-  return records.length ? records[0] : null;
-    }
-
-  function updateMedicationPatientDisplay() {
-  const patient = getMedicationPatientInfo();
-
-  const formWrap = document.getElementById('med-patient-form');
-  const displayWrap = document.getElementById('med-patient-display');
-  const nameInput = document.getElementById('med-patient-name');
-  const dateInput = document.getElementById('med-tracker-date');
-  const displayName = document.getElementById('med-display-patient-name');
-  const displayDate = document.getElementById('med-display-tracker-date');
-
-  if (!formWrap || !displayWrap || !nameInput || !dateInput || !displayName || !displayDate) return;
-
-  if (patient) {
-    nameInput.value = patient.patientName || '';
-    dateInput.value = patient.trackerDate || '';
-    displayName.textContent = patient.patientName || '—';
-    displayDate.textContent = patient.trackerDate ? formatDate(patient.trackerDate) : '—';
-    formWrap.classList.add('hidden');
-    displayWrap.classList.remove('hidden');
-  } else {
-    nameInput.value = '';
-    dateInput.value = '';
-    dateInput.valueAsDate = new Date();
-    displayName.textContent = '—';
-    displayDate.textContent = '—';
-    formWrap.classList.remove('hidden');
-    displayWrap.classList.add('hidden');
-  }
-}
     document.getElementById('med-add-form').addEventListener('submit', async (e) => {
       e.preventDefault();
       if (isLoading) return;
