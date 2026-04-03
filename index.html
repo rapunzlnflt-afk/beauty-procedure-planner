@@ -967,15 +967,37 @@
       <p class="font-body text-sm opacity-90">Keep a complete record of all medications, supplements, and prescriptions</p>
      </div>
      <div class="card p-5 mb-6">
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-       <div>
-        <label class="block font-body text-sm text-secondary mb-1">Patient Name</label><input type="text" id="med-patient-name" class="w-full" placeholder="Enter patient name">
-       </div>
-       <div>
-        <label class="block font-body text-sm text-secondary mb-1">Date</label><input type="date" id="med-tracker-date" class="w-full">
-       </div>
+  <div id="med-patient-form">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+      <div>
+        <label class="block font-body text-sm text-secondary mb-1">Patient Name</label>
+        <input type="text" id="med-patient-name" class="w-full" placeholder="Enter patient name">
       </div>
-     </div>
+      <div>
+        <label class="block font-body text-sm text-secondary mb-1">Date</label>
+        <input type="date" id="med-tracker-date" class="w-full">
+      </div>
+    </div>
+    <button id="med-save-patient-btn" type="button" class="btn-primary px-4 py-2 rounded font-body text-sm">
+      Save Patient Info
+    </button>
+  </div>
+
+  <div id="med-patient-display" class="hidden">
+    <div class="flex justify-between items-start gap-4">
+      <div>
+        <p class="font-body text-xs text-secondary uppercase tracking-wide mb-1">Patient Name</p>
+        <h3 id="med-display-patient-name" class="font-heading text-xl font-bold text-primary">Patient</h3>
+        <p class="font-body text-sm text-secondary mt-1">
+          Date: <span id="med-display-date">N/A</span>
+        </p>
+      </div>
+      <button id="med-edit-patient-btn" type="button" class="btn-secondary px-3 py-2 rounded text-xs font-medium">
+        Edit
+      </button>
+    </div>
+  </div>
+</div>
      <div class="card p-5 mb-6">
       <h3 class="font-heading text-lg font-semibold text-primary mb-4">Add Medication or Supplement</h3>
       <form id="med-add-form" class="space-y-4">
@@ -1492,7 +1514,8 @@
       if (!meds || meds.length === 0) return;
 
       const printWindow = window.open('', '', 'height=800,width=900');
-      const patientName = document.getElementById('med-patient-name').value || 'Patient';
+      const patientInfo = getMedicationPatientInfo();
+      const patientName = patientInfo?.patientName || document.getElementById('med-patient-name').value || 'Patient';
       const today = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
       let html = `
@@ -1954,6 +1977,7 @@
       updateExpenses();
       updatePhysicians();
       updateTravelBudget();
+      updateMedicationPatientDisplay();
       updateMedications();
       updateReceipts();
       updatePhotoLog();
@@ -1962,7 +1986,40 @@
       updateDocumentVault();
     }
 
-  // Goal
+ function getMedicationPatientInfo() {
+  const records = getDataByType('medication-patient');
+  return records.length ? records[records.length - 1] : null;
+}
+
+function updateMedicationPatientDisplay() {
+  const patient = getMedicationPatientInfo();
+
+  const formEl = document.getElementById('med-patient-form');
+  const displayEl = document.getElementById('med-patient-display');
+  const nameInput = document.getElementById('med-patient-name');
+  const dateInput = document.getElementById('med-tracker-date');
+  const displayName = document.getElementById('med-display-patient-name');
+  const displayDate = document.getElementById('med-display-date');
+
+  if (!formEl || !displayEl || !nameInput || !dateInput || !displayName || !displayDate) return;
+
+  if (!patient) {
+    formEl.classList.remove('hidden');
+    displayEl.classList.add('hidden');
+    return;
+  }
+
+  formEl.classList.add('hidden');
+  displayEl.classList.remove('hidden');
+
+  displayName.textContent = patient.patientName || 'Patient';
+  displayDate.textContent = patient.trackerDate ? formatDate(patient.trackerDate) : 'N/A';
+
+  nameInput.value = patient.patientName || '';
+  dateInput.value = patient.trackerDate || '';
+  }
+   
+   // Goal
 function updateGoal() {
   const goals = getDataByType('goal');
 const goal = goals[goals.length - 1];
@@ -2717,7 +2774,68 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
     });
 
     // Medications
-    function updateMedications() {
+    document.getElementById('med-save-patient-btn').addEventListener('click', async () => {
+  if (isLoading) return;
+
+  const btn = document.getElementById('med-save-patient-btn');
+  const patientName = document.getElementById('med-patient-name').value.trim();
+  const trackerDate = document.getElementById('med-tracker-date').value;
+
+  if (!patientName) {
+    showErrorMessage('Please enter the patient name first.');
+    return;
+  }
+
+  isLoading = true;
+  showLoading(btn, 'Saving...');
+
+  try {
+    const existing = getMedicationPatientInfo();
+
+    let result;
+    if (existing) {
+      result = await SDK.update({
+        ...existing,
+        type: 'medication-patient',
+        patientName,
+        trackerDate
+      });
+    } else {
+      result = await SDK.create({
+        type: 'medication-patient',
+        patientName,
+        trackerDate
+      });
+    }
+
+    if (!result || !result.isOk) {
+      throw new Error('Could not save patient info.');
+    }
+
+    updateMedicationPatientDisplay();
+    const originalUpdateAllUI = updateAllUI;
+  updateAllUI = function() {
+  originalUpdateAllUI();
+  updateSavingsTracker();
+  updateSavingsGrid();
+  updateMedicationPatientDisplay();
+};
+   updateAllUI();
+  } catch (error) {
+    console.error(error);
+    showErrorMessage('Could not save patient info.');
+  } finally {
+    isLoading = false;
+    hideLoading(btn);
+  }
+});
+
+  document.getElementById('med-edit-patient-btn').addEventListener('click', () => {
+  document.getElementById('med-patient-form').classList.remove('hidden');
+  document.getElementById('med-patient-display').classList.add('hidden');
+});
+   
+   function updateMedications() {
       const meds = getDataByType('medication');
       const tableBody = document.getElementById('med-table-body');
 
@@ -2758,6 +2876,40 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
       });
     }
 
+  function getMedicationPatientInfo() {
+  const records = getDataByType('medication-patient');
+  return records.length ? records[0] : null;
+    }
+
+  function updateMedicationPatientDisplay() {
+  const patient = getMedicationPatientInfo();
+
+  const formWrap = document.getElementById('med-patient-form');
+  const displayWrap = document.getElementById('med-patient-display');
+  const nameInput = document.getElementById('med-patient-name');
+  const dateInput = document.getElementById('med-tracker-date');
+  const displayName = document.getElementById('med-display-patient-name');
+  const displayDate = document.getElementById('med-display-tracker-date');
+
+  if (!formWrap || !displayWrap || !nameInput || !dateInput || !displayName || !displayDate) return;
+
+  if (patient) {
+    nameInput.value = patient.patientName || '';
+    dateInput.value = patient.trackerDate || '';
+    displayName.textContent = patient.patientName || '—';
+    displayDate.textContent = patient.trackerDate ? formatDate(patient.trackerDate) : '—';
+    formWrap.classList.add('hidden');
+    displayWrap.classList.remove('hidden');
+  } else {
+    nameInput.value = '';
+    dateInput.value = '';
+    dateInput.valueAsDate = new Date();
+    displayName.textContent = '—';
+    displayDate.textContent = '—';
+    formWrap.classList.remove('hidden');
+    displayWrap.classList.add('hidden');
+  }
+}
     document.getElementById('med-add-form').addEventListener('submit', async (e) => {
       e.preventDefault();
       if (isLoading) return;
@@ -2817,9 +2969,10 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
     document.getElementById('med-clear-btn').addEventListener('click', () => {
       document.getElementById('med-add-form').reset();
       document.getElementById('med-form-message').classList.add('hidden');
+     document.getElementById('med-tracker-date').valueAsDate = new Date();
     });
 
-    document.getElementById('med-tracker-date').valueAsDate = new Date();
+   
    
           // Patient name persistence - load saved name and set up auto-save
           const patientNameInput = document.getElementById('med-patient-name');
