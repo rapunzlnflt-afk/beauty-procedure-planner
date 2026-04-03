@@ -1884,11 +1884,11 @@
         btn.addEventListener('click', function(e) {
           e.preventDefault();
           const tabName = this.getAttribute('data-tab');
-          document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active-tab'));
+          document.querySelectorAll('.tab-content').forEach(tab => { tab.classList.remove('active-tab'); tab.classList.add('hidden'); });
           buttons.forEach(b => b.classList.remove('active'));
           const targetTab = document.getElementById(`tab-${tabName}`);
           if (targetTab) {
-            targetTab.classList.add('active-tab'); const mc=document.querySelector('.flex-1.overflow-y-auto');if(mc)mc.scrollTop=0; window.scrollTo(0,0);
+            targetTab.classList.add('active-tab'); targetTab.classList.remove('hidden'); const mc=document.querySelector('.flex-1.overflow-y-auto');if(mc)mc.scrollTop=0; window.scrollTo(0,0);
             this.classList.add('active');
           }
 
