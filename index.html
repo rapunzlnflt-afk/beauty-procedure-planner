@@ -2302,7 +2302,7 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
     document.getElementById('print-challenge-btn').addEventListener('click', () => {
       const grid = getDataByType('grid')[0];
       if (!grid) return;
-      printSavingsGrid(grid);
+      window.print();
     });
 
     document.getElementById('travel-print-btn').addEventListener('click', () => {
