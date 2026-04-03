@@ -1303,14 +1303,13 @@
             .stat-label { font-size: 12px; color: #718096; text-transform: uppercase; margin-bottom: 5px; }
             .stat-value { font-size: 20px; font-weight: bold; color: #2d3748; }
               .footer { margin-top: 10px; font-size: 11px; color: #718096; border-top: 1px solid #cbd5e1; padding-top: 10px; }          </style>
+              @page { margin: 0.5in; }
         </head>
         <body>
           <h1>Savings Grid Challenge</h1>
-                        @page { margin: 0.5in; }
 <div class="header-info">
             <p><strong>Goal Amount:</strong> $${grid.goal_amount.toFixed(2)}</p>
             <p><strong>Amount Per Box:</strong> $${grid.amount_per_box.toFixed(2)}</p>
-            <p><strong>Date Printed:</strong> ${today}</p>
           </div>
           
           <div class="stats">
