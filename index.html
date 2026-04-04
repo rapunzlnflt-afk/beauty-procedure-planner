@@ -171,6 +171,16 @@
     [data-theme="dark"] #login-box h1 { color: #f1f5f9; }
     [data-theme="dark"] #login-input { background: #3a4a62 !important; color: #f1f5f9 !important; border-color: #4a5568 !important; }
     [data-theme="dark"] .summary-bar { background: #2e3a50 !important; }
+    /* Dark mode fixes for hardcoded elements */
+    [data-theme="dark"] #total-spent-badge { background: #3a4a62 !important; border-color: #4a5a72 !important; }
+    [data-theme="dark"] .loyalty-col { background-color: #2e3a50 !important; }
+    [data-theme="dark"] .bg-gradient-to-br.from-blue-50 { background: #2e3a50 !important; }
+    [data-theme="dark"] .bg-red-50 { background: #3d2020 !important; }
+    [data-theme="dark"] [style*="background-color: #f0ecff"] { background-color: #2e3a50 !important; }
+    [data-theme="dark"] [style*="background: #f8f9ff"] { background: #2e3a50 !important; }
+    [data-theme="dark"] .border-purple-200 { border-color: #4a5a72 !important; }
+    [data-theme="dark"] .bg-white[style] { background: #323d54 !important; }
+
     [data-theme="dark"] .summary-bar, [data-theme="dark"] [style*="background-color: #f7fafc"] { background: #2e3a50 !important; }
     [data-theme="dark"] [style*="background: white"], [data-theme="dark"] [style*="background:white"] { background: #323d54 !important; }
     [data-theme="dark"] [style*="background-color: #f3f4f6"] { background: #3a4a62 !important; }
@@ -223,7 +233,7 @@
   // ==========================================
   </script>
 
-  <div id="main-app" class="flex min-h-screen" style="display:none;">
+  <div id="main-app" class="flex min-h-screen" style="display:none;opacity:0;transition:opacity 0.2s ease;">
    <aside class="w-64 bg-white shadow-lg flex-shrink-0 overflow-y-auto sticky top-0 h-screen">
     <div class="p-4 border-b border-gray-200">
      <h1 class="font-heading text-xl font-bold text-primary">Beauty Procedure Savings Planner</h1>
@@ -364,20 +374,20 @@
      <h2 class="font-heading text-2xl font-bold text-primary mb-4">Cost Breakdown</h2>
 
      <!-- Regional Cost Estimator -->
-     <div class="card p-5 mb-4" style="background:linear-gradient(135deg,#2d3748 0%,#1a202c 100%);">
+     <div class="card p-5 mb-4" style="background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);">
       <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px;">
-       <div style="width:36px;height:36px;background:rgba(255,255,255,0.1);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+       <div style="width:36px;height:36px;background:rgba(255,255,255,0.2);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
        </div>
        <div>
         <h3 class="font-heading text-base font-bold" style="color:white;margin:0;">Procedure Cost Estimator</h3>
-        <p class="font-body text-xs" style="color:rgba(255,255,255,0.5);margin:0;">Average cost ranges by region &amp; physician rating</p>
+        <p class="font-body text-xs" style="color:rgba(255,255,255,0.75);margin:0;">Average cost ranges by region &amp; physician rating</p>
        </div>
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:16px;">
        <div>
-        <label class="block font-body text-xs font-medium mb-1" style="color:rgba(255,255,255,0.6);">Procedure</label>
-        <select id="estimator-procedure" class="w-full" style="background:#374151;color:white;border:1px solid rgba(255,255,255,0.15);border-radius:8px;padding:8px 10px;font-size:13px;">
+        <label class="block font-body text-xs font-medium mb-1" style="color:rgba(255,255,255,0.85);">Procedure</label>
+        <select id="estimator-procedure" class="w-full" style="background:rgba(255,255,255,0.2);color:white;border:1px solid rgba(255,255,255,0.3);border-radius:8px;padding:8px 10px;font-size:13px;">
          <option value="">Select procedure...</option>
          <option value="rhinoplasty">Rhinoplasty</option>
          <option value="breast-aug">Breast Augmentation</option>
@@ -397,8 +407,8 @@
         </select>
        </div>
        <div>
-        <label class="block font-body text-xs font-medium mb-1" style="color:rgba(255,255,255,0.6);">Region</label>
-        <select id="estimator-region" class="w-full" style="background:#374151;color:white;border:1px solid rgba(255,255,255,0.15);border-radius:8px;padding:8px 10px;font-size:13px;">
+        <label class="block font-body text-xs font-medium mb-1" style="color:rgba(255,255,255,0.85);">Region</label>
+        <select id="estimator-region" class="w-full" style="background:rgba(255,255,255,0.2);color:white;border:1px solid rgba(255,255,255,0.3);border-radius:8px;padding:8px 10px;font-size:13px;">
          <option value="">Select region...</option>
          <optgroup label="United States">
           <option value="us-northeast">US — Northeast (NY, NJ, MA)</option>
@@ -417,8 +427,8 @@
         </select>
        </div>
        <div>
-        <label class="block font-body text-xs font-medium mb-1" style="color:rgba(255,255,255,0.6);">Physician Rating</label>
-        <select id="estimator-rating" class="w-full" style="background:#374151;color:white;border:1px solid rgba(255,255,255,0.15);border-radius:8px;padding:8px 10px;font-size:13px;">
+        <label class="block font-body text-xs font-medium mb-1" style="color:rgba(255,255,255,0.85);">Physician Rating</label>
+        <select id="estimator-rating" class="w-full" style="background:rgba(255,255,255,0.2);color:white;border:1px solid rgba(255,255,255,0.3);border-radius:8px;padding:8px 10px;font-size:13px;">
          <option value="any">Any / Unknown</option>
          <option value="budget">Budget / Less Experienced</option>
          <option value="mid">Mid-tier (3–4 stars)</option>
@@ -426,23 +436,23 @@
         </select>
        </div>
       </div>
-      <button id="run-estimator-btn" style="width:100%;padding:11px;background:linear-gradient(135deg,#667eea,#764ba2);color:white;border:none;border-radius:8px;font-size:13px;font-weight:700;font-family:inherit;cursor:pointer;margin-bottom:16px;">Get Estimate</button>
+      <button id="run-estimator-btn" style="width:100%;padding:11px;background:rgba(255,255,255,0.25);color:white;border:2px solid rgba(255,255,255,0.5);border-radius:8px;font-size:13px;font-weight:700;font-family:inherit;cursor:pointer;margin-bottom:16px;letter-spacing:0.3px;">Get Estimate</button>
       <div id="estimator-result" style="display:none;">
        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:14px;">
-        <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:14px;text-align:center;">
-         <p class="font-body text-xs" style="color:rgba(255,255,255,0.5);margin-bottom:4px;">LOW END</p>
-         <p class="font-heading text-xl font-bold" style="color:#86efac;" id="est-low">—</p>
+        <div style="background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);border-radius:10px;padding:14px;text-align:center;">
+         <p class="font-body text-xs" style="color:rgba(255,255,255,0.75);margin-bottom:4px;">LOW END</p>
+         <p class="font-heading text-xl font-bold" style="color:#d1fae5;" id="est-low">—</p>
         </div>
-        <div style="background:rgba(102,126,234,0.25);border:1px solid rgba(102,126,234,0.4);border-radius:10px;padding:14px;text-align:center;">
-         <p class="font-body text-xs" style="color:rgba(255,255,255,0.6);margin-bottom:4px;">AVERAGE</p>
+        <div style="background:rgba(255,255,255,0.25);border:1px solid rgba(255,255,255,0.4);border-radius:10px;padding:14px;text-align:center;">
+         <p class="font-body text-xs" style="color:rgba(255,255,255,0.85);margin-bottom:4px;">AVERAGE</p>
          <p class="font-heading text-xl font-bold" style="color:white;" id="est-avg">—</p>
         </div>
-        <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:14px;text-align:center;">
-         <p class="font-body text-xs" style="color:rgba(255,255,255,0.5);margin-bottom:4px;">HIGH END</p>
-         <p class="font-heading text-xl font-bold" style="color:#fca5a5;" id="est-high">—</p>
+        <div style="background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);border-radius:10px;padding:14px;text-align:center;">
+         <p class="font-body text-xs" style="color:rgba(255,255,255,0.75);margin-bottom:4px;">HIGH END</p>
+         <p class="font-heading text-xl font-bold" style="color:#fde8e8;" id="est-high">—</p>
         </div>
        </div>
-       <p id="est-note" class="font-body text-xs" style="color:rgba(255,255,255,0.45);line-height:1.6;text-align:center;"></p>
+       <p id="est-note" class="font-body text-xs" style="color:rgba(255,255,255,0.7);line-height:1.6;text-align:center;"></p>
       </div>
      </div>
 
@@ -1119,7 +1129,7 @@
       <h3 class="font-heading text-lg font-semibold mb-4 text-primary">Loyalty Programs &amp; Travel Protection</h3>
       <p class="font-body text-sm text-secondary mb-4 pb-4 border-b border-gray-200">Click the QR code icon next to any program to scan and join instantly, or click the program name to visit their website.</p>
       <div class="grid md:grid-cols-3 gap-4">
-       <div class="rounded-lg p-4" style="background-color: #f0ecff;">
+       <div class="rounded-lg p-4 loyalty-col">
         <h4 class="font-heading font-semibold mb-3 text-sm" style="color: var(--accent-color);">Hotel Loyalty Programs</h4>
         <ul class="space-y-3">
          <li class="flex items-center gap-2"><button id="qr-marriott" class="qr-button" style="background: none; border: none; padding: 0; cursor: pointer; flex-shrink: 0; color: #a4a3cf; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center;" title="Scan QR code">
@@ -1148,7 +1158,7 @@
            </svg></button><a href="https://www.wyndhamrewards.com" target="_blank" rel="noopener noreferrer" class="font-body text-sm underline hover:opacity-75" style="color: var(--accent-color);">Wyndham Rewards</a></li>
         </ul>
        </div>
-       <div class="rounded-lg p-4" style="background-color: #f0ecff;">
+       <div class="rounded-lg p-4 loyalty-col">
         <h4 class="font-heading font-semibold mb-3 text-sm" style="color: var(--accent-color);">Airline Loyalty Programs</h4>
         <ul class="space-y-3">
          <li class="flex items-center gap-2"><button id="qr-aa" class="qr-button" style="background: none; border: none; padding: 0; cursor: pointer; flex-shrink: 0; color: #a4a3cf; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center;" title="Scan QR code">
@@ -1177,7 +1187,7 @@
            </svg></button><a href="https://www.lufthansa.com/us/en/miles-and-more" target="_blank" rel="noopener noreferrer" class="font-body text-sm underline hover:opacity-75" style="color: var(--accent-color);">Lufthansa Miles &amp; More</a></li>
         </ul>
        </div>
-       <div class="rounded-lg p-4" style="background-color: #f0ecff;">
+       <div class="rounded-lg p-4 loyalty-col">
         <h4 class="font-heading font-semibold mb-3 text-sm" style="color: var(--accent-color);">Travel Insurance</h4>
         <ul class="space-y-3">
          <li class="flex items-center gap-2"><button id="qr-worldnomads" class="qr-button" style="background: none; border: none; padding: 0; cursor: pointer; flex-shrink: 0; color: #a4a3cf; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center;" title="Scan QR code">
@@ -1377,7 +1387,7 @@
         <h3 class="font-heading text-xl font-semibold text-primary">Saved Receipts</h3>
         <p class="font-body text-xs text-secondary mt-1" id="receipts-count">0 receipts logged</p>
        </div>
-       <div class="text-right bg-gradient-to-br from-blue-50 to-purple-50 px-4 py-3 rounded-lg border border-blue-100">
+       <div class="text-right bg-gradient-to-br from-blue-50 to-purple-50 px-4 py-3 rounded-lg border border-blue-100" id="total-spent-badge">
         <p class="font-body text-xs text-secondary mb-1 uppercase tracking-wide">Total Spent</p>
         <p class="font-heading text-2xl font-bold text-primary" id="receipts-total-amount">$0.00</p>
        </div>
@@ -4901,6 +4911,7 @@ document.querySelector('[data-tab="receipt-log"]').addEventListener('click', pop
   if (localStorage.getItem(AUTH_KEY) === PLANNER_ACCESS_CODE) {
     loginScreen.style.display = 'none';
     mainApp.style.display = 'flex';
+    setTimeout(function(){ mainApp.style.opacity = '1'; }, 10);
   } else {
     loginScreen.style.display = 'flex';
     mainApp.style.display = 'none';
@@ -4913,6 +4924,7 @@ document.querySelector('[data-tab="receipt-log"]').addEventListener('click', pop
       localStorage.setItem(AUTH_KEY, code);
       loginScreen.style.display = 'none';
       mainApp.style.display = 'flex';
+      setTimeout(function(){ mainApp.style.opacity = '1'; }, 10);
     } else {
       document.getElementById('login-error').textContent = 'Incorrect access code. Please try again.';
       document.getElementById('login-input').value = '';
