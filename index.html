@@ -171,10 +171,12 @@
         width: 260px !important;
         z-index: 1001;
         transition: left 0.25s ease;
-        overflow-y: auto;
+        overflow-y: scroll !important;
+        -webkit-overflow-scrolling: touch;
+        max-height: 100vh;
       }
       aside.open { left: 0 !important; }
-      main { padding: 68px 12px 16px !important; width: 100% !important; }
+      main { padding: 68px 12px 32px !important; width: 100% !important; overflow-y: auto; min-height: 100vh; }
 
       /* Stack all 2 and 3 col grids */
       .grid-cols-2, .grid-cols-3, .md\:grid-cols-3, .md\:grid-cols-2 { grid-template-columns: 1fr !important; }
@@ -432,6 +434,7 @@
       <button id="export-data-btn" style="padding:7px 4px;background:transparent;color:#667eea;border:1.5px solid #667eea;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;" title="Export your data to a file">&#8681; Export</button>
       <label id="import-data-label" style="padding:7px 4px;background:transparent;color:#667eea;border:1.5px solid #667eea;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;text-align:center;display:block;" title="Import data from a file">&#8679; Import<input type="file" id="import-data-input" accept=".json" style="display:none;"></label>
      </div>
+     <p style="font-size:10px;color:#94a3b8;margin-top:5px;line-height:1.5;"><strong>Export</strong> saves your data as a file. <strong>Import</strong> loads it back &mdash; use these to transfer your data between devices.</p>
      <button id="dark-mode-btn" style="margin-top:6px;width:100%;padding:7px 10px;background:transparent;color:#667eea;border:1.5px solid #667eea;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:6px;" title="Toggle dark mode">
       <svg id="dark-mode-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
       <span id="dark-mode-label">Dark Mode</span>
