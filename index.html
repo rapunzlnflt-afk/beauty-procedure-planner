@@ -182,6 +182,8 @@
   // ============ PASSWORD CONFIG ============
   // Change this value to set the access code your buyers will use:
   var PLANNER_ACCESS_CODE = 'beauty2026';
+  // When your Etsy listing is live, replace this URL:
+  var ETSY_LISTING_URL = 'https://www.etsy.com/your-listing-url-here';
   // ==========================================
   </script>
 
@@ -238,6 +240,16 @@
          <div class="text-center">
           <p class="font-body text-xs text-secondary mb-1 uppercase tracking-wide">Remaining</p>
           <p class="font-heading text-2xl font-bold text-primary" id="display-remaining">$0.00</p>
+         </div>
+        </div>
+        <div class="grid grid-cols-2 gap-4 mt-4 pt-4" style="border-top:1px solid #e2e8f0;">
+         <div class="text-center">
+          <p class="font-body text-xs text-secondary mb-1 uppercase tracking-wide">Days Remaining</p>
+          <p class="font-heading text-xl font-bold text-primary" id="display-countdown">—</p>
+         </div>
+         <div class="text-center">
+          <p class="font-body text-xs text-secondary mb-1 uppercase tracking-wide">Est. Completion</p>
+          <p class="font-heading text-xl font-bold" style="color:var(--accent-color);" id="display-est-completion">—</p>
          </div>
         </div>
        </div>
@@ -328,7 +340,12 @@
        </div>
        <div>
         <label for="cost-amount" class="block font-body text-sm text-secondary mb-1">Amount</label><input type="number" id="cost-amount" class="w-full" placeholder="0.00" step="0.01" min="0" required>
-       </div><button type="submit" class="btn-primary px-4 py-2 rounded font-body text-sm">Add Cost</button>
+       </div>
+       <div class="mb-4">
+        <label for="cost-description" class="block font-body text-sm text-secondary mb-1">Description <span class="text-xs italic">(optional)</span></label>
+        <input type="text" id="cost-description" class="w-full" placeholder="e.g., Quote from Dr. Smith, includes anesthesia">
+       </div>
+       <button type="submit" class="btn-primary px-4 py-2 rounded font-body text-sm">Add Cost</button>
       </form>
      </div>
      <div class="card p-5">
@@ -339,6 +356,7 @@
       <div class="mt-4 pt-4 border-t border-gray-200">
        <div class="flex justify-between">
         <span class="font-body font-semibold text-primary">Total Estimated Cost:</span><span class="font-heading text-xl font-bold text-primary" id="total-cost">$0.00</span>
+        <button id="sync-cost-to-goal-btn" class="ml-4 text-xs px-3 py-1 rounded font-medium" style="background:linear-gradient(135deg,#667eea,#764ba2);color:white;border:none;cursor:pointer;" title="Update your goal amount to match this total">&#8593; Sync to Goal</button>
        </div>
       </div>
      </div>
@@ -2085,6 +2103,43 @@ const goal = goals[goals.length - 1];
   document.getElementById('display-goal').textContent = formatCurrency(goalAmount);
   document.getElementById('display-saved').textContent = formatCurrency(saved);
   document.getElementById('display-remaining').textContent = formatCurrency(Math.max(0, goalAmount - saved));
+
+  // Countdown: days until target date
+  const countdownEl = document.getElementById('display-countdown');
+  const estEl = document.getElementById('display-est-completion');
+  if (goal.targetdate) {
+    const today = new Date(); today.setHours(0,0,0,0);
+    const target = new Date(goal.targetdate + 'T00:00:00');
+    const daysLeft = Math.ceil((target - today) / (1000 * 60 * 60 * 24));
+    countdownEl.textContent = daysLeft > 0 ? daysLeft + ' days' : (daysLeft === 0 ? 'Today!' : 'Past due');
+    countdownEl.style.color = daysLeft < 30 ? '#e53e3e' : 'inherit';
+  } else {
+    countdownEl.textContent = '—';
+  }
+
+  // Estimated completion: based on average savings rate
+  const savingsEntries = getDataByType('savings');
+  if (savingsEntries.length >= 2 && goalAmount > totalSaved) {
+    const sorted = [...savingsEntries].sort((a,b) => new Date(a.date) - new Date(b.date));
+    const firstDate = new Date(sorted[0].date);
+    const lastDate = new Date(sorted[sorted.length-1].date);
+    const daySpan = Math.max(1, (lastDate - firstDate) / (1000*60*60*24));
+    const dailyRate = totalSaved / daySpan;
+    if (dailyRate > 0) {
+      const daysNeeded = (goalAmount - totalSaved) / dailyRate;
+      const estDate = new Date();
+      estDate.setDate(estDate.getDate() + Math.ceil(daysNeeded));
+      estEl.textContent = estDate.toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' });
+    } else {
+      estEl.textContent = '—';
+    }
+  } else if (totalSaved >= goalAmount) {
+    estEl.textContent = 'Goal reached!';
+    estEl.style.color = 'var(--success-color)';
+  } else {
+    estEl.textContent = 'Add savings to estimate';
+    estEl.style.fontSize = '12px';
+  }
 }
 
 document.getElementById('goal-form').addEventListener('submit', async (e) => {
@@ -2150,6 +2205,7 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
         <div class="flex justify-between items-center p-3 bg-gray-50 rounded">
           <div>
             <p class="font-body font-semibold text-primary text-sm">${c.cost_item || 'Item'}</p>
+            ${c.cost_description ? `<p class="font-body text-xs text-secondary mt-0.5">${c.cost_description}</p>` : ''}
           </div>
           <div class="flex items-center gap-3">
             <p class="font-heading font-bold text-primary">${formatCurrency(c.item_cost || 0)}</p>
@@ -2169,6 +2225,20 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
       const total = costs.reduce((sum, c) => sum + (c.item_cost || 0), 0);
       document.getElementById('total-cost').textContent = formatCurrency(total);
     }
+
+    // Sync cost total to goal amount
+    document.getElementById('sync-cost-to-goal-btn').addEventListener('click', async () => {
+      const costs = getDataByType('cost');
+      const total = costs.reduce((sum, c) => sum + (c.item_cost || 0), 0);
+      if (total === 0) { alert('Add cost items first.'); return; }
+      const goals = getDataByType('goal');
+      const goal = goals[goals.length - 1];
+      if (!goal) { alert('Please set a goal on the Overview tab first.'); return; }
+      if (!confirm(`Update your goal amount to ${formatCurrency(total)}?`)) return;
+      await requireDataSdk().update({ ...goal, goalamount: total });
+      updateGoal();
+      alert('Goal amount updated to ' + formatCurrency(total));
+    });
 
     document.getElementById('cost-category').addEventListener('change', (e) => {
       const customContainer = document.getElementById('custom-category-container');
@@ -2198,10 +2268,13 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
       isLoading = true;
       showLoading(btn, 'Adding...');
 
+      const description = document.getElementById('cost-description').value.trim();
+
       const result = await requireDataSdk().create({
         type: 'cost',
         cost_item: costItem,
-        item_cost: amount
+        item_cost: amount,
+        cost_description: description
       });
 
       isLoading = false;
@@ -4250,6 +4323,12 @@ document.getElementById('share-clean-btn').addEventListener('click', function() 
     + '})();'
     + '<\/script>';
 
+  // Lock shared copy to demo mode — replaces the real access code with a sentinel
+  html = html.replace(
+    "var PLANNER_ACCESS_CODE = '" + PLANNER_ACCESS_CODE + "';",
+    "var PLANNER_ACCESS_CODE = '__DEMO__';"
+  );
+
   // Insert the clear script right before </body>
   html = html.replace('</body>', clearScript + '</body>');
 
@@ -4270,6 +4349,24 @@ document.getElementById('share-clean-btn').addEventListener('click', function() 
   var AUTH_KEY = 'beautyPlannerAuth_v1';
   var loginScreen = document.getElementById('login-screen');
   var mainApp = document.getElementById('main-app');
+
+  // DEMO/SHARED copy — redirect all attempts to purchase page
+  if (PLANNER_ACCESS_CODE === '__DEMO__') {
+    loginScreen.style.display = 'flex';
+    mainApp.style.display = 'none';
+    var subtitle = document.querySelector('#login-box .login-subtitle');
+    if (subtitle) subtitle.textContent = 'This is a preview copy. Purchase your own to get full access.';
+    var btn = document.getElementById('login-btn');
+    if (btn) { btn.textContent = 'Get Your Copy on Etsy →'; btn.style.background = 'linear-gradient(135deg,#f6a623,#e8891a)'; }
+    // Hide the password field — just show the buy button
+    var input = document.getElementById('login-input');
+    if (input) input.style.display = 'none';
+    document.getElementById('login-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      window.open(ETSY_LISTING_URL, '_blank');
+    });
+    return;
+  }
 
   if (localStorage.getItem(AUTH_KEY) === PLANNER_ACCESS_CODE) {
     loginScreen.style.display = 'none';
