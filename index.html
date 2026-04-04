@@ -2210,9 +2210,19 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
 
       const total = savings.reduce((sum, s) => sum + (s.amount || 0), 0);
 document.getElementById('total-savings').textContent = formatCurrency(total);
-const calcCurrent = document.getElementById('calc-current');
-if (calcCurrent) calcCurrent.value = total.toFixed(2);
-updateGoal();
+           const calcCurrent = document.getElementById('calc-current');
+      if (calcCurrent) calcCurrent.value = total.toFixed(2);
+      const breakdownCurrent = document.getElementById('breakdown-current');
+      if (breakdownCurrent) breakdownCurrent.textContent = formatCurrency(total);
+      const goalEntries = getDataByType('goal');
+      const goalAmount = goalEntries.length > 0 ? (goalEntries[goalEntries.length - 1].goalamount || 0) : 0;
+      const breakdownGoal = document.getElementById('breakdown-goal');
+      if (breakdownGoal) breakdownGoal.textContent = formatCurrency(goalAmount);
+      const breakdownNeeded = document.getElementById('breakdown-needed');
+      if (breakdownNeeded) breakdownNeeded.textContent = formatCurrency(Math.max(0, goalAmount - total));
+      const calcCurrent = document.getElementById('calc-current');
+      if (calcCurrent) calcCurrent.value = total.toFixed(2);
+      updateGoal();
     }
 
     document.getElementById('savings-form').addEventListener('submit', async (e) => {
