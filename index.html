@@ -200,8 +200,11 @@
    <main class="flex-1 p-4">
     <section id="tab-overview" class="tab-content active-tab">
      <h2 class="font-heading text-2xl font-bold text-primary mb-4">Overview</h2>
-     <div class="card p-4">
-      <h3 class="font-heading text-lg font-semibold text-primary mb-3">Set Your Beauty Goal</h3>
+     <div class="card p-4" style="border-left: 4px solid var(--accent-color);">
+      <div style="display:flex; align-items:center; gap:10px; margin-bottom:12px;">
+       <div style="width:32px;height:32px;background:linear-gradient(135deg,#667eea,#764ba2);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+       <h3 class="font-heading text-lg font-semibold text-primary" style="margin:0;">Your Beauty Goal</h3>
+      </div>
       <form id="goal-form" class="space-y-3">
        <div>
         <label for="goal-procedure" class="block font-body text-xs font-medium text-secondary mb-1">Procedure Name</label><input type="text" id="goal-procedure" class="w-full" placeholder="e.g., Rhinoplasty, Breast Augmentation" required>
@@ -254,8 +257,11 @@
         </div>
        </div>
       </div>
-      <div class="card p-4">
-       <h3 class="font-heading text-2xl font-bold text-primary mb-8 text-center">Your Path to Success</h3>
+     </div>
+
+     <div class="card p-6 mt-4" style="background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);">
+      <h3 class="font-heading text-2xl font-bold text-center mb-2" style="color:white;">Your Path to Success</h3>
+      <p class="text-center text-sm mb-6" style="color:rgba(255,255,255,0.8);">Follow these six steps to reach your goal</p>
        <div class="grid md:grid-cols-3 gap-6">
         <div class="step-card">
          <div class="card p-6 h-full">
@@ -324,7 +330,6 @@
          </div>
         </div>
        </div>
-      </div>
      </div>
     </section>
     <section id="tab-cost-breakdown" class="tab-content hidden">
