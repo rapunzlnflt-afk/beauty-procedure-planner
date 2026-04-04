@@ -265,48 +265,18 @@
       </form>
      </div>
 
-     <!-- Legacy single-goal display (hidden, kept for updateGoal compat) -->
-     <div id="goal-display" class="hidden">
-       <div class="flex justify-between items-center mb-4">
-        <div>
-         <h3 class="font-heading text-2xl font-bold text-primary" id="display-procedure">Procedure Name</h3>
-         <p class="font-body text-xs text-secondary mt-1">Target Date: <span id="display-date">N/A</span></p>
-        </div><button id="edit-goal-btn" class="btn-secondary px-3 py-2 rounded text-xs font-medium">Edit Goal</button>
-       </div>
-       <div class="mb-4">
-        <div class="text-center mb-3">
-         <p class="font-heading text-5xl font-bold text-primary mb-1" id="display-percent">0%</p>
-         <p class="font-body text-xs text-secondary uppercase tracking-wider">Complete</p>
-        </div>
-        <div class="progress-bar h-2 mb-4">
-         <div class="progress-fill" id="display-progress" style="width: 0%"></div>
-        </div>
-        <div class="grid grid-cols-3 gap-4">
-         <div class="text-center">
-          <p class="font-body text-xs text-secondary mb-1 uppercase tracking-wide">Goal</p>
-          <p class="font-heading text-2xl font-bold text-primary" id="display-goal">$0.00</p>
-         </div>
-         <div class="text-center">
-          <p class="font-body text-xs text-secondary mb-1 uppercase tracking-wide">Saved</p>
-          <p class="font-heading text-2xl font-bold" style="color: var(--success-color);" id="display-saved">$0.00</p>
-         </div>
-         <div class="text-center">
-          <p class="font-body text-xs text-secondary mb-1 uppercase tracking-wide">Remaining</p>
-          <p class="font-heading text-2xl font-bold text-primary" id="display-remaining">$0.00</p>
-         </div>
-        </div>
-        <div class="grid grid-cols-2 gap-4 mt-4 pt-4" style="border-top:1px solid #e2e8f0;">
-         <div class="text-center">
-          <p class="font-body text-xs text-secondary mb-1 uppercase tracking-wide">Days Remaining</p>
-          <p class="font-heading text-xl font-bold text-primary" id="display-countdown">—</p>
-         </div>
-         <div class="text-center">
-          <p class="font-body text-xs text-secondary mb-1 uppercase tracking-wide">Est. Completion</p>
-          <p class="font-heading text-xl font-bold" style="color:var(--accent-color);" id="display-est-completion">—</p>
-         </div>
-        </div>
-       </div>
-      </div>
+     <!-- Hidden legacy compat elements for updateGoal calculations -->
+     <div id="goal-display" style="display:none;">
+      <span id="display-procedure"></span>
+      <span id="display-date"></span>
+      <span id="display-percent"></span>
+      <div id="display-progress"></div>
+      <span id="display-goal"></span>
+      <span id="display-saved"></span>
+      <span id="display-remaining"></span>
+      <span id="display-countdown"></span>
+      <span id="display-est-completion"></span>
+      <button id="edit-goal-btn" style="display:none;"></button>
      </div>
 
      <div class="card p-6 mt-4" style="background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);">
