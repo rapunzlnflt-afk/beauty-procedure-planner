@@ -155,7 +155,7 @@
 
     /* Page background — deep purple-navy gradient for depth */
     [data-theme="dark"] body {
-      background: linear-gradient(160deg, #1e1b2e 0%, #1a1a2e 40%, #16213e 100%) !important;
+      background: linear-gradient(160deg, #48426e 0%, #423c68 40%, #3d3762 100%) !important;
       color: #e8e6f0;
       min-height: 100vh;
     }
@@ -167,24 +167,28 @@
 
     /* Cards — rich dark purple tint with top accent border */
     [data-theme="dark"] .card {
-      background: rgba(40, 35, 65, 0.85) !important;
+      background: rgba(58, 52, 90, 0.92) !important;
       border-color: rgba(139, 124, 248, 0.18) !important;
       border-top: 2px solid rgba(139, 124, 248, 0.25) !important;
       color: #e8e6f0;
       box-shadow: 0 4px 20px rgba(0,0,0,0.3) !important;
     }
 
-    /* Cards with inline gradient backgrounds — preserve them */
+    /* Cards with inline gradient backgrounds — let their inline style win */
     [data-theme="dark"] .card[style*="background:linear-gradient"],
     [data-theme="dark"] .card[style*="background: linear-gradient"] {
-      background: unset !important;
       border-top: none !important;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.4) !important;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.35) !important;
+    }
+    /* Path to Success card — always purple */
+    [data-theme="dark"] #path-to-success-card {
+      background: linear-gradient(135deg,#667eea 0%,#764ba2 100%) !important;
+      border-top: none !important;
     }
 
     /* Step cards on overview — dark with purple tint */
     [data-theme="dark"] .step-card .card {
-      background: rgba(45, 38, 75, 0.9) !important;
+      background: rgba(65, 55, 100, 0.92) !important;
       border-top: 2px solid rgba(139, 124, 248, 0.3) !important;
       color: #e8e6f0 !important;
     }
@@ -193,7 +197,7 @@
 
     /* Sidebar */
     [data-theme="dark"] aside {
-      background: rgba(25, 22, 42, 0.95) !important;
+      background: rgba(38, 34, 62, 0.98) !important;
       border-right: 1px solid rgba(139,124,248,0.15) !important;
     }
     [data-theme="dark"] .sidebar-item { color: #9b98b0; }
@@ -209,7 +213,7 @@
     [data-theme="dark"] input,
     [data-theme="dark"] select,
     [data-theme="dark"] textarea {
-      background: rgba(30, 26, 50, 0.8) !important;
+      background: rgba(48, 42, 75, 0.9) !important;
       color: #e8e6f0 !important;
       border-color: rgba(139,124,248,0.3) !important;
     }
@@ -224,7 +228,7 @@
 
     /* Buttons */
     [data-theme="dark"] .btn-secondary {
-      background: rgba(60, 54, 95, 0.8);
+      background: rgba(75, 68, 112, 0.85);
       color: #c4b5fd;
       border-color: rgba(139,124,248,0.3);
     }
@@ -236,26 +240,26 @@
     [data-theme="dark"] .border-gray-200 { border-color: rgba(139,124,248,0.15) !important; }
 
     /* Backgrounds */
-    [data-theme="dark"] .bg-gray-50 { background: rgba(30,26,50,0.6) !important; }
+    [data-theme="dark"] .bg-gray-50 { background: rgba(50,44,80,0.7) !important; }
     [data-theme="dark"] .bg-white { background: rgba(40,35,65,0.85) !important; }
 
     /* Progress bar track */
     [data-theme="dark"] .progress-bar { background: rgba(139,124,248,0.15); }
 
     /* Summary/net bar */
-    [data-theme="dark"] .summary-bar { background: rgba(30,26,50,0.8) !important; }
+    [data-theme="dark"] .summary-bar { background: rgba(48,42,78,0.9) !important; }
 
     /* Specific elements */
     [data-theme="dark"] #total-spent-badge {
-      background: rgba(45,38,75,0.9) !important;
+      background: rgba(62,54,98,0.92) !important;
       border-color: rgba(139,124,248,0.25) !important;
     }
-    [data-theme="dark"] .loyalty-col { background-color: rgba(35,30,58,0.8) !important; }
-    [data-theme="dark"] .bg-gradient-to-br.from-blue-50 { background: rgba(35,30,58,0.8) !important; }
+    [data-theme="dark"] .loyalty-col { background-color: rgba(52,46,82,0.85) !important; }
+    [data-theme="dark"] .bg-gradient-to-br.from-blue-50 { background: rgba(52,46,82,0.85) !important; }
     [data-theme="dark"] .bg-red-50 { background: rgba(80,25,25,0.6) !important; }
-    [data-theme="dark"] [style*="background-color: #f0ecff"] { background-color: rgba(35,30,58,0.8) !important; }
+    [data-theme="dark"] [style*="background-color: #f0ecff"] { background-color: rgba(52,46,82,0.85) !important; }
     [data-theme="dark"] [style*="background: #f8f9ff"],
-    [data-theme="dark"] [style*="background:#f8f9ff"] { background: rgba(35,30,58,0.6) !important; }
+    [data-theme="dark"] [style*="background:#f8f9ff"] { background: rgba(52,46,82,0.7) !important; }
 
     /* Login */
     [data-theme="dark"] #login-box {
@@ -264,7 +268,7 @@
     }
     [data-theme="dark"] #login-box h1 { color: #e8e6f0; }
     [data-theme="dark"] #login-input {
-      background: rgba(25,22,42,0.8) !important;
+      background: rgba(45,40,72,0.88) !important;
       color: #e8e6f0 !important;
       border-color: rgba(139,124,248,0.3) !important;
     }
@@ -277,15 +281,15 @@
     }
 
     /* Extra dark-mode hardcoded overrides */
-    [data-theme="dark"] #total-spent-badge { background: rgba(45,38,75,0.9) !important; border-color: rgba(139,124,248,0.25) !important; }
-    [data-theme="dark"] .loyalty-col { background-color: rgba(35,30,58,0.8) !important; }
-    [data-theme="dark"] .bg-gradient-to-br.from-blue-50 { background: rgba(35,30,58,0.8) !important; }
+    [data-theme="dark"] #total-spent-badge { background: rgba(62,54,98,0.92) !important; border-color: rgba(139,124,248,0.25) !important; }
+    [data-theme="dark"] .loyalty-col { background-color: rgba(52,46,82,0.85) !important; }
+    [data-theme="dark"] .bg-gradient-to-br.from-blue-50 { background: rgba(52,46,82,0.85) !important; }
     [data-theme="dark"] .bg-red-50 { background: rgba(80,25,25,0.6) !important; }
-    [data-theme="dark"] [style*="background-color: #f0ecff"] { background-color: rgba(35,30,58,0.8) !important; }
-    [data-theme="dark"] [style*="background: #f8f9ff"] { background: rgba(35,30,58,0.6) !important; }
-    [data-theme="dark"] [style*="background-color: #f7fafc"] { background: rgba(30,26,50,0.6) !important; }
-    [data-theme="dark"] [style*="background-color: #f3f4f6"] { background: rgba(40,35,65,0.8) !important; }
-    [data-theme="dark"] [style*="background-color: #e2e8f0"] { background: rgba(60,54,95,0.8) !important; color: #e8e6f0 !important; }
+    [data-theme="dark"] [style*="background-color: #f0ecff"] { background-color: rgba(52,46,82,0.85) !important; }
+    [data-theme="dark"] [style*="background: #f8f9ff"] { background: rgba(52,46,82,0.7) !important; }
+    [data-theme="dark"] [style*="background-color: #f7fafc"] { background: rgba(50,44,80,0.7) !important; }
+    [data-theme="dark"] [style*="background-color: #f3f4f6"] { background: rgba(58,52,90,0.88) !important; }
+    [data-theme="dark"] [style*="background-color: #e2e8f0"] { background: rgba(75,68,112,0.88) !important; color: #e8e6f0 !important; }
     [data-theme="dark"] [style*="background: white"],
     [data-theme="dark"] [style*="background:white"] { background: rgba(40,35,65,0.85) !important; }
   </style>
@@ -396,7 +400,7 @@
       <button id="edit-goal-btn" style="display:none;"></button>
      </div>
 
-     <div class="card p-6 mt-4" style="background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);">
+     <div id="path-to-success-card" class="card p-6 mt-4" style="background:linear-gradient(135deg,#667eea 0%,#764ba2 100%) !important;">
       <h3 class="font-heading text-2xl font-bold text-center mb-2" style="color:white;">Your Path to Success</h3>
       <p class="text-center text-sm mb-6" style="color:rgba(255,255,255,0.8);">Follow these six steps to reach your goal</p>
        <div class="grid md:grid-cols-3 gap-6">
