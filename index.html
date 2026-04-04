@@ -2752,24 +2752,48 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
       if (result.isOk) e.target.reset();
     });
 
-    // Currency converter
-    const exchangeRates = {
+    // Currency converter — live rates via open.er-api.com (free, no key required)
+    let exchangeRates = {
       'USD': 1, 'EUR': 0.95, 'GBP': 0.87, 'MXN': 20.5, 'CAD': 1.36,
       'AUD': 1.52, 'JPY': 149.5, 'CHF': 0.88, 'CNY': 7.24, 'INR': 83.1, 'COP': 4100
     };
+    let ratesLastUpdated = null;
+
+    async function fetchLiveRates() {
+      try {
+        const res = await fetch('https://open.er-api.com/v6/latest/USD');
+        if (!res.ok) throw new Error('Rate fetch failed');
+        const data = await res.json();
+        if (data && data.rates) {
+          exchangeRates = data.rates;
+          exchangeRates['USD'] = 1;
+          ratesLastUpdated = new Date().toLocaleTimeString();
+          const info = document.getElementById('converter-rate-info');
+          if (info) info.textContent = 'Live rates · updated ' + ratesLastUpdated;
+        }
+      } catch (e) {
+        const info = document.getElementById('converter-rate-info');
+        if (info) info.textContent = 'Using approximate rates (offline)';
+      }
+    }
 
     function updateCurrencyConverter() {
       const amount = parseFloat(document.getElementById('converter-amount').value) || 1;
       const from = document.getElementById('converter-from').value;
       const to = document.getElementById('converter-to').value;
-      
-      const amountInUSD = amount / exchangeRates[from];
-      const result = amountInUSD * exchangeRates[to];
-      
+      const fromRate = exchangeRates[from] || 1;
+      const toRate = exchangeRates[to] || 1;
+      const result = (amount / fromRate) * toRate;
       document.getElementById('converter-result-value').textContent = result.toFixed(2);
       document.getElementById('converter-result-currency').textContent = to;
-      document.getElementById('converter-rate-info').textContent = `1 ${from} = ${(exchangeRates[to] / exchangeRates[from]).toFixed(4)} ${to}`;
+      if (ratesLastUpdated) {
+        document.getElementById('converter-rate-info').textContent = `1 ${from} = ${(toRate / fromRate).toFixed(4)} ${to} · updated ${ratesLastUpdated}`;
+      } else {
+        document.getElementById('converter-rate-info').textContent = `1 ${from} = ${(toRate / fromRate).toFixed(4)} ${to}`;
+      }
     }
+
+    fetchLiveRates().then(updateCurrencyConverter);
 
     document.getElementById('converter-amount').addEventListener('input', updateCurrencyConverter);
     document.getElementById('converter-from').addEventListener('change', updateCurrencyConverter);
