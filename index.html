@@ -143,6 +143,34 @@
     .challenge-box.filled { background: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-color-2) 100%); border-color: var(--accent-color); box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3); }
 
            .tab-content { display: none !important; } .tab-content.active-tab { display: block !important; }
+    /* ===== DARK MODE ===== */
+    [data-theme="dark"] {
+      --bg-light: #0f1117;
+      --text-primary: #f1f5f9;
+      --text-secondary: #94a3b8;
+      --border-color: #2d3748;
+    }
+    [data-theme="dark"] body { background-color: #0f1117; color: #f1f5f9; }
+    [data-theme="dark"] .card { background: #1e2533 !important; border-color: #2d3748; color: #f1f5f9; }
+    [data-theme="dark"] aside { background: #161b27 !important; border-color: #2d3748; }
+    [data-theme="dark"] .sidebar-item { color: #94a3b8; }
+    [data-theme="dark"] .sidebar-item:hover { background: #2d3748; color: #f1f5f9; }
+    [data-theme="dark"] .sidebar-item.active { background: #2d3748 !important; color: white; }
+    [data-theme="dark"] .text-primary { color: #f1f5f9 !important; }
+    [data-theme="dark"] .text-secondary { color: #94a3b8 !important; }
+    [data-theme="dark"] input, [data-theme="dark"] select, [data-theme="dark"] textarea { background: #2d3748 !important; color: #f1f5f9 !important; border-color: #4a5568 !important; }
+    [data-theme="dark"] input::placeholder, [data-theme="dark"] textarea::placeholder { color: #64748b !important; }
+    [data-theme="dark"] .btn-secondary { background: #2d3748; color: #94a3b8; border-color: #4a5568; }
+    [data-theme="dark"] .border-t, [data-theme="dark"] .border-gray-200 { border-color: #2d3748 !important; }
+    [data-theme="dark"] .bg-gray-50 { background: #1a2236 !important; }
+    [data-theme="dark"] .bg-white { background: #1e2533 !important; }
+    [data-theme="dark"] main { background: #0f1117 !important; }
+    [data-theme="dark"] .progress-bar { background: #2d3748; }
+    [data-theme="dark"] .step-card .card { background: #1e2533 !important; }
+    [data-theme="dark"] #login-box { background: rgba(30,37,51,0.97) !important; }
+    [data-theme="dark"] #login-box h1 { color: #f1f5f9; }
+    [data-theme="dark"] #login-input { background: #2d3748 !important; color: #f1f5f9 !important; border-color: #4a5568 !important; }
+    [data-theme="dark"] .summary-bar { background: #1a2236 !important; }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js" type="text/javascript"></script>
  </head>
@@ -192,6 +220,10 @@
     <div class="p-4 border-b border-gray-200">
      <h1 class="font-heading text-xl font-bold text-primary">Beauty Procedure Savings Planner</h1>
      <button id="share-clean-btn" style="margin-top:10px;width:100%;padding:7px 10px;background:linear-gradient(135deg,#667eea,#764ba2);color:white;border:none;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;" title="Download a clean copy with no personal data for sharing">&#8681; Share Clean Copy</button>
+     <button id="dark-mode-btn" style="margin-top:8px;width:100%;padding:7px 10px;background:transparent;color:#667eea;border:1.5px solid #667eea;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:6px;" title="Toggle dark mode">
+      <svg id="dark-mode-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      <span id="dark-mode-label">Dark Mode</span>
+     </button>
     </div>
     <nav class="py-2">
      <button class="sidebar-item active w-full text-left px-4 py-3 font-body text-sm font-medium" data-tab="overview">Overview</button><button class="sidebar-item w-full text-left px-4 py-3 font-body text-sm font-medium" data-tab="cost-breakdown">Cost Breakdown</button><button class="sidebar-item w-full text-left px-4 py-3 font-body text-sm font-medium" data-tab="budget-fund">Budget &amp; Fund</button><button class="sidebar-item w-full text-left px-4 py-3 font-body text-sm font-medium" data-tab="savings-tracker">Savings Tracker</button><button class="sidebar-item w-full text-left px-4 py-3 font-body text-sm font-medium" data-tab="savings-grid">Savings Grid</button><button class="sidebar-item w-full text-left px-4 py-3 font-body text-sm font-medium" data-tab="physician-selection">Physician Selection</button><button class="sidebar-item w-full text-left px-4 py-3 font-body text-sm font-medium" data-tab="consultation-questions">Consultation Questions</button><button class="sidebar-item w-full text-left px-4 py-3 font-body text-sm font-medium" data-tab="travel-budget">Travel Budget</button><button class="sidebar-item w-full text-left px-4 py-3 font-body text-sm font-medium" data-tab="medication-tracker">Medication Tracker</button><button class="sidebar-item w-full text-left px-4 py-3 font-body text-sm font-medium" data-tab="receipt-log">Receipt Log</button><button class="sidebar-item w-full text-left px-4 py-3 font-body text-sm font-medium" data-tab="photo-log">Photo Log</button><button class="sidebar-item w-full text-left px-4 py-3 font-body text-sm font-medium" data-tab="document-vault">Document Vault</button>
@@ -200,11 +232,22 @@
    <main class="flex-1 p-4">
     <section id="tab-overview" class="tab-content active-tab">
      <h2 class="font-heading text-2xl font-bold text-primary mb-4">Overview</h2>
-     <div class="card p-4" style="border-left: 4px solid var(--accent-color);">
-      <div style="display:flex; align-items:center; gap:10px; margin-bottom:12px;">
+
+     <!-- Multi-goal header -->
+     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+      <div style="display:flex;align-items:center;gap:10px;">
        <div style="width:32px;height:32px;background:linear-gradient(135deg,#667eea,#764ba2);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
-       <h3 class="font-heading text-lg font-semibold text-primary" style="margin:0;">Your Beauty Goal</h3>
+       <h3 class="font-heading text-lg font-semibold text-primary" style="margin:0;">Your Beauty Goals</h3>
       </div>
+      <button id="add-goal-btn" class="btn-primary px-3 py-2 rounded font-body text-sm font-medium" style="display:none;">+ Add Another Goal</button>
+     </div>
+
+     <!-- Goals container: all goal cards render here -->
+     <div id="goals-container" class="space-y-4 mb-4"></div>
+
+     <!-- Add goal form (shown when no goals or user clicks add) -->
+     <div id="goal-form-wrapper" class="card p-4" style="border-left:4px solid var(--accent-color);">
+      <h4 class="font-heading text-sm font-semibold text-primary mb-3" id="goal-form-title">Set Your First Beauty Goal</h4>
       <form id="goal-form" class="space-y-3">
        <div>
         <label for="goal-procedure" class="block font-body text-xs font-medium text-secondary mb-1">Procedure Name</label><input type="text" id="goal-procedure" class="w-full" placeholder="e.g., Rhinoplasty, Breast Augmentation" required>
@@ -214,9 +257,16 @@
        </div>
        <div>
         <label for="goal-amount" class="block font-body text-xs font-medium text-secondary mb-1">Total Goal Amount</label><input type="number" id="goal-amount" class="w-full" placeholder="0.00" step="0.01" min="0" required>
-       </div><button type="submit" class="btn-primary px-3 py-2 rounded font-body text-sm font-medium">Save Goal</button>
+       </div>
+       <div style="display:flex;gap:8px;">
+        <button type="submit" class="btn-primary px-3 py-2 rounded font-body text-sm font-medium">Save Goal</button>
+        <button type="button" id="cancel-add-goal-btn" class="btn-secondary px-3 py-2 rounded font-body text-sm font-medium" style="display:none;">Cancel</button>
+       </div>
       </form>
-      <div id="goal-display" class="hidden">
+     </div>
+
+     <!-- Legacy single-goal display (hidden, kept for updateGoal compat) -->
+     <div id="goal-display" class="hidden">
        <div class="flex justify-between items-center mb-4">
         <div>
          <h3 class="font-heading text-2xl font-bold text-primary" id="display-procedure">Procedure Name</h3>
@@ -361,6 +411,11 @@
          <option value="eyelid">Eyelid Surgery</option>
          <option value="botox">Botox / Filler</option>
          <option value="mommy-makeover">Mommy Makeover</option>
+         <optgroup label="Hair Restoration">
+          <option value="fue">FUE Hair Transplant</option>
+          <option value="fut">FUT Hair Transplant (Strip)</option>
+          <option value="dhi">DHI Hair Transplant</option>
+         </optgroup>
         </select>
        </div>
        <div>
@@ -2292,19 +2347,16 @@ function updateMedicationPatientDisplay() {
    
    // Goal
 function updateGoal() {
-  const goals = getDataByType('goal');
-const goal = goals[goals.length - 1];
+const activeId = localStorage.getItem('beautyActiveGoalId');
+const goal = (activeId && goals.find(g => g.__backendId === activeId)) || goals[goals.length - 1];
   const savings = getDataByType('savings');
   const totalSaved = savings.reduce((sum, s) => sum + (s.amount || 0), 0);
 
   if (!goal) {
     document.getElementById('goal-form').classList.remove('hidden');
     document.getElementById('goal-display').classList.add('hidden');
-    return;
+  document.getElementById('goal-display').classList.add('hidden');
   }
-
-  document.getElementById('goal-form').classList.add('hidden');
-  document.getElementById('goal-display').classList.remove('hidden');
 
   const goalAmount = goal.goalamount || 0;
   const saved = Math.min(totalSaved, goalAmount);
@@ -2372,17 +2424,27 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
       goalamount: parseFloat(document.getElementById('goal-amount').value || '0')
     };
 
-    console.log('Saving goal payload:', payload);
-
     if (!window.dataSdk || typeof window.dataSdk.create !== 'function') {
       throw new Error('Data SDK failed to load');
     }
-   const result = await requireDataSdk().create(payload);
-    console.log('Goal save result:', result);
+
+    let result;
+    if (editingGoalId) {
+      const allGoals = getDataByType('goal');
+      const existing = allGoals.find(g => g.__backendId === editingGoalId);
+      if (existing) result = await requireDataSdk().update({ ...existing, ...payload });
+      editingGoalId = null;
+      document.getElementById('cancel-add-goal-btn').style.display = 'none';
+    } else {
+      result = await requireDataSdk().create(payload);
+    }
 
     if (result && result.isOk) {
       e.target.reset();
+      renderGoalCards();
       updateAllDisplays();
+      document.getElementById('goal-form-wrapper').style.display = 'none';
+      document.getElementById('add-goal-btn').style.display = 'inline-flex';
     } else {
       showErrorMessage(
         result?.error?.message ||
@@ -4541,7 +4603,7 @@ document.getElementById('share-clean-btn').addEventListener('click', function() 
   // Inject a one-time script that clears all user data when the shared file is first opened
   var clearScript = '<script>'
     + '(function(){'
-    + 'var keys=["beautyPlannerData_v1","beautyJourneyEntries_v1","medPatientName","sinkingFundPlan","beautyPlannerAuth_v1"];'
+    + 'var keys=["beautyPlannerData_v1","beautyJourneyEntries_v1","medPatientName","sinkingFundPlan","beautyPlannerAuth_v1","beautyActiveGoalId","beautyPlannerTheme"];'
     + 'keys.forEach(function(k){localStorage.removeItem(k);});'
     + '})();'
     + '<\/script>';
@@ -4580,7 +4642,10 @@ const COST_DATA = {
   'facelift':       { 'us-northeast':[12000,20000,35000], 'us-southeast':[9000,15000,26000], 'us-west':[14000,22000,38000], 'us-midwest':[8000,14000,24000], 'us-south':[7500,13000,22000], 'mexico':[5000,8000,13000], 'colombia':[4000,7000,11000], 'thailand':[5000,8000,13000], 'brazil':[6000,10000,16000], 'turkey':[4000,7000,12000] },
   'eyelid':         { 'us-northeast':[4000,7000,12000], 'us-southeast':[3000,5500,9000], 'us-west':[4500,8000,13000], 'us-midwest':[2800,5000,8500], 'us-south':[2500,4500,8000], 'mexico':[1500,2500,4500], 'colombia':[1200,2200,4000], 'thailand':[1500,2800,4500], 'brazil':[2000,3500,5500], 'turkey':[1200,2200,4000] },
   'botox':          { 'us-northeast':[800,1800,4000], 'us-southeast':[600,1400,3000], 'us-west':[900,2000,4500], 'us-midwest':[500,1200,2800], 'us-south':[500,1200,2500], 'mexico':[300,700,1500], 'colombia':[250,600,1200], 'thailand':[300,700,1400], 'brazil':[400,900,2000], 'turkey':[250,600,1200] },
-  'mommy-makeover': { 'us-northeast':[15000,24000,40000], 'us-southeast':[12000,19000,32000], 'us-west':[17000,27000,45000], 'us-midwest':[11000,17000,29000], 'us-south':[10000,16000,27000], 'mexico':[6000,10000,16000], 'colombia':[5000,8500,14000], 'thailand':[6000,10000,16000], 'brazil':[7000,12000,19000], 'turkey':[5500,9000,15000] }
+  'mommy-makeover': { 'us-northeast':[15000,24000,40000], 'us-southeast':[12000,19000,32000], 'us-west':[17000,27000,45000], 'us-midwest':[11000,17000,29000], 'us-south':[10000,16000,27000], 'mexico':[6000,10000,16000], 'colombia':[5000,8500,14000], 'thailand':[6000,10000,16000], 'brazil':[7000,12000,19000], 'turkey':[5500,9000,15000] },
+  'fue':             { 'us-northeast':[8000,14000,25000], 'us-southeast':[5500,9000,16000], 'us-west':[9000,15000,28000], 'us-midwest':[5000,8500,15000], 'us-south':[5000,8000,14000], 'mexico':[2000,3500,6000], 'colombia':[1500,3000,5000], 'thailand':[2000,3500,5500], 'brazil':[2500,4500,7500], 'turkey':[1500,2500,4500] },
+  'fut':             { 'us-northeast':[6500,11000,20000], 'us-southeast':[4500,7500,13000], 'us-west':[7500,12500,22000], 'us-midwest':[4000,7000,12000], 'us-south':[4000,6500,11000], 'mexico':[1800,3000,5000], 'colombia':[1400,2500,4500], 'thailand':[1800,3000,5000], 'brazil':[2000,3500,6000], 'turkey':[1200,2200,3800] },
+  'dhi':             { 'us-northeast':[9000,16000,28000], 'us-southeast':[6500,11000,19000], 'us-west':[10000,17000,30000], 'us-midwest':[6000,10000,17000], 'us-south':[5500,9500,17000], 'mexico':[2500,4000,7000], 'colombia':[2000,3500,6000], 'thailand':[2500,4500,7000], 'brazil':[3000,5500,9000], 'turkey':[2000,3000,5500] }
 };
 
 // Rating multipliers: [low multiplier, high multiplier]
@@ -4684,6 +4749,152 @@ function calcSavingsStreak(savings) {
   }
   return streak;
 }
+
+// ============ DARK MODE ============
+(function() {
+  var btn = document.getElementById('dark-mode-btn');
+  var icon = document.getElementById('dark-mode-icon');
+  var label = document.getElementById('dark-mode-label');
+  var sunIcon = '<path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/><circle cx="12" cy="12" r="5"/>';
+  var moonIcon = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+
+  function applyTheme(dark) {
+    if (dark) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+      icon.innerHTML = sunIcon;
+      label.textContent = 'Light Mode';
+      localStorage.setItem('beautyPlannerTheme', 'dark');
+    } else {
+      document.documentElement.removeAttribute('data-theme');
+      icon.innerHTML = moonIcon;
+      label.textContent = 'Dark Mode';
+      localStorage.setItem('beautyPlannerTheme', 'light');
+    }
+  }
+
+  // Apply saved preference
+  applyTheme(localStorage.getItem('beautyPlannerTheme') === 'dark');
+
+  btn.addEventListener('click', function() {
+    applyTheme(document.documentElement.getAttribute('data-theme') !== 'dark');
+  });
+})();
+
+// ============ MULTI-GOAL SYSTEM ============
+var editingGoalId = null;
+
+function renderGoalCards() {
+  if (!window.dataSdk) return;
+  const goals = getDataByType('goal');
+  const container = document.getElementById('goals-container');
+  const formWrapper = document.getElementById('goal-form-wrapper');
+  const addBtn = document.getElementById('add-goal-btn');
+  const savings = getDataByType('savings');
+  const totalSaved = savings.reduce((s, e) => s + (e.amount || 0), 0);
+
+  if (!container) return;
+
+  if (goals.length === 0) {
+    container.innerHTML = '';
+    formWrapper.style.display = '';
+    addBtn.style.display = 'none';
+    document.getElementById('goal-form-title').textContent = 'Set Your First Beauty Goal';
+    return;
+  }
+
+  formWrapper.style.display = editingGoalId ? '' : 'none';
+  addBtn.style.display = editingGoalId ? 'none' : 'inline-flex';
+
+  const activeId = localStorage.getItem('beautyActiveGoalId') || goals[0].__backendId;
+
+  container.innerHTML = goals.map(g => {
+    const isActive = g.__backendId === activeId;
+    const amt = g.goalamount || 0;
+    const pct = amt > 0 ? Math.min(100, Math.round((totalSaved / amt) * 100)) : 0;
+    const remaining = Math.max(0, amt - totalSaved);
+    const daysLeft = g.targetdate ? Math.ceil((new Date(g.targetdate + 'T00:00:00') - new Date().setHours(0,0,0,0)) / 86400000) : null;
+
+    return `
+    <div class="card p-4" style="border-left:4px solid ${isActive ? '#667eea' : '#cbd5e1'};opacity:${isActive ? '1' : '0.75'};">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;">
+        <div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <h4 class="font-heading text-lg font-bold text-primary" style="margin:0;">${g.procedurename || 'Untitled Goal'}</h4>
+            ${isActive ? '<span style="background:linear-gradient(135deg,#667eea,#764ba2);color:white;font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;font-family:inherit;">ACTIVE</span>' : ''}
+          </div>
+          <p class="font-body text-xs text-secondary mt-1">Target: ${g.targetdate ? new Date(g.targetdate + 'T00:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) : 'No date'} ${daysLeft !== null ? '&bull; ' + (daysLeft > 0 ? daysLeft + ' days left' : daysLeft === 0 ? 'Today!' : 'Past due') : ''}</p>
+        </div>
+        <div style="display:flex;gap:6px;">
+          ${!isActive ? `<button class="set-active-goal btn-secondary px-2 py-1 rounded text-xs" data-id="${g.__backendId}">Set Active</button>` : ''}
+          <button class="edit-goal-card btn-secondary px-2 py-1 rounded text-xs" data-id="${g.__backendId}" data-procedure="${g.procedurename||''}" data-date="${g.targetdate||''}" data-amount="${g.goalamount||0}">Edit</button>
+          <button class="delete-goal-card btn-secondary px-2 py-1 rounded text-xs" style="color:#e53e3e;" data-id="${g.__backendId}">Delete</button>
+        </div>
+      </div>
+      <div class="progress-bar h-2 mb-3" style="background:#e2e8f0;border-radius:4px;overflow:hidden;"><div style="height:100%;width:${pct}%;background:linear-gradient(135deg,#667eea,#764ba2);border-radius:4px;"></div></div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;">
+        <div style="text-align:center;"><p class="font-body" style="font-size:10px;color:#94a3b8;text-transform:uppercase;margin-bottom:2px;">Progress</p><p class="font-heading font-bold text-primary">${pct}%</p></div>
+        <div style="text-align:center;"><p class="font-body" style="font-size:10px;color:#94a3b8;text-transform:uppercase;margin-bottom:2px;">Goal</p><p class="font-heading font-bold text-primary">${formatCurrency(amt)}</p></div>
+        <div style="text-align:center;"><p class="font-body" style="font-size:10px;color:#94a3b8;text-transform:uppercase;margin-bottom:2px;">${isActive ? 'Saved' : 'Total Pool'}</p><p class="font-heading font-bold" style="color:#48bb78;">${formatCurrency(totalSaved)}</p></div>
+        <div style="text-align:center;"><p class="font-body" style="font-size:10px;color:#94a3b8;text-transform:uppercase;margin-bottom:2px;">Remaining</p><p class="font-heading font-bold text-primary">${formatCurrency(remaining)}</p></div>
+      </div>
+    </div>`;
+  }).join('');
+
+  // Wire up buttons
+  container.querySelectorAll('.set-active-goal').forEach(btn => {
+    btn.addEventListener('click', () => {
+      localStorage.setItem('beautyActiveGoalId', btn.dataset.id);
+      renderGoalCards();
+      updateGoal();
+    });
+  });
+
+  container.querySelectorAll('.edit-goal-card').forEach(btn => {
+    btn.addEventListener('click', () => {
+      editingGoalId = btn.dataset.id;
+      document.getElementById('goal-procedure').value = btn.dataset.procedure;
+      document.getElementById('goal-target-date').value = btn.dataset.date;
+      document.getElementById('goal-amount').value = btn.dataset.amount;
+      document.getElementById('goal-form-title').textContent = 'Edit Goal';
+      document.getElementById('cancel-add-goal-btn').style.display = 'inline-flex';
+      formWrapper.style.display = '';
+      addBtn.style.display = 'none';
+      formWrapper.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+
+  container.querySelectorAll('.delete-goal-card').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      if (!confirm('Delete this goal?')) return;
+      const goals = getDataByType('goal');
+      const g = goals.find(x => x.__backendId === btn.dataset.id);
+      if (g) await requireDataSdk().delete(g);
+      if (localStorage.getItem('beautyActiveGoalId') === btn.dataset.id) {
+        localStorage.removeItem('beautyActiveGoalId');
+      }
+      renderGoalCards();
+      updateGoal();
+    });
+  });
+}
+
+// Add goal button
+document.getElementById('add-goal-btn').addEventListener('click', () => {
+  editingGoalId = null;
+  document.getElementById('goal-form').reset();
+  document.getElementById('goal-form-title').textContent = 'Add Another Goal';
+  document.getElementById('cancel-add-goal-btn').style.display = 'inline-flex';
+  document.getElementById('goal-form-wrapper').style.display = '';
+  document.getElementById('add-goal-btn').style.display = 'none';
+});
+
+// Cancel add
+document.getElementById('cancel-add-goal-btn').addEventListener('click', () => {
+  editingGoalId = null;
+  document.getElementById('goal-form').reset();
+  document.getElementById('goal-form-wrapper').style.display = 'none';
+  document.getElementById('add-goal-btn').style.display = 'inline-flex';
+});
 
 // ============ RECEIPT COST LINK POPULATOR ============
 function populateReceiptCostLink() {
