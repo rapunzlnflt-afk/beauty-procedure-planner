@@ -2215,7 +2215,7 @@
           <div class="p-6">
             <div class="flex items-start gap-4">
               <div class="flex-shrink-0 w-12 h-12 rounded-lg flex items-center justify-center" style="background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);">
-                <span style="font-size: 24px;"></span>
+                <span style="font-size: 24px;">â„¹ï¸</span>
               </div>
               <div class="flex-1">
                 <p class="font-body text-sm text-secondary leading-relaxed">${escapeHtml(message)}</p>
@@ -2347,15 +2347,18 @@ function updateMedicationPatientDisplay() {
    
    // Goal
 function updateGoal() {
-const activeId = localStorage.getItem('beautyActiveGoalId');
-const goal = (activeId && goals.find(g => g.__backendId === activeId)) || goals[goals.length - 1];
+  renderGoalCards();
+
+  const allGoals = getDataByType('goal');
+  const activeId = localStorage.getItem('beautyActiveGoalId');
+  const goal = (activeId && allGoals.find(g => g.__backendId === activeId)) || allGoals[allGoals.length - 1];
+
   const savings = getDataByType('savings');
   const totalSaved = savings.reduce((sum, s) => sum + (s.amount || 0), 0);
 
   if (!goal) {
-    document.getElementById('goal-form').classList.remove('hidden');
     document.getElementById('goal-display').classList.add('hidden');
-  document.getElementById('goal-display').classList.add('hidden');
+    return;
   }
 
   const goalAmount = goal.goalamount || 0;
@@ -2507,8 +2510,9 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
       const costs = getDataByType('cost');
       const total = costs.reduce((sum, c) => sum + (c.item_cost || 0), 0);
       if (total === 0) { alert('Add cost items first.'); return; }
-      const goals = getDataByType('goal');
-      const goal = goals[goals.length - 1];
+      const syncGoals = getDataByType('goal');
+      const activeId = localStorage.getItem('beautyActiveGoalId');
+      const goal = (activeId && syncGoals.find(g => g.__backendId === activeId)) || syncGoals[syncGoals.length - 1];
       if (!goal) { alert('Please set a goal on the Overview tab first.'); return; }
       if (!confirm(`Update your goal amount to ${formatCurrency(total)}?`)) return;
       await requireDataSdk().update({ ...goal, goalamount: total });
