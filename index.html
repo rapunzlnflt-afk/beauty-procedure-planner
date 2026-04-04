@@ -334,6 +334,36 @@
     </section>
     <section id="tab-cost-breakdown" class="tab-content hidden">
      <h2 class="font-heading text-2xl font-bold text-primary mb-4">Cost Breakdown</h2>
+
+     <!-- Procedure Presets -->
+     <div class="card p-4 mb-4" style="border-left:4px solid #667eea;background:#f8f9ff;">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+       <div style="width:28px;height:28px;background:linear-gradient(135deg,#667eea,#764ba2);border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+       </div>
+       <div>
+        <h3 class="font-heading text-sm font-bold text-primary" style="margin:0;">Quick Start with a Procedure Preset</h3>
+        <p class="font-body text-xs text-secondary" style="margin:0;">Auto-fill typical cost categories for your procedure type</p>
+       </div>
+      </div>
+      <div style="display:flex;gap:10px;align-items:center;">
+       <select id="procedure-preset" class="w-full" style="flex:1;">
+        <option value="">Select a procedure to load preset costs...</option>
+        <option value="rhinoplasty">Rhinoplasty (Nose Job)</option>
+        <option value="breast-aug">Breast Augmentation</option>
+        <option value="breast-lift">Breast Lift</option>
+        <option value="bbl">Brazilian Butt Lift (BBL)</option>
+        <option value="tummy-tuck">Tummy Tuck (Abdominoplasty)</option>
+        <option value="liposuction">Liposuction</option>
+        <option value="facelift">Facelift</option>
+        <option value="eyelid">Eyelid Surgery (Blepharoplasty)</option>
+        <option value="botox">Botox / Filler</option>
+        <option value="mommy-makeover">Mommy Makeover</option>
+       </select>
+       <button id="load-preset-btn" class="btn-primary px-4 py-2 rounded font-body text-sm" style="white-space:nowrap;">Load Preset</button>
+      </div>
+     </div>
+
      <div class="card p-4 mb-4">
       <h3 class="font-heading text-lg font-semibold text-primary mb-3">Add Cost Item</h3>
       <form id="cost-form" class="space-y-3">
@@ -556,6 +586,10 @@
         <div style="text-align:center;">
          <p class="font-body text-xs uppercase tracking-wider mb-1" style="color:rgba(255,255,255,0.7);">Avg. Deposit</p>
          <p class="font-heading text-2xl font-bold" style="color:white;" id="tracker-hero-avg">$0.00</p>
+        </div>
+        <div style="text-align:center;">
+         <p class="font-body text-xs uppercase tracking-wider mb-1" style="color:rgba(255,255,255,0.7);">Streak</p>
+         <p class="font-heading text-2xl font-bold" style="color:#fde68a;" id="tracker-hero-streak">0 wks</p>
         </div>
        </div>
       </div>
@@ -1256,6 +1290,10 @@
       <h3 class="font-heading text-lg font-semibold text-primary mb-4">Add New Receipt</h3>
       <form id="receipt-form" class="space-y-4">
        <div>
+        <label for="receipt-cost-link" class="block font-body text-sm text-secondary mb-1">Link to Cost Item <span class="text-xs italic">(optional)</span></label>
+        <select id="receipt-cost-link" class="w-full mb-3">
+         <option value="">-- Not linked to a cost item --</option>
+        </select>
         <label for="receipt-category" class="block font-body text-sm text-secondary mb-1">Category</label><select id="receipt-category" class="w-full"><option value="procedure">Procedure</option><option value="surgeon fee">Surgeon Fee</option><option value="anesthesia">Anesthesia</option><option value="facility fee">Facility Fee</option><option value="pre-op tests">Pre-op Tests</option><option value="post-op meds">Post-op Meds</option><option value="compression garments">Compression Garments</option><option value="follow-up visits">Follow-up Visits</option><option value="travel - flights">Travel - Flights</option><option value="travel - ground">Travel - Ground</option><option value="accommodation">Accommodation</option><option value="meals">Meals</option><option value="child care">Child Care</option><option value="time off work">Time Off Work</option><option value="other">Other</option></select>
        </div>
        <div class="grid grid-cols-2 gap-4">
@@ -2455,6 +2493,8 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
       if (heroSaved) heroSaved.textContent = formatCurrency(total);
       if (heroCount) heroCount.textContent = savings.length;
       if (heroAvg) heroAvg.textContent = savings.length > 0 ? formatCurrency(total / savings.length) : '$0.00';
+      const heroStreak = document.getElementById('tracker-hero-streak');
+      if (heroStreak) heroStreak.textContent = calcSavingsStreak(savings) + ' wks';
       updateGoal();
       // Keep Savings Breakdown card and calc-current in sync
       const calcCurrent = document.getElementById('calc-current');
@@ -3255,6 +3295,7 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
             <p class="font-heading font-bold text-primary text-xl mb-1">${formatCurrency(r.receipt_amount)}</p>
             <p class="font-body text-xs text-secondary mb-3">${r.receipt_date || 'No date'}</p>
             ${r.receipt_notes ? `<p class="font-body text-xs text-secondary leading-relaxed mb-3">${r.receipt_notes}</p>` : ''}
+            ${r.receipt_cost_link ? `<p class="font-body text-xs mb-2" style="color:#667eea;"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="display:inline;margin-right:3px;"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>Linked: ${r.receipt_cost_link}</p>` : ''}
             ${r.receipt_image_link ? `<div class="pt-3 border-t border-gray-200"><a href="${r.receipt_image_link}" target="_blank" rel="noopener noreferrer" class="font-body text-xs font-medium inline-flex items-center gap-1 px-2 py-1 rounded transition-all hover:opacity-75" style="background-color: #f3f4f6; color: var(--accent-color);">View Receipt Image</a></div>` : ''}
             <button class="delete-receipt absolute bottom-3 right-3 flex items-center justify-center font-bold transition-all duration-300 hover:scale-110" style="color: #460bdf; background: none; border: none; padding: 0; width: 24px; height: 24px; font-size: 20px; line-height: 1; cursor: pointer;" data-id="${r.__backendId}" title="Delete receipt">X</button>
           </div>
@@ -3292,7 +3333,8 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
         receipt_amount: parseFloat(document.getElementById('receipt-amount').value),
         receipt_date: document.getElementById('receipt-date').value,
         receipt_image_link: document.getElementById('receipt-image-link').value,
-        receipt_notes: document.getElementById('receipt-notes').value
+        receipt_notes: document.getElementById('receipt-notes').value,
+        receipt_cost_link: document.getElementById('receipt-cost-link').value || ''
       });
 
       isLoading = false;
@@ -4477,6 +4519,84 @@ document.getElementById('share-clean-btn').addEventListener('click', function() 
   document.body.removeChild(a);
   URL.revokeObjectURL(url);
 });
+
+// ============ PROCEDURE PRESETS ============
+const PROCEDURE_PRESETS = {
+  'rhinoplasty':     [['Surgeon Fee',7000],['Anesthesia',1500],['Facility Fee',1200],['Pre-op Tests',400],['Post-op Meds',200],['Follow-up Visits',500]],
+  'breast-aug':      [['Surgeon Fee',6500],['Anesthesia',1200],['Facility Fee',1000],['Implants',1500],['Pre-op Tests',350],['Post-op Meds',150],['Follow-up Visits',400]],
+  'breast-lift':     [['Surgeon Fee',7000],['Anesthesia',1500],['Facility Fee',1200],['Pre-op Tests',350],['Post-op Meds',200],['Follow-up Visits',400]],
+  'bbl':             [['Surgeon Fee',8000],['Anesthesia',1800],['Facility Fee',1500],['Compression Garments',300],['Pre-op Tests',400],['Post-op Meds',250],['Follow-up Visits',500]],
+  'tummy-tuck':      [['Surgeon Fee',8500],['Anesthesia',2000],['Facility Fee',1500],['Compression Garments',250],['Pre-op Tests',400],['Post-op Meds',300],['Follow-up Visits',500]],
+  'liposuction':     [['Surgeon Fee',5500],['Anesthesia',1200],['Facility Fee',1000],['Compression Garments',200],['Pre-op Tests',300],['Post-op Meds',150],['Follow-up Visits',400]],
+  'facelift':        [['Surgeon Fee',12000],['Anesthesia',2500],['Facility Fee',2000],['Pre-op Tests',500],['Post-op Meds',300],['Follow-up Visits',600]],
+  'eyelid':          [['Surgeon Fee',4000],['Anesthesia',800],['Facility Fee',800],['Pre-op Tests',250],['Post-op Meds',100],['Follow-up Visits',300]],
+  'botox':           [['Botox/Filler Treatment',1200],['Follow-up Visits',400]],
+  'mommy-makeover':  [['Surgeon Fee',15000],['Anesthesia',3000],['Facility Fee',2500],['Compression Garments',400],['Pre-op Tests',600],['Post-op Meds',400],['Follow-up Visits',800]]
+};
+
+document.getElementById('load-preset-btn').addEventListener('click', async () => {
+  const preset = document.getElementById('procedure-preset').value;
+  if (!preset) { alert('Please select a procedure first.'); return; }
+  const items = PROCEDURE_PRESETS[preset];
+  if (!items) return;
+  if (!confirm(`Load ${items.length} preset cost items for this procedure? Existing items will remain.`)) return;
+  for (const [name, amount] of items) {
+    await requireDataSdk().create({ type: 'cost', cost_item: name, item_cost: amount, cost_description: 'Preset estimate — adjust to your actual quote' });
+  }
+  document.getElementById('procedure-preset').value = '';
+});
+
+// ============ SAVINGS STREAK ============
+function calcSavingsStreak(savings) {
+  if (!savings || savings.length === 0) return 0;
+  // Get unique weeks (year-week) that have at least one deposit
+  const weekSet = new Set();
+  savings.forEach(s => {
+    if (!s.date) return;
+    const d = new Date(s.date + 'T00:00:00');
+    const jan1 = new Date(d.getFullYear(), 0, 1);
+    const week = Math.ceil(((d - jan1) / 86400000 + jan1.getDay() + 1) / 7);
+    weekSet.add(d.getFullYear() + '-' + week);
+  });
+  // Sort weeks descending and count consecutive
+  const sorted = [...weekSet].sort().reverse();
+  if (sorted.length === 0) return 0;
+  // Get current week
+  const now = new Date();
+  const jan1Now = new Date(now.getFullYear(), 0, 1);
+  const currentWeek = now.getFullYear() + '-' + Math.ceil(((now - jan1Now) / 86400000 + jan1Now.getDay() + 1) / 7);
+  // Only count streak if this week or last week has a deposit
+  if (!weekSet.has(currentWeek) && !weekSet.has(sorted[0])) return 0;
+  let streak = 1;
+  for (let i = 0; i < sorted.length - 1; i++) {
+    const [y1, w1] = sorted[i].split('-').map(Number);
+    const [y2, w2] = sorted[i+1].split('-').map(Number);
+    const diff = (y1 * 52 + w1) - (y2 * 52 + w2);
+    if (diff === 1) streak++;
+    else break;
+  }
+  return streak;
+}
+
+// ============ RECEIPT COST LINK POPULATOR ============
+function populateReceiptCostLink() {
+  const sel = document.getElementById('receipt-cost-link');
+  if (!sel) return;
+  const costs = getDataByType('cost');
+  const current = sel.value;
+  sel.innerHTML = '<option value="">-- Not linked to a cost item --</option>';
+  costs.forEach(c => {
+    const label = (c.cost_item || 'Item') + (c.item_cost ? ' (' + formatCurrency(c.item_cost) + ')' : '');
+    const opt = document.createElement('option');
+    opt.value = c.cost_item || 'Item';
+    opt.textContent = label;
+    if (opt.value === current) opt.selected = true;
+    sel.appendChild(opt);
+  });
+}
+
+// Populate on tab open
+document.querySelector('[data-tab="receipt-log"]').addEventListener('click', populateReceiptCostLink);
 
 // ============ LOGIN GATE ============
 (function() {
