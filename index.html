@@ -171,6 +171,13 @@
     [data-theme="dark"] #login-box h1 { color: #f1f5f9; }
     [data-theme="dark"] #login-input { background: #3a4a62 !important; color: #f1f5f9 !important; border-color: #4a5568 !important; }
     [data-theme="dark"] .summary-bar { background: #2e3a50 !important; }
+    /* Estimator select options — always readable when dropdown opens */
+    #estimator-procedure option, #estimator-region option, #estimator-rating option,
+    #estimator-procedure optgroup, #estimator-region optgroup {
+      background: #4c3d8f;
+      color: white;
+    }
+
     /* Dark mode fixes for hardcoded elements */
     [data-theme="dark"] #total-spent-badge { background: #3a4a62 !important; border-color: #4a5a72 !important; }
     [data-theme="dark"] .loyalty-col { background-color: #2e3a50 !important; }
@@ -387,7 +394,7 @@
       <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:16px;">
        <div>
         <label class="block font-body text-xs font-medium mb-1" style="color:rgba(255,255,255,0.85);">Procedure</label>
-        <select id="estimator-procedure" class="w-full" style="background:rgba(255,255,255,0.2);color:white;border:1px solid rgba(255,255,255,0.3);border-radius:8px;padding:8px 10px;font-size:13px;">
+        <select id="estimator-procedure" class="w-full" style="background:rgba(255,255,255,0.25);color:white;border:1px solid rgba(255,255,255,0.3);border-radius:8px;padding:8px 10px;font-size:13px;-webkit-appearance:auto;">
          <option value="">Select procedure...</option>
          <option value="rhinoplasty">Rhinoplasty</option>
          <option value="breast-aug">Breast Augmentation</option>
@@ -408,7 +415,7 @@
        </div>
        <div>
         <label class="block font-body text-xs font-medium mb-1" style="color:rgba(255,255,255,0.85);">Region</label>
-        <select id="estimator-region" class="w-full" style="background:rgba(255,255,255,0.2);color:white;border:1px solid rgba(255,255,255,0.3);border-radius:8px;padding:8px 10px;font-size:13px;">
+        <select id="estimator-region" class="w-full" style="background:rgba(255,255,255,0.25);color:white;border:1px solid rgba(255,255,255,0.3);border-radius:8px;padding:8px 10px;font-size:13px;-webkit-appearance:auto;">
          <option value="">Select region...</option>
          <optgroup label="United States">
           <option value="us-northeast">US — Northeast (NY, NJ, MA)</option>
@@ -428,7 +435,7 @@
        </div>
        <div>
         <label class="block font-body text-xs font-medium mb-1" style="color:rgba(255,255,255,0.85);">Physician Rating</label>
-        <select id="estimator-rating" class="w-full" style="background:rgba(255,255,255,0.2);color:white;border:1px solid rgba(255,255,255,0.3);border-radius:8px;padding:8px 10px;font-size:13px;">
+        <select id="estimator-rating" class="w-full" style="background:rgba(255,255,255,0.25);color:white;border:1px solid rgba(255,255,255,0.3);border-radius:8px;padding:8px 10px;font-size:13px;-webkit-appearance:auto;">
          <option value="any">Any / Unknown</option>
          <option value="budget">Budget / Less Experienced</option>
          <option value="mid">Mid-tier (3–4 stars)</option>
