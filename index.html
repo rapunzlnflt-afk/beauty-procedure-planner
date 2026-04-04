@@ -335,32 +335,81 @@
     <section id="tab-cost-breakdown" class="tab-content hidden">
      <h2 class="font-heading text-2xl font-bold text-primary mb-4">Cost Breakdown</h2>
 
-     <!-- Procedure Presets -->
-     <div class="card p-4 mb-4" style="border-left:4px solid #667eea;background:#f8f9ff;">
-      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
-       <div style="width:28px;height:28px;background:linear-gradient(135deg,#667eea,#764ba2);border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+     <!-- Regional Cost Estimator -->
+     <div class="card p-5 mb-4" style="background:linear-gradient(135deg,#2d3748 0%,#1a202c 100%);">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px;">
+       <div style="width:36px;height:36px;background:rgba(255,255,255,0.1);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
        </div>
        <div>
-        <h3 class="font-heading text-sm font-bold text-primary" style="margin:0;">Quick Start with a Procedure Preset</h3>
-        <p class="font-body text-xs text-secondary" style="margin:0;">Auto-fill typical cost categories for your procedure type</p>
+        <h3 class="font-heading text-base font-bold" style="color:white;margin:0;">Procedure Cost Estimator</h3>
+        <p class="font-body text-xs" style="color:rgba(255,255,255,0.5);margin:0;">Average cost ranges by region &amp; physician rating</p>
        </div>
       </div>
-      <div style="display:flex;gap:10px;align-items:center;">
-       <select id="procedure-preset" class="w-full" style="flex:1;">
-        <option value="">Select a procedure to load preset costs...</option>
-        <option value="rhinoplasty">Rhinoplasty (Nose Job)</option>
-        <option value="breast-aug">Breast Augmentation</option>
-        <option value="breast-lift">Breast Lift</option>
-        <option value="bbl">Brazilian Butt Lift (BBL)</option>
-        <option value="tummy-tuck">Tummy Tuck (Abdominoplasty)</option>
-        <option value="liposuction">Liposuction</option>
-        <option value="facelift">Facelift</option>
-        <option value="eyelid">Eyelid Surgery (Blepharoplasty)</option>
-        <option value="botox">Botox / Filler</option>
-        <option value="mommy-makeover">Mommy Makeover</option>
-       </select>
-       <button id="load-preset-btn" class="btn-primary px-4 py-2 rounded font-body text-sm" style="white-space:nowrap;">Load Preset</button>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:16px;">
+       <div>
+        <label class="block font-body text-xs font-medium mb-1" style="color:rgba(255,255,255,0.6);">Procedure</label>
+        <select id="estimator-procedure" class="w-full" style="background:#374151;color:white;border:1px solid rgba(255,255,255,0.15);border-radius:8px;padding:8px 10px;font-size:13px;">
+         <option value="">Select procedure...</option>
+         <option value="rhinoplasty">Rhinoplasty</option>
+         <option value="breast-aug">Breast Augmentation</option>
+         <option value="breast-lift">Breast Lift</option>
+         <option value="bbl">Brazilian Butt Lift (BBL)</option>
+         <option value="tummy-tuck">Tummy Tuck</option>
+         <option value="liposuction">Liposuction</option>
+         <option value="facelift">Facelift</option>
+         <option value="eyelid">Eyelid Surgery</option>
+         <option value="botox">Botox / Filler</option>
+         <option value="mommy-makeover">Mommy Makeover</option>
+        </select>
+       </div>
+       <div>
+        <label class="block font-body text-xs font-medium mb-1" style="color:rgba(255,255,255,0.6);">Region</label>
+        <select id="estimator-region" class="w-full" style="background:#374151;color:white;border:1px solid rgba(255,255,255,0.15);border-radius:8px;padding:8px 10px;font-size:13px;">
+         <option value="">Select region...</option>
+         <optgroup label="United States">
+          <option value="us-northeast">US — Northeast (NY, NJ, MA)</option>
+          <option value="us-southeast">US — Southeast (FL, GA, TX)</option>
+          <option value="us-west">US — West Coast (CA, OR, WA)</option>
+          <option value="us-midwest">US — Midwest (IL, OH, MI)</option>
+          <option value="us-south">US — South (TN, NC, SC)</option>
+         </optgroup>
+         <optgroup label="Medical Tourism">
+          <option value="mexico">Mexico (Tijuana, Monterrey, CDMX)</option>
+          <option value="colombia">Colombia (Bogotá, Medellín, Cali)</option>
+          <option value="thailand">Thailand (Bangkok)</option>
+          <option value="brazil">Brazil (São Paulo, Rio)</option>
+          <option value="turkey">Turkey (Istanbul)</option>
+         </optgroup>
+        </select>
+       </div>
+       <div>
+        <label class="block font-body text-xs font-medium mb-1" style="color:rgba(255,255,255,0.6);">Physician Rating</label>
+        <select id="estimator-rating" class="w-full" style="background:#374151;color:white;border:1px solid rgba(255,255,255,0.15);border-radius:8px;padding:8px 10px;font-size:13px;">
+         <option value="any">Any / Unknown</option>
+         <option value="budget">Budget / Less Experienced</option>
+         <option value="mid">Mid-tier (3–4 stars)</option>
+         <option value="top">Top-rated (4.5–5 stars)</option>
+        </select>
+       </div>
+      </div>
+      <button id="run-estimator-btn" style="width:100%;padding:11px;background:linear-gradient(135deg,#667eea,#764ba2);color:white;border:none;border-radius:8px;font-size:13px;font-weight:700;font-family:inherit;cursor:pointer;margin-bottom:16px;">Get Estimate</button>
+      <div id="estimator-result" style="display:none;">
+       <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:14px;">
+        <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:14px;text-align:center;">
+         <p class="font-body text-xs" style="color:rgba(255,255,255,0.5);margin-bottom:4px;">LOW END</p>
+         <p class="font-heading text-xl font-bold" style="color:#86efac;" id="est-low">—</p>
+        </div>
+        <div style="background:rgba(102,126,234,0.25);border:1px solid rgba(102,126,234,0.4);border-radius:10px;padding:14px;text-align:center;">
+         <p class="font-body text-xs" style="color:rgba(255,255,255,0.6);margin-bottom:4px;">AVERAGE</p>
+         <p class="font-heading text-xl font-bold" style="color:white;" id="est-avg">—</p>
+        </div>
+        <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:14px;text-align:center;">
+         <p class="font-body text-xs" style="color:rgba(255,255,255,0.5);margin-bottom:4px;">HIGH END</p>
+         <p class="font-heading text-xl font-bold" style="color:#fca5a5;" id="est-high">—</p>
+        </div>
+       </div>
+       <p id="est-note" class="font-body text-xs" style="color:rgba(255,255,255,0.45);line-height:1.6;text-align:center;"></p>
       </div>
      </div>
 
@@ -2374,7 +2423,7 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
           </div>
           <div class="flex items-center gap-3">
             <p class="font-heading font-bold text-primary">${formatCurrency(c.item_cost || 0)}</p>
-            <button class="delete-cost btn-secondary px-2 py-1 rounded text-xs" data-id="${c.__backendId}">X</button>
+            <button class="delete-cost btn-secondary px-2 py-1 rounded text-xs" data-id="${c.__backendId}">Delete</button>
           </div>
         </div>
       `).join('');
@@ -2471,7 +2520,7 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
           </div>
           <div class="flex items-center gap-3">
             <p class="font-heading font-bold" style="color: var(--success-color);">${formatCurrency(s.amount || 0)}</p>
-            <button class="delete-savings btn-secondary px-2 py-1 rounded text-xs" data-id="${s.__backendId}">X</button>
+            <button class="delete-savings btn-secondary px-2 py-1 rounded text-xs" data-id="${s.__backendId}">Delete</button>
           </div>
         </div>
       `).join('');
@@ -2817,7 +2866,7 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
                   ${p.specialty ? `<p class="font-body text-sm text-secondary">${p.specialty}</p>` : ''}
                   ${p.rating ? `<div class="flex items-center gap-1 mt-1"><span class="font-body text-xs text-secondary">Rating:</span><span class="font-body text-sm font-semibold" style="color: #f59e0b;">${'★'.repeat(p.rating)}${'â˜†'.repeat(5-p.rating)}</span></div>` : ''}
                 </div>
-                <button class="delete-physician btn-secondary px-2 py-1 rounded text-xs" data-id="${p.__backendId}">X</button>
+                <button class="delete-physician btn-secondary px-2 py-1 rounded text-xs" data-id="${p.__backendId}">Delete</button>
               </div>
               <div class="grid grid-cols-2 gap-3 text-sm">
                 ${p.location ? `<div><p class="font-body text-xs text-secondary uppercase tracking-wide mb-1">Location</p><p class="font-body text-primary">${p.location}</p></div>` : ''}
@@ -2951,7 +3000,7 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
                   </div>
                   <div class="flex items-center gap-3 ml-3">
                     <p class="font-heading font-bold text-primary whitespace-nowrap">${formatCurrency(e.travel_expense_amount)}</p>
-                    <button class="delete-travel-expense text-#460bdf hover:text-#460bdf font-medium text-xs" data-id="${e.__backendId}" style="background: none; border: none; cursor: pointer;">X</button>
+                    <button class="delete-travel-expense text-red-500 hover:text-red-700 font-medium text-xs" data-id="${e.__backendId}" style="background: none; border: none; cursor: pointer;">Delete</button>
                   </div>
                 </div>
               `).join('')}
@@ -3171,7 +3220,7 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
             <td class="px-3 py-2 text-sm font-body text-secondary">${m.medicationPurpose || '-'}</td>
             <td class="px-3 py-2 text-sm font-body text-secondary">${m.medicationNotes || '-'}</td>
             <td class="px-3 py-2 text-center">
-              <button class="delete-medication text-#460bdf hover:text-#460bdf font-medium text-sm" data-id="${m.__backendId}">X</button>
+              <button class="delete-medication text-red-500 hover:text-red-700 font-medium text-sm" data-id="${m.__backendId}">Delete</button>
             </td>
           </tr>
         `;
@@ -3410,7 +3459,7 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
               <h3 class="font-heading font-bold text-lg">Photo Details</h3>
               <p class="font-body text-xs opacity-90 mt-1">${entry.type.charAt(0).toUpperCase() + entry.type.slice(1)}  •  ${entry.date || 'No date'}</p>
             </div>
-            <button class="modal-close" style="background: none; border: none; color: white; font-size: 28px; cursor: pointer; padding: 0; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;">X</button>
+            <button class="modal-close" style="background: none; border: none; color: white; font-size: 28px; cursor: pointer; padding: 0; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;">&times;</button>
           </div>
           <div class="p-6">
             <img src="${entry.image}" alt="Photo" class="w-full rounded-lg mb-4 max-h-96 object-cover">
@@ -3426,7 +3475,6 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
               <div class="flex gap-3 pt-4 border-t border-gray-200">
                 <button id="photo-delete-btn" class="btn-secondary px-4 py-2 rounded font-body text-sm font-medium flex-1">Delete Photo</button>
                 <button id="photo-save-btn" class="btn-primary px-4 py-2 rounded font-body text-sm font-medium flex-1">Save Changes</button>
-                <button class="modal-close btn-secondary px-4 py-2 rounded font-body text-sm font-medium">Close</button>
               </div>
             </div>
           </div>
@@ -3435,8 +3483,7 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
 
       document.body.appendChild(modal);
 
-      const closeBtn = modal.querySelector('.modal-close');
-      closeBtn.addEventListener('click', () => modal.remove());
+      modal.querySelector('.modal-close').addEventListener('click', () => modal.remove());
 
       modal.addEventListener('click', (e) => {
         if (e.target === modal) modal.remove();
@@ -3581,7 +3628,7 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
           <div class="p-2 bg-gray-50 rounded border-l-4 border-orange-500">
             <div class="flex justify-between items-start gap-3">
               <p class="font-body text-sm text-primary flex-1">${escapeHtml(q.question_text)}</p>
-              <button class="delete-custom-question text-#460bdf text-xs font-medium whitespace-nowrap hover:text-#460bdf" data-id="${q.__backendId}">X</button>
+              <button class="delete-custom-question text-red-500 text-xs font-medium whitespace-nowrap hover:text-red-700" data-id="${q.__backendId}">Delete</button>
             </div>
           </div>
         `).join('');
@@ -3699,7 +3746,7 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
               <div class="flex items-center gap-4 text-sm flex-shrink-0">
                 ${doc.date ? `<span class="font-body text-secondary">${formatDate(doc.date)}</span>` : ''}
                 ${linkDisplay}
-                <button class="vault-delete-btn font-body px-3 py-1 rounded text-sm transition-all hover:opacity-80" style="background-color: #e2e8f0; color: #2d3646;" data-id="${doc.__backendId}">X</button>
+                <button class="vault-delete-btn font-body px-3 py-1 rounded text-sm transition-all hover:opacity-80" style="background-color: #e2e8f0; color: #2d3646;" data-id="${doc.__backendId}">Delete</button>
               </div>
             `;
 
@@ -4120,7 +4167,7 @@ document.addEventListener('DOMContentLoaded', function () {
               <textarea id="edit-photo-notes" class="w-full px-2 py-1.5 rounded border text-xs focus:outline-none focus:ring-2 focus:ring-blue-400" style="border-color: #cbd5e1; background-color: #ffffff; min-height: 60px; resize: none;">${entry.notes || ''}</textarea>
             </div>
             <div class="flex gap-2 pt-3 border-t border-gray-200">
-              <button type="button" id="photo-delete-btn" class="btn-secondary px-3 py-1.5 rounded font-body text-xs font-medium flex-1">X</button>
+              <button type="button" id="photo-delete-btn" class="btn-secondary px-3 py-1.5 rounded font-body text-xs font-medium flex-1">Delete</button>
               <button type="button" id="photo-save-btn" class="btn-primary px-3 py-1.5 rounded font-body text-xs font-medium flex-1">Save</button>
               <button type="button" class="modal-close btn-secondary px-3 py-1.5 rounded font-body text-xs font-medium">Close</button>
             </div>
@@ -4520,6 +4567,78 @@ document.getElementById('share-clean-btn').addEventListener('click', function() 
   URL.revokeObjectURL(url);
 });
 
+// ============ REGIONAL COST ESTIMATOR ============
+// Base costs in USD (all-in: surgeon + anesthesia + facility)
+// Format: { procedure: { region: [low, avg, high] } }
+const COST_DATA = {
+  'rhinoplasty':    { 'us-northeast':[8000,12000,20000], 'us-southeast':[6000,9500,16000], 'us-west':[8500,13000,22000], 'us-midwest':[5500,8500,14000], 'us-south':[5000,8000,13000], 'mexico':[2500,4000,7000], 'colombia':[2000,3500,6000], 'thailand':[2500,4000,6500], 'brazil':[3000,5000,8000], 'turkey':[2000,3500,6000] },
+  'breast-aug':     { 'us-northeast':[7000,11000,18000], 'us-southeast':[5500,9000,15000], 'us-west':[8000,12500,20000], 'us-midwest':[5000,8000,13000], 'us-south':[4500,7500,12000], 'mexico':[2500,4000,6500], 'colombia':[2000,3500,5500], 'thailand':[2500,4000,6000], 'brazil':[3000,5000,8000], 'turkey':[2000,3500,5500] },
+  'breast-lift':    { 'us-northeast':[8000,12000,19000], 'us-southeast':[6000,9500,16000], 'us-west':[9000,13500,21000], 'us-midwest':[5500,8500,14000], 'us-south':[5000,8000,13000], 'mexico':[3000,4500,7000], 'colombia':[2500,4000,6000], 'thailand':[2500,4000,6500], 'brazil':[3500,5500,9000], 'turkey':[2500,4000,6500] },
+  'bbl':            { 'us-northeast':[9000,14000,22000], 'us-southeast':[6500,10000,17000], 'us-west':[9500,15000,24000], 'us-midwest':[6000,9500,15000], 'us-south':[5500,9000,15000], 'mexico':[3500,5500,9000], 'colombia':[3000,5000,8000], 'thailand':[3000,5000,8000], 'brazil':[4000,6500,10000], 'turkey':[3000,5000,8000] },
+  'tummy-tuck':     { 'us-northeast':[9000,14000,22000], 'us-southeast':[7000,11000,18000], 'us-west':[10000,15000,24000], 'us-midwest':[6500,10000,16000], 'us-south':[6000,9500,15500], 'mexico':[3500,5500,9000], 'colombia':[3000,5000,8000], 'thailand':[3500,5500,9000], 'brazil':[4000,6500,11000], 'turkey':[3000,5000,8500] },
+  'liposuction':    { 'us-northeast':[5000,8500,15000], 'us-southeast':[4000,7000,12000], 'us-west':[5500,9000,16000], 'us-midwest':[3500,6500,11000], 'us-south':[3500,6000,10000], 'mexico':[2000,3500,5500], 'colombia':[1500,3000,5000], 'thailand':[2000,3500,5500], 'brazil':[2500,4000,7000], 'turkey':[1500,3000,5000] },
+  'facelift':       { 'us-northeast':[12000,20000,35000], 'us-southeast':[9000,15000,26000], 'us-west':[14000,22000,38000], 'us-midwest':[8000,14000,24000], 'us-south':[7500,13000,22000], 'mexico':[5000,8000,13000], 'colombia':[4000,7000,11000], 'thailand':[5000,8000,13000], 'brazil':[6000,10000,16000], 'turkey':[4000,7000,12000] },
+  'eyelid':         { 'us-northeast':[4000,7000,12000], 'us-southeast':[3000,5500,9000], 'us-west':[4500,8000,13000], 'us-midwest':[2800,5000,8500], 'us-south':[2500,4500,8000], 'mexico':[1500,2500,4500], 'colombia':[1200,2200,4000], 'thailand':[1500,2800,4500], 'brazil':[2000,3500,5500], 'turkey':[1200,2200,4000] },
+  'botox':          { 'us-northeast':[800,1800,4000], 'us-southeast':[600,1400,3000], 'us-west':[900,2000,4500], 'us-midwest':[500,1200,2800], 'us-south':[500,1200,2500], 'mexico':[300,700,1500], 'colombia':[250,600,1200], 'thailand':[300,700,1400], 'brazil':[400,900,2000], 'turkey':[250,600,1200] },
+  'mommy-makeover': { 'us-northeast':[15000,24000,40000], 'us-southeast':[12000,19000,32000], 'us-west':[17000,27000,45000], 'us-midwest':[11000,17000,29000], 'us-south':[10000,16000,27000], 'mexico':[6000,10000,16000], 'colombia':[5000,8500,14000], 'thailand':[6000,10000,16000], 'brazil':[7000,12000,19000], 'turkey':[5500,9000,15000] }
+};
+
+// Rating multipliers: [low multiplier, high multiplier]
+const RATING_MULTIPLIER = {
+  'budget': [0.65, 0.80],
+  'mid':    [0.90, 1.10],
+  'top':    [1.20, 1.50],
+  'any':    [1.00, 1.00]
+};
+
+const REGION_NOTES = {
+  'us-northeast': 'Major metro markets (NYC, Boston) typically command the highest US prices.',
+  'us-southeast': 'Florida and Texas are popular due to competitive pricing and experienced surgeons.',
+  'us-west':      'California prices rival the Northeast; consider Nevada or Arizona for lower costs.',
+  'us-midwest':   'One of the most affordable US regions without sacrificing quality.',
+  'us-south':     'Growing medical tourism hub within the US with competitive all-inclusive pricing.',
+  'mexico':       'Popular border cities like Tijuana offer significant savings. Verify board certification.',
+  'colombia':     'Medellín is a top global destination for plastic surgery with highly trained surgeons.',
+  'thailand':     'Bangkok\'s JCI-accredited hospitals attract patients worldwide with quality care.',
+  'brazil':       'Brazil has more plastic surgeons per capita than any country. Quality varies widely.',
+  'turkey':       'Istanbul is a fast-growing medical tourism hub, particularly strong for facial procedures.'
+};
+
+document.getElementById('run-estimator-btn').addEventListener('click', () => {
+  const proc = document.getElementById('estimator-procedure').value;
+  const region = document.getElementById('estimator-region').value;
+  const rating = document.getElementById('estimator-rating').value;
+  const resultEl = document.getElementById('estimator-result');
+
+  if (!proc || !region) {
+    alert('Please select both a procedure and a region.');
+    return;
+  }
+
+  const base = COST_DATA[proc] && COST_DATA[proc][region];
+  if (!base) { alert('No data for that combination.'); return; }
+
+  const [low, avg, high] = base;
+  const [multLow, multHigh] = RATING_MULTIPLIER[rating] || [1, 1];
+
+  const adjLow  = Math.round(low  * multLow  / 100) * 100;
+  const adjAvg  = Math.round(avg  * ((multLow + multHigh) / 2) / 100) * 100;
+  const adjHigh = Math.round(high * multHigh / 100) * 100;
+
+  document.getElementById('est-low').textContent  = formatCurrency(adjLow);
+  document.getElementById('est-avg').textContent  = formatCurrency(adjAvg);
+  document.getElementById('est-high').textContent = formatCurrency(adjHigh);
+
+  const ratingNote = rating === 'budget' ? 'Budget/less-experienced surgeon pricing applied. ' :
+                     rating === 'top'    ? 'Top-rated surgeon premium applied. ' :
+                     rating === 'mid'    ? 'Mid-tier surgeon pricing applied. ' : '';
+  document.getElementById('est-note').textContent =
+    ratingNote + (REGION_NOTES[region] || '') +
+    ' These are estimates based on reported averages. Always get a personalized quote.';
+
+  resultEl.style.display = 'block';
+});
+
 // ============ PROCEDURE PRESETS ============
 const PROCEDURE_PRESETS = {
   'rhinoplasty':     [['Surgeon Fee',7000],['Anesthesia',1500],['Facility Fee',1200],['Pre-op Tests',400],['Post-op Meds',200],['Follow-up Visits',500]],
@@ -4533,18 +4652,6 @@ const PROCEDURE_PRESETS = {
   'botox':           [['Botox/Filler Treatment',1200],['Follow-up Visits',400]],
   'mommy-makeover':  [['Surgeon Fee',15000],['Anesthesia',3000],['Facility Fee',2500],['Compression Garments',400],['Pre-op Tests',600],['Post-op Meds',400],['Follow-up Visits',800]]
 };
-
-document.getElementById('load-preset-btn').addEventListener('click', async () => {
-  const preset = document.getElementById('procedure-preset').value;
-  if (!preset) { alert('Please select a procedure first.'); return; }
-  const items = PROCEDURE_PRESETS[preset];
-  if (!items) return;
-  if (!confirm(`Load ${items.length} preset cost items for this procedure? Existing items will remain.`)) return;
-  for (const [name, amount] of items) {
-    await requireDataSdk().create({ type: 'cost', cost_item: name, item_cost: amount, cost_description: 'Preset estimate — adjust to your actual quote' });
-  }
-  document.getElementById('procedure-preset').value = '';
-});
 
 // ============ SAVINGS STREAK ============
 function calcSavingsStreak(savings) {
