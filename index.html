@@ -143,6 +143,78 @@
     .challenge-box.filled { background: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-color-2) 100%); border-color: var(--accent-color); box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3); }
 
            .tab-content { display: none !important; } .tab-content.active-tab { display: block !important; }
+    /* ===== MOBILE ===== */
+    .mobile-topbar {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 56px;
+      background: white;
+      border-bottom: 1px solid #e2e8f0;
+      align-items: center;
+      padding: 0 16px;
+      z-index: 1000;
+      gap: 12px;
+    }
+    .mobile-topbar h1 { font-size: 14px; font-weight: 700; color: #667eea; flex: 1; margin: 0; }
+    #hamburger-btn { background: none; border: none; cursor: pointer; padding: 4px; color: #667eea; }
+    #sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1000; }
+    #sidebar-overlay.open { display: block; }
+
+    @media (max-width: 768px) {
+      .mobile-topbar { display: flex; }
+      #main-app { flex-direction: column !important; }
+      aside {
+        position: fixed !important;
+        left: -280px;
+        top: 0; bottom: 0;
+        width: 260px !important;
+        z-index: 1001;
+        transition: left 0.25s ease;
+        overflow-y: auto;
+      }
+      aside.open { left: 0 !important; }
+      main { padding: 68px 12px 16px !important; width: 100% !important; }
+
+      /* Stack all 2 and 3 col grids */
+      .grid-cols-2, .grid-cols-3, .md\:grid-cols-3, .md\:grid-cols-2 { grid-template-columns: 1fr !important; }
+      [style*="grid-template-columns:1fr 1fr"],
+      [style*="grid-template-columns: 1fr 1fr"],
+      [style*="grid-template-columns:1fr 1.5fr"],
+      [style*="grid-template-columns:repeat(2"],
+      [style*="grid-template-columns:repeat(3"],
+      [style*="display:grid"] { grid-template-columns: 1fr !important; }
+
+      /* Savings tracker side-by-side cards */
+      #tab-savings-tracker > div[style*="grid-template-columns"] { grid-template-columns: 1fr !important; }
+
+      /* Estimator 3-col dropdowns */
+      #tab-cost-breakdown > div > div[style*="grid-template-columns:1fr 1fr 1fr"] { grid-template-columns: 1fr !important; }
+
+      /* Hero stat rows — wrap instead of overflow */
+      div[style*="display:flex"][style*="gap:24px"] { flex-wrap: wrap; gap: 12px !important; }
+
+      /* Font size adjustments */
+      .font-heading.text-2xl { font-size: 1.25rem !important; }
+      .font-heading.text-5xl { font-size: 2rem !important; }
+      h2.font-heading { font-size: 1.3rem !important; }
+
+      /* Card padding */
+      .card { padding: 14px !important; }
+
+      /* Sidebar header title size */
+      aside h1 { font-size: 15px !important; }
+
+      /* Receipt grid */
+      #receipts-grid { grid-template-columns: 1fr !important; }
+
+      /* Physician grid */
+      #physicians-list { grid-template-columns: 1fr !important; }
+
+      /* Photo log grid */
+      #photo-grid { grid-template-columns: 1fr 1fr !important; }
+    }
+
     /* ===== DARK MODE ===== */
     [data-theme="dark"] {
       --bg-light: #1e1b2e;
@@ -154,6 +226,9 @@
     }
 
     /* Page background — deep purple-navy gradient for depth */
+    [data-theme="dark"] .mobile-topbar { background: #131c26 !important; border-color: rgba(139,124,248,0.2) !important; }
+    [data-theme="dark"] .mobile-topbar h1 { color: #c4b5fd; }
+    [data-theme="dark"] #hamburger-btn { color: #c4b5fd; }
     [data-theme="dark"] body {
       background: #15202b !important;
       color: #e8e6f0;
@@ -331,18 +406,33 @@
   <script>
   // ============ PASSWORD CONFIG ============
   // Change this value to set the access code your buyers will use:
-  var PLANNER_ACCESS_CODE = 'beauty2026';
+  var PLANNER_ACCESS_CODE = ''; // Login disabled for testing — re-enable by setting a code
   // When your Etsy listing is live, replace this URL:
   var ETSY_LISTING_URL = 'https://www.etsy.com/your-listing-url-here';
   // ==========================================
   </script>
 
+  <!-- Mobile overlay -->
+  <div id="sidebar-overlay"></div>
+
+  <!-- Mobile top bar -->
+  <div class="mobile-topbar">
+    <button id="hamburger-btn" aria-label="Open menu">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+    <h1>Beauty Procedure Savings Planner</h1>
+  </div>
+
   <div id="main-app" class="flex min-h-screen" style="display:none;opacity:0;transition:opacity 0.2s ease;">
    <aside class="w-64 bg-white shadow-lg flex-shrink-0 overflow-y-auto sticky top-0 h-screen">
     <div class="p-4 border-b border-gray-200">
      <h1 class="font-heading text-xl font-bold text-primary">Beauty Procedure Savings Planner</h1>
-     <button id="share-clean-btn" style="margin-top:10px;width:100%;padding:7px 10px;background:linear-gradient(135deg,#667eea,#764ba2);color:white;border:none;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;" title="Download a clean copy with no personal data for sharing">&#8681; Share Clean Copy</button>
-     <button id="dark-mode-btn" style="margin-top:8px;width:100%;padding:7px 10px;background:transparent;color:#667eea;border:1.5px solid #667eea;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:6px;" title="Toggle dark mode">
+
+     <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px;">
+      <button id="export-data-btn" style="padding:7px 4px;background:transparent;color:#667eea;border:1.5px solid #667eea;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;" title="Export your data to a file">&#8681; Export</button>
+      <label id="import-data-label" style="padding:7px 4px;background:transparent;color:#667eea;border:1.5px solid #667eea;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;text-align:center;display:block;" title="Import data from a file">&#8679; Import<input type="file" id="import-data-input" accept=".json" style="display:none;"></label>
+     </div>
+     <button id="dark-mode-btn" style="margin-top:6px;width:100%;padding:7px 10px;background:transparent;color:#667eea;border:1.5px solid #667eea;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:6px;" title="Toggle dark mode">
       <svg id="dark-mode-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
       <span id="dark-mode-label">Dark Mode</span>
      </button>
@@ -779,7 +869,7 @@
         </div>
         <div style="text-align:center;">
          <p class="font-body text-xs uppercase tracking-wider mb-1" style="color:rgba(255,255,255,0.7);">Streak</p>
-         <p class="font-heading text-2xl font-bold" style="color:#ff8c42;" id="tracker-hero-streak">0 wks</p>
+         <p class="font-heading text-2xl font-bold" style="color:#ffb347;" id="tracker-hero-streak">0 wks</p>
         </div>
        </div>
       </div>
@@ -4667,7 +4757,8 @@ document.addEventListener('DOMContentLoaded', function () {
   renderEntries();
 });
 
-// Share Clean Copy button
+// Share Clean Copy button (disabled — using GitHub Pages link instead)
+/*
 document.getElementById('share-clean-btn').addEventListener('click', function() {
   // Get the full HTML source
   var html = document.documentElement.outerHTML;
@@ -4700,6 +4791,7 @@ document.getElementById('share-clean-btn').addEventListener('click', function() 
   document.body.removeChild(a);
   URL.revokeObjectURL(url);
 });
+*/
 
 // ============ REGIONAL COST ESTIMATOR ============
 // Base costs in USD (all-in: surgeon + anesthesia + facility)
@@ -4821,6 +4913,62 @@ function calcSavingsStreak(savings) {
   }
   return streak;
 }
+
+// ============ HAMBURGER MENU ============
+(function() {
+  var hamburger = document.getElementById('hamburger-btn');
+  var overlay = document.getElementById('sidebar-overlay');
+  var aside = document.querySelector('aside');
+  function openMenu() { aside.classList.add('open'); overlay.classList.add('open'); }
+  function closeMenu() { aside.classList.remove('open'); overlay.classList.remove('open'); }
+  if (hamburger) hamburger.addEventListener('click', openMenu);
+  if (overlay) overlay.addEventListener('click', closeMenu);
+  // Close sidebar when a tab is clicked on mobile
+  document.querySelectorAll('.sidebar-item').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      if (window.innerWidth <= 768) closeMenu();
+    });
+  });
+})();
+
+// ============ EXPORT / IMPORT DATA ============
+document.getElementById('export-data-btn').addEventListener('click', function() {
+  var keys = ['beautyPlannerData_v1', 'beautyJourneyEntries_v1', 'medPatientName', 'sinkingFundPlan', 'beautyActiveGoalId', 'beautyPlannerTheme'];
+  var data = {};
+  keys.forEach(function(k) {
+    var v = localStorage.getItem(k);
+    if (v) data[k] = v;
+  });
+  var blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'beauty-planner-backup-' + new Date().toISOString().slice(0,10) + '.json';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+});
+
+document.getElementById('import-data-input').addEventListener('change', function(e) {
+  var file = e.target.files[0];
+  if (!file) return;
+  var reader = new FileReader();
+  reader.onload = function(evt) {
+    try {
+      var data = JSON.parse(evt.target.result);
+      Object.keys(data).forEach(function(k) {
+        localStorage.setItem(k, data[k]);
+      });
+      alert('Data imported successfully! The page will reload.');
+      window.location.reload();
+    } catch(err) {
+      alert('Invalid backup file. Please use a file exported from this planner.');
+    }
+  };
+  reader.readAsText(file);
+  e.target.value = '';
+});
 
 // ============ DARK MODE ============
 (function() {
@@ -5012,7 +5160,8 @@ document.querySelector('[data-tab="receipt-log"]').addEventListener('click', pop
     return;
   }
 
-  if (localStorage.getItem(AUTH_KEY) === PLANNER_ACCESS_CODE) {
+  // If no access code set, skip login entirely
+  if (!PLANNER_ACCESS_CODE || localStorage.getItem(AUTH_KEY) === PLANNER_ACCESS_CODE) {
     loginScreen.style.display = 'none';
     mainApp.style.display = 'flex';
     setTimeout(function(){ mainApp.style.opacity = '1'; }, 10);
