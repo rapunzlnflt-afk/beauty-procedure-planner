@@ -2459,7 +2459,7 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
           </div>
           <div class="flex items-center gap-3">
             <p class="font-heading font-bold text-primary">${formatCurrency(c.item_cost || 0)}</p>
-            <button class="delete-cost" style="background:none;border:none;color:#460bdf;font-size:14px;font-weight:600;cursor:pointer;padding:0 4px;line-height:1;font-family:Arial,sans-serif;letter-spacing:0;" title="Delete" data-id="${c.__backendId}">X</button>
+            <button class="delete-cost" style="background:none;border:none;color:#667eea;font-size:14px;font-weight:600;cursor:pointer;padding:0 4px;line-height:1;font-family:Arial,sans-serif;letter-spacing:0;" title="Delete" data-id="${c.__backendId}">X</button>
           </div>
         </div>
       `).join('');
@@ -2557,7 +2557,7 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
           </div>
           <div class="flex items-center gap-3">
             <p class="font-heading font-bold" style="color: var(--success-color);">${formatCurrency(s.amount || 0)}</p>
-            <button class="delete-savings" style="background:none;border:none;color:#460bdf;font-size:14px;font-weight:600;cursor:pointer;padding:0 4px;line-height:1;font-family:Arial,sans-serif;letter-spacing:0;" title="Delete" data-id="${s.__backendId}">X</button>
+            <button class="delete-savings" style="background:none;border:none;color:#667eea;font-size:14px;font-weight:600;cursor:pointer;padding:0 4px;line-height:1;font-family:Arial,sans-serif;letter-spacing:0;" title="Delete" data-id="${s.__backendId}">X</button>
           </div>
         </div>
       `).join('');
@@ -2631,7 +2631,7 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
 
       list.innerHTML = '';
       funds.forEach(f => {
-        const _ti = funds.reduce((s,f)=>s+(f.amount||0),0); const _te = document.getElementById('monthly-income-total-amount'); if(_te) _te.textContent = '$'+_ti.toFixed(2); const itemHtml = '<div class="flex justify-between items-center p-2 bg-gray-50 rounded text-sm"><span class="font-body text-primary">' + (f.source_name || 'Source') + '</span><div class="flex items-center gap-2"><span class="font-heading font-bold text-primary">' + formatCurrency(f.amount || 0) + '</span><button class="delete-fund" style="background:none;border:none;color:#460bdf;font-size:14px;font-weight:600;cursor:pointer;padding:0 4px;line-height:1;font-family:Arial,sans-serif;" title="Delete" data-id="' + f.__backendId + '">X</button></div></div>';
+        const _ti = funds.reduce((s,f)=>s+(f.amount||0),0); const _te = document.getElementById('monthly-income-total-amount'); if(_te) _te.textContent = '$'+_ti.toFixed(2); const itemHtml = '<div class="flex justify-between items-center p-2 bg-gray-50 rounded text-sm"><span class="font-body text-primary">' + (f.source_name || 'Source') + '</span><div class="flex items-center gap-2"><span class="font-heading font-bold text-primary">' + formatCurrency(f.amount || 0) + '</span><button class="delete-fund" style="background:none;border:none;color:#667eea;font-size:14px;font-weight:600;cursor:pointer;padding:0 4px;line-height:1;font-family:Arial,sans-serif;" title="Delete" data-id="' + f.__backendId + '">X</button></div></div>';
         list.innerHTML += itemHtml;
       });
 
@@ -2697,7 +2697,7 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
         if (e.due_date) {
           dueText = '<p class="font-body text-xs text-secondary">Due: Day ' + e.due_date + '</p>';
         }
-        const itemHtml = '<div class="flex justify-between items-center p-2 bg-gray-50 rounded text-sm"><div><p class="font-body text-primary font-semibold">' + (e.expense_name || 'Expense') + '</p>' + dueText + '</div><div class="flex items-center gap-2"><span class="font-heading font-bold text-primary">' + formatCurrency(e.amount || 0) + '</span><button class="delete-expense" style="background:none;border:none;color:#460bdf;font-size:14px;font-weight:600;cursor:pointer;padding:0 4px;line-height:1;font-family:Arial,sans-serif;" title="Delete" data-id="' + e.__backendId + '">X</button></div></div>';
+        const itemHtml = '<div class="flex justify-between items-center p-2 bg-gray-50 rounded text-sm"><div><p class="font-body text-primary font-semibold">' + (e.expense_name || 'Expense') + '</p>' + dueText + '</div><div class="flex items-center gap-2"><span class="font-heading font-bold text-primary">' + formatCurrency(e.amount || 0) + '</span><button class="delete-expense" style="background:none;border:none;color:#667eea;font-size:14px;font-weight:600;cursor:pointer;padding:0 4px;line-height:1;font-family:Arial,sans-serif;" title="Delete" data-id="' + e.__backendId + '">X</button></div></div>';
         list.innerHTML += itemHtml;
       });
 
@@ -2903,7 +2903,7 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
                   ${p.specialty ? `<p class="font-body text-sm text-secondary">${p.specialty}</p>` : ''}
                   ${p.rating ? `<div class="flex items-center gap-1 mt-1"><span class="font-body text-xs text-secondary">Rating:</span><span class="font-body text-sm font-semibold" style="color: #f59e0b;">${'★'.repeat(p.rating)}${'â˜†'.repeat(5-p.rating)}</span></div>` : ''}
                 </div>
-                <button class="delete-physician" style="background:none;border:none;color:#460bdf;font-size:14px;font-weight:600;cursor:pointer;padding:0 4px;line-height:1;font-family:Arial,sans-serif;letter-spacing:0;" title="Delete" data-id="${p.__backendId}">X</button>
+                <button class="delete-physician" style="background:none;border:none;color:#667eea;font-size:14px;font-weight:600;cursor:pointer;padding:0 4px;line-height:1;font-family:Arial,sans-serif;letter-spacing:0;" title="Delete" data-id="${p.__backendId}">X</button>
               </div>
               <div class="grid grid-cols-2 gap-3 text-sm">
                 ${p.location ? `<div><p class="font-body text-xs text-secondary uppercase tracking-wide mb-1">Location</p><p class="font-body text-primary">${p.location}</p></div>` : ''}
@@ -3037,7 +3037,7 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
                   </div>
                   <div class="flex items-center gap-3 ml-3">
                     <p class="font-heading font-bold text-primary whitespace-nowrap">${formatCurrency(e.travel_expense_amount)}</p>
-                    <button class="delete-travel-expense" style="background:none;border:none;color:#460bdf;font-size:14px;font-weight:600;cursor:pointer;padding:0 4px;line-height:1;font-family:Arial,sans-serif;letter-spacing:0;" title="Delete" data-id="${e.__backendId}">X</button>
+                    <button class="delete-travel-expense" style="background:none;border:none;color:#667eea;font-size:14px;font-weight:600;cursor:pointer;padding:0 4px;line-height:1;font-family:Arial,sans-serif;letter-spacing:0;" title="Delete" data-id="${e.__backendId}">X</button>
                   </div>
                 </div>
               `).join('')}
@@ -3257,7 +3257,7 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
             <td class="px-3 py-2 text-sm font-body text-secondary">${m.medicationPurpose || '-'}</td>
             <td class="px-3 py-2 text-sm font-body text-secondary">${m.medicationNotes || '-'}</td>
             <td class="px-3 py-2 text-center">
-              <button class="delete-medication" style="background:none;border:none;color:#460bdf;font-size:14px;font-weight:600;cursor:pointer;padding:0 4px;line-height:1;font-family:Arial,sans-serif;letter-spacing:0;" title="Delete" data-id="${m.__backendId}">X</button>
+              <button class="delete-medication" style="background:none;border:none;color:#667eea;font-size:14px;font-weight:600;cursor:pointer;padding:0 4px;line-height:1;font-family:Arial,sans-serif;letter-spacing:0;" title="Delete" data-id="${m.__backendId}">X</button>
             </td>
           </tr>
         `;
@@ -3665,7 +3665,7 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
           <div class="p-2 bg-gray-50 rounded border-l-4 border-orange-500">
             <div class="flex justify-between items-start gap-3">
               <p class="font-body text-sm text-primary flex-1">${escapeHtml(q.question_text)}</p>
-              <button class="delete-custom-question" style="background:none;border:none;color:#460bdf;font-size:14px;font-weight:600;cursor:pointer;padding:0 4px;line-height:1;font-family:Arial,sans-serif;letter-spacing:0;" title="Delete" data-id="${q.__backendId}">X</button>
+              <button class="delete-custom-question" style="background:none;border:none;color:#667eea;font-size:14px;font-weight:600;cursor:pointer;padding:0 4px;line-height:1;font-family:Arial,sans-serif;letter-spacing:0;" title="Delete" data-id="${q.__backendId}">X</button>
             </div>
           </div>
         `).join('');
@@ -3783,7 +3783,7 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
               <div class="flex items-center gap-4 text-sm flex-shrink-0">
                 ${doc.date ? `<span class="font-body text-secondary">${formatDate(doc.date)}</span>` : ''}
                 ${linkDisplay}
-                <button class="vault-delete-btn" style="background:none;border:none;color:#460bdf;font-size:16px;font-weight:700;cursor:pointer;padding:0 4px;line-height:1;font-family:inherit;" title="Delete" data-id="${doc.__backendId}">&times;</button>
+                <button class="vault-delete-btn" style="background:none;border:none;color:#667eea;font-size:16px;font-weight:700;cursor:pointer;padding:0 4px;line-height:1;font-family:inherit;" title="Delete" data-id="${doc.__backendId}">&times;</button>
               </div>
             `;
 
