@@ -166,7 +166,10 @@
     [data-theme="dark"] .bg-white { background: #323d54 !important; }
     [data-theme="dark"] main { background: #2a3142 !important; }
     [data-theme="dark"] .progress-bar { background: #3a4a62; }
-    [data-theme="dark"] .step-card .card { background: #323d54 !important; }
+    /* Step cards go dark but purple outer background stays */
+    [data-theme="dark"] .step-card .card { background: #323d54 !important; color: #f1f5f9 !important; }
+    [data-theme="dark"] .step-card .card .text-primary { color: #f1f5f9 !important; }
+    [data-theme="dark"] .step-card .card .text-secondary { color: #94a3b8 !important; }
     [data-theme="dark"] #login-box { background: rgba(50,61,84,0.97) !important; }
     [data-theme="dark"] #login-box h1 { color: #f1f5f9; }
     [data-theme="dark"] #login-input { background: #3a4a62 !important; color: #f1f5f9 !important; border-color: #4a5568 !important; }
@@ -3383,7 +3386,7 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
             ${r.receipt_notes ? `<p class="font-body text-xs text-secondary leading-relaxed mb-3">${r.receipt_notes}</p>` : ''}
             ${r.receipt_cost_link ? `<p class="font-body text-xs mb-2" style="color:#667eea;"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="display:inline;margin-right:3px;"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>Linked: ${r.receipt_cost_link}</p>` : ''}
             ${r.receipt_image_link ? `<div class="pt-3 border-t border-gray-200"><a href="${r.receipt_image_link}" target="_blank" rel="noopener noreferrer" class="font-body text-xs font-medium inline-flex items-center gap-1 px-2 py-1 rounded transition-all hover:opacity-75" style="background-color: #f3f4f6; color: var(--accent-color);">View Receipt Image</a></div>` : ''}
-            <button class="delete-receipt absolute bottom-3 right-3 flex items-center justify-center font-bold transition-all duration-300 hover:scale-110" style="color: #460bdf; background: none; border: none; padding: 0; width: 24px; height: 24px; font-size: 20px; line-height: 1; cursor: pointer;" data-id="${r.__backendId}" title="Delete receipt">X</button>
+            <button class="delete-receipt absolute bottom-3 right-3 flex items-center justify-center font-bold transition-all duration-300 hover:scale-110" style="color: #667eea; background: none; border: none; padding: 0; width: 24px; height: 24px; font-size: 20px; line-height: 1; cursor: pointer;" data-id="${r.__backendId}" title="Delete receipt">X</button>
           </div>
         `).join('');
 
