@@ -89,10 +89,13 @@
     Export saves your data as a file. Import loads it back — use to transfer data between devices
   </p>
 
-  <button id="sidebar-darkmode-btn" class="btn-secondary w-full px-3 py-2 rounded font-body text-xs font-medium text-left">
-    Dark Mode
-  </button>
-</div>
+          <div class="flex items-center justify-between px-1 py-1">
+          <span class="font-body text-xs text-secondary flex items-center gap-1">🌙 Dark Mode</span>
+          <label class="relative inline-flex items-center cursor-pointer">
+            <input type="checkbox" id="sidebar-darkmode-btn" class="sr-only peer">
+            <div class="w-9 h-5 bg-gray-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-indigo-500"></div>
+          </label>
+        </div>div>
 </aside>
    <main class="flex-1 overflow-y-auto p-4">
     <section id="tab-overview" class="tab-content">
@@ -3486,11 +3489,11 @@
     }
 
     if (darkModeBtn) {
-      darkModeBtn.addEventListener('click', () => {
+      darkModeBtn.addEventListener('change', () => {
         const body = document.body;
         const aside = document.querySelector('aside');
         const cards = document.querySelectorAll('.card');
-        const isDark = body.classList.toggle('dark-mode');
+        const isDark = darkModeBtn.checked;body.classList.toggle('dark-mode', isDark);
 
         if (isDark) {
           body.style.backgroundColor = '#111827';
@@ -3500,7 +3503,7 @@
             card.style.background = '#1f2937';
             card.style.borderColor = '#374151';
           });
-          darkModeBtn.textContent = 'Light Mode';
+          
         } else {
           body.style.backgroundColor = 'var(--bg-light)';
           body.style.color = '';
@@ -3509,7 +3512,7 @@
             card.style.background = 'white';
             card.style.borderColor = '#e2e8f0';
           });
-          darkModeBtn.textContent = 'Dark Mode';
+          
         }
       });
     }
