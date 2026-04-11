@@ -55,14 +55,39 @@
  </head>
  <body class="h-full font-body" style="background-color: var(--bg-light);">
   <div id="main-app" class="flex h-full">
-   <aside class="w-64 bg-white shadow-lg flex-shrink-0 overflow-y-auto">
-    <div class="p-4 border-b border-gray-200">
-     <h1 class="font-heading text-xl font-bold text-primary">Beauty Procedure Savings Planner</h1>
-    </div>
-    <nav class="py-2">
-     <button class="sidebar-item active w-full text-left px-4 py-3 font-body text-sm font-medium" data-tab="overview">Overview</button><button class="sidebar-item w-full text-left px-4 py-3 font-body text-sm font-medium" data-tab="cost-breakdown">Cost Breakdown</button><button class="sidebar-item w-full text-left px-4 py-3 font-body text-sm font-medium" data-tab="budget-fund">Budget &amp; Fund</button><button class="sidebar-item w-full text-left px-4 py-3 font-body text-sm font-medium" data-tab="savings-tracker">Savings Tracker</button><button class="sidebar-item w-full text-left px-4 py-3 font-body text-sm font-medium" data-tab="savings-grid">Savings Grid</button><button class="sidebar-item w-full text-left px-4 py-3 font-body text-sm font-medium" data-tab="physician-selection">Physician Selection</button><button class="sidebar-item w-full text-left px-4 py-3 font-body text-sm font-medium" data-tab="consultation-questions">Consultation Questions</button><button class="sidebar-item w-full text-left px-4 py-3 font-body text-sm font-medium" data-tab="travel-budget">Travel Budget</button><button class="sidebar-item w-full text-left px-4 py-3 font-body text-sm font-medium" data-tab="medication-tracker">Medication Tracker</button><button class="sidebar-item w-full text-left px-4 py-3 font-body text-sm font-medium" data-tab="receipt-log">Receipt Log</button><button class="sidebar-item w-full text-left px-4 py-3 font-body text-sm font-medium" data-tab="photo-log">Photo Log</button><button class="sidebar-item w-full text-left px-4 py-3 font-body text-sm font-medium" data-tab="document-vault">Document Vault</button>
-    </nav>
-   </aside>
+   <aside class="w-64 bg-white shadow-lg flex-shrink-0 flex flex-col h-full">
+  <div class="p-4 border-b border-gray-200">
+    <h1 class="font-heading text-xl font-bold text-primary">Beauty Procedure Savings Planner</h1>
+  </div>
+
+  <nav class="py-2 flex-1 overflow-y-auto">
+    <button class="sidebar-item active w-full text-left px-4 py-3 font-body text-sm font-medium" data-tab="overview">Overview</button>
+    <button class="sidebar-item w-full text-left px-4 py-3 font-body text-sm font-medium" data-tab="cost-breakdown">Cost Breakdown</button>
+    <button class="sidebar-item w-full text-left px-4 py-3 font-body text-sm font-medium" data-tab="budget-fund">Budget &amp; Fund</button>
+    <button class="sidebar-item w-full text-left px-4 py-3 font-body text-sm font-medium" data-tab="savings-tracker">Savings Tracker</button>
+    <button class="sidebar-item w-full text-left px-4 py-3 font-body text-sm font-medium" data-tab="savings-grid">Savings Grid</button>
+    <button class="sidebar-item w-full text-left px-4 py-3 font-body text-sm font-medium" data-tab="physician-selection">Physician Selection</button>
+    <button class="sidebar-item w-full text-left px-4 py-3 font-body text-sm font-medium" data-tab="consultation-questions">Consultation Questions</button>
+    <button class="sidebar-item w-full text-left px-4 py-3 font-body text-sm font-medium" data-tab="travel-budget">Travel Budget</button>
+    <button class="sidebar-item w-full text-left px-4 py-3 font-body text-sm font-medium" data-tab="medication-tracker">Medication Tracker</button>
+    <button class="sidebar-item w-full text-left px-4 py-3 font-body text-sm font-medium" data-tab="receipt-log">Receipt Log</button>
+    <button class="sidebar-item w-full text-left px-4 py-3 font-body text-sm font-medium" data-tab="photo-log">Photo Log</button>
+    <button class="sidebar-item w-full text-left px-4 py-3 font-body text-sm font-medium" data-tab="document-vault">Document Vault</button>
+  </nav>
+
+  <div class="p-4 border-t border-gray-200 space-y-2">
+    <button id="sidebar-export-btn" class="btn-secondary w-full px-4 py-2 rounded font-body text-sm font-medium">
+      Export
+    </button>
+    <label for="sidebar-import-input" class="btn-secondary w-full px-4 py-2 rounded font-body text-sm font-medium block text-center cursor-pointer">
+      Import
+    </label>
+    <input type="file" id="sidebar-import-input" class="hidden" accept=".json">
+    <button id="sidebar-darkmode-btn" class="btn-secondary w-full px-4 py-2 rounded font-body text-sm font-medium">
+      Toggle Dark Mode
+    </button>
+  </div>
+</aside>
    <main class="flex-1 overflow-y-auto p-4">
     <section id="tab-overview" class="tab-content">
      <h2 class="font-heading text-2xl font-bold text-primary mb-4">Overview</h2>
@@ -489,7 +514,7 @@
        </div>
        <div class="text-sm leading-relaxed">
         <p class="font-semibold mb-1">Print Your Questions:</p>
-        <p class="opacity-90">Take your questions with you to the consultation. Having them written down ensures you won't forget anything important in the moment.</p>
+        <p class="opacity-90">Take your questions with you to the consultation. Having them written down ensures you won't forget anything ant in the moment.</p>
        </div>
        <div class="text-sm leading-relaxed">
         <p class="font-semibold mb-1">International Consultations Tip:</p>
@@ -1062,7 +1087,7 @@
       <!-- Header -->
       <div style="background: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-color-2) 100%); padding: 1.5rem; border-radius: 12px; margin-bottom: 2rem; color: white; box-shadow: 0 8px 24px rgba(102, 126, 234, 0.15);">
        <h2 class="font-heading text-3xl font-bold mb-1">Document Vault</h2>
-       <p class="font-body text-sm opacity-90">Organize and track your important document links securely</p>
+       <p class="font-body text-sm opacity-90">Organize and track your ant document links securely</p>
       </div><!-- Security Reminder -->
       <div class="rounded-lg p-3 mb-6 border-l-4 card" style="border-left-color: #667eea;">
        <p class="font-body text-xs text-secondary"><strong style="color: #667eea;">Security Reminder:</strong> This tracker stores links and descriptions only. Always store actual documents in secure cloud storage (Google Drive, Dropbox, etc.) and paste the sharing links here.</p>
@@ -1084,7 +1109,7 @@
           <label for="vault-doc-link" class="block font-body text-sm font-medium mb-1 text-secondary">Cloud Link/Location</label> <input type="url" id="vault-doc-link" class="w-full px-3 py-2 rounded border text-sm focus:outline-none focus:ring-2 focus:ring-blue-400" style="border-color: #cbd5e1; background-color: #ffffff;" placeholder="https://drive.google.com/...">
          </div>
          <div class="flex items-end">
-          <label class="flex items-center gap-2 cursor-pointer"> <input type="checkbox" id="vault-doc-important" class="checkbox-custom"> <span class="font-body text-sm font-medium text-primary">Mark as Important</span> </label>
+          <label class="flex items-center gap-2 cursor-pointer"> <input type="checkbox" id="vault-doc-ant" class="checkbox-custom"> <span class="font-body text-sm font-medium text-primary">Mark as ant</span> </label>
          </div>
          <div class="md:col-span-3">
           <label for="vault-doc-description" class="block font-body text-sm font-medium mb-1 text-secondary">Description</label> <textarea id="vault-doc-description" rows="2" class="w-full px-3 py-2 rounded border text-sm focus:outline-none focus:ring-2 focus:ring-blue-400" style="border-color: #cbd5e1; background-color: #ffffff;" placeholder="Brief description of the document"></textarea>
@@ -3065,7 +3090,7 @@
             row.className = 'p-4 flex flex-col md:flex-row md:items-center gap-3 hover:bg-gray-50 transition-all';
             row.dataset.docId = doc.__backendId;
 
-            const importantClass = doc.important ? 'active' : '';
+            const antClass = doc.important ? 'active' : '';
             const completedClass = doc.completed ? 'line-through opacity-60' : '';
             const linkDisplay = doc.link ? `<a href="${doc.link}" target="_blank" rel="noopener noreferrer" class="font-body text-sm underline hover:opacity-80" style="color: #667eea;">Open Link</a>` : '<span class="font-body text-sm" style="color: #a4a3cf;">No link</span>';
 
@@ -3398,6 +3423,98 @@
       document.getElementById('calculator-results').classList.remove('hidden');
       document.getElementById('budget-fund-calculator').classList.add('hidden');
     });
+   <script>
+  function exportAllPlannerData() {
+    const dataStr = JSON.stringify(allData, null, 2);
+    const blob = new Blob([dataStr], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'beauty-procedure-planner-export.json';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  async function importAllPlannerData(file) {
+    try {
+      const text = await file.text();
+      const imported = JSON.parse(text);
+
+      if (!Array.isArray(imported)) {
+        showErrorMessage('Import file must contain a valid planner data array.');
+        return;
+      }
+
+      for (const item of imported) {
+        const cleanItem = { ...item };
+        delete cleanItem.__backendId;
+        delete cleanItem.backendId;
+        await window.dataSdk.create(cleanItem);
+      }
+
+      showErrorMessage('Import completed successfully.');
+    } catch (error) {
+      showErrorMessage('Unable to import file. Please use a valid JSON export.');
+    }
+  }
+
+  function initializeSidebarTools() {
+    const exportBtn = document.getElementById('sidebar-export-btn');
+    const importInput = document.getElementById('sidebar-import-input');
+    const darkModeBtn = document.getElementById('sidebar-darkmode-btn');
+
+    if (exportBtn) {
+      exportBtn.addEventListener('click', exportAllPlannerData);
+    }
+
+    if (importInput) {
+      importInput.addEventListener('change', async (e) => {
+        const file = e.target.files && e.target.files[0];
+        if (file) {
+          await importAllPlannerData(file);
+          e.target.value = '';
+        }
+      });
+    }
+
+    if (darkModeBtn) {
+      darkModeBtn.addEventListener('click', () => {
+        const body = document.body;
+        const aside = document.querySelector('aside');
+        const cards = document.querySelectorAll('.card');
+        const isDark = body.classList.toggle('dark-mode');
+
+        if (isDark) {
+          body.style.backgroundColor = '#111827';
+          body.style.color = '#f9fafb';
+          if (aside) aside.style.backgroundColor = '#1f2937';
+          cards.forEach(card => {
+            card.style.background = '#1f2937';
+            card.style.borderColor = '#374151';
+          });
+          darkModeBtn.textContent = 'Light Mode';
+        } else {
+          body.style.backgroundColor = 'var(--bg-light)';
+          body.style.color = '';
+          if (aside) aside.style.backgroundColor = '#ffffff';
+          cards.forEach(card => {
+            card.style.background = 'white';
+            card.style.borderColor = '#e2e8f0';
+          });
+          darkModeBtn.textContent = 'Dark Mode';
+        }
+      });
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializeSidebarTools);
+  } else {
+    initializeSidebarTools();
+  }
+</script>
   </script>
   <script>
 document.addEventListener('DOMContentLoaded', function () {
