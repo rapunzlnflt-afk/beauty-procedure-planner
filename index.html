@@ -11,39 +11,251 @@
   <script src="https://cdn.tailwindcss.com/3.4.17" type="text/javascript"></script>
   <script>
 (function () {
-  const STORAGE_KEY = 'beautyPlannerData_v1';
+  const DB_NAME = 'beautyPlannerDB';
+  const DB_VERSION = 1;
+  const RECORDS_STORE = 'records';
+  const PHOTOS_STORE = 'photos';
+  const SETTINGS_STORE = 'settings';
+  let db = null;
   let changeHandler = null;
 
-  function loadAll() {
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      const parsed = raw ? JSON.parse(raw) : [];
-      return Array.isArray(parsed) ? parsed.map(r => ({ ...r, __backendId: r.__backendId || r.backendId })) : [];
-    } catch (e) {
-      console.error('Failed to load stored data:', e);
-      return [];
-    }
+  function openDB() {
+    return new Promise((resolve, reject) => {
+      if (db) return resolve(db);
+      const request = indexedDB.open(DB_NAME, DB_VERSION);
+      request.onupgradeneeded = (e) => {
+        const d = e.target.result;
+        if (!d.objectStoreNames.contains(RECORDS_STORE)) {
+          d.createObjectStore(RECORDS_STORE, { keyPath: '__backendId' });
+        }
+        if (!d.objectStoreNames.contains(PHOTOS_STORE)) {
+          d.createObjectStore(PHOTOS_STORE, { keyPath: 'id', autoIncrement: true });
+        }
+        if (!d.objectStoreNames.contains(SETTINGS_STORE)) {
+          d.createObjectStore(SETTINGS_STORE, { keyPath: 'key' });
+        }
+      };
+      request.onsuccess = (e) => { db = e.target.result; resolve(db); };
+      request.onerror = (e) => reject(e.target.error);
+    });
   }
 
-  function saveAll(data) {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  function txPromise(storeName, mode, fn) {
+    return openDB().then(d => new Promise((resolve, reject) => {
+      const tx = d.transaction(storeName, mode);
+      const store = tx.objectStore(storeName);
+      const result = fn(store);
+      tx.oncomplete = () => resolve(result._value);
+      tx.onerror = (e) => reject(e.target.error);
+    }));
   }
 
-  function emitChange() {
-    const data = loadAll();
-    if (typeof changeHandler === 'function') {
-      changeHandler(data);
-    }
+  function getAllRecords() {
+    return openDB().then(d => new Promise((resolve, reject) => {
+      const tx = d.transaction(RECORDS_STORE, 'readonly');
+      const req = tx.objectStore(RECORDS_STORE).getAll();
+      req.onsuccess = () => resolve(req.result || []);
+      req.onerror = (e) => reject(e.target.error);
+    }));
   }
 
   function makeId() {
     return 'id_' + Date.now() + '_' + Math.random().toString(36).slice(2, 9);
   }
 
+  async function emitChange() {
+    if (typeof changeHandler === 'function') {
+      const data = await getAllRecords();
+      changeHandler(data);
+    }
+  }
+
+  // Migrate existing localStorage data to IndexedDB on first run
+  async function migrateFromLocalStorage() {
+    const migrated = localStorage.getItem('beautyPlanner_idb_migrated');
+    if (migrated) return;
+    try {
+      // Migrate main records
+      const raw = localStorage.getItem('beautyPlannerData_v1');
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed)) {
+          const d = await openDB();
+          const tx = d.transaction(RECORDS_STORE, 'readwrite');
+          const store = tx.objectStore(RECORDS_STORE);
+          for (const r of parsed) {
+            const rec = { ...r, __backendId: r.__backendId || r.backendId || makeId() };
+            rec.backendId = rec.__backendId;
+            store.put(rec);
+          }
+          await new Promise((res, rej) => { tx.oncomplete = res; tx.onerror = rej; });
+        }
+      }
+      // Migrate photos
+      const photoRaw = localStorage.getItem('beautyJourneyEntries_v1');
+      if (photoRaw) {
+        const photos = JSON.parse(photoRaw);
+        if (Array.isArray(photos)) {
+          const d = await openDB();
+          const tx = d.transaction(PHOTOS_STORE, 'readwrite');
+          const store = tx.objectStore(PHOTOS_STORE);
+          for (const p of photos) { store.put(p); }
+          await new Promise((res, rej) => { tx.oncomplete = res; tx.onerror = rej; });
+        }
+      }
+      // Migrate settings
+      const settingsKeys = ['medPatientName', 'sinkingFundPlan', 'beautyActiveGoalId', 'beautyPlannerTheme'];
+      const d = await openDB();
+      const tx = d.transaction(SETTINGS_STORE, 'readwrite');
+      const store = tx.objectStore(SETTINGS_STORE);
+      for (const k of settingsKeys) {
+        const v = localStorage.getItem(k);
+        if (v !== null) store.put({ key: k, value: v });
+      }
+      await new Promise((res, rej) => { tx.oncomplete = res; tx.onerror = rej; });
+      localStorage.setItem('beautyPlanner_idb_migrated', '1');
+      console.log('Migration from localStorage to IndexedDB complete.');
+    } catch (e) {
+      console.error('Migration failed:', e);
+    }
+  }
+
+  // Settings helpers (replaces direct localStorage calls throughout app)
+  window.beautySettings = {
+    async get(key) {
+      const d = await openDB();
+      return new Promise((resolve, reject) => {
+        const tx = d.transaction(SETTINGS_STORE, 'readonly');
+        const req = tx.objectStore(SETTINGS_STORE).get(key);
+        req.onsuccess = () => resolve(req.result ? req.result.value : null);
+        req.onerror = (e) => reject(e.target.error);
+      });
+    },
+    async set(key, value) {
+      const d = await openDB();
+      return new Promise((resolve, reject) => {
+        const tx = d.transaction(SETTINGS_STORE, 'readwrite');
+        tx.objectStore(SETTINGS_STORE).put({ key, value });
+        tx.oncomplete = () => resolve();
+        tx.onerror = (e) => reject(e.target.error);
+      });
+    },
+    async remove(key) {
+      const d = await openDB();
+      return new Promise((resolve, reject) => {
+        const tx = d.transaction(SETTINGS_STORE, 'readwrite');
+        tx.objectStore(SETTINGS_STORE).delete(key);
+        tx.oncomplete = () => resolve();
+        tx.onerror = (e) => reject(e.target.error);
+      });
+    }
+  };
+
+  // Photo storage helpers (replaces beautyJourneyEntries_v1 localStorage)
+  window.beautyPhotos = {
+    async getAll() {
+      const d = await openDB();
+      return new Promise((resolve, reject) => {
+        const tx = d.transaction(PHOTOS_STORE, 'readonly');
+        const req = tx.objectStore(PHOTOS_STORE).getAll();
+        req.onsuccess = () => resolve(req.result || []);
+        req.onerror = (e) => reject(e.target.error);
+      });
+    },
+    async saveAll(entries) {
+      const d = await openDB();
+      return new Promise((resolve, reject) => {
+        const tx = d.transaction(PHOTOS_STORE, 'readwrite');
+        const store = tx.objectStore(PHOTOS_STORE);
+        store.clear();
+        for (const entry of entries) { store.put(entry); }
+        tx.oncomplete = () => resolve();
+        tx.onerror = (e) => reject(e.target.error);
+      });
+    }
+  };
+
+  // Export all data from IndexedDB
+  window.beautyExportAll = async function() {
+    const records = await getAllRecords();
+    const d = await openDB();
+    const photos = await new Promise((res, rej) => {
+      const req = d.transaction(PHOTOS_STORE, 'readonly').objectStore(PHOTOS_STORE).getAll();
+      req.onsuccess = () => res(req.result || []); req.onerror = (e) => rej(e.target.error);
+    });
+    const settings = await new Promise((res, rej) => {
+      const req = d.transaction(SETTINGS_STORE, 'readonly').objectStore(SETTINGS_STORE).getAll();
+      req.onsuccess = () => res(req.result || []); req.onerror = (e) => rej(e.target.error);
+    });
+    return { records, photos, settings, version: 2 };
+  };
+
+  // Import all data into IndexedDB
+  window.beautyImportAll = async function(data) {
+    const d = await openDB();
+    // Handle old localStorage format (version 1)
+    if (!data.version) {
+      // Old format: keys are localStorage key names
+      if (data.beautyPlannerData_v1) {
+        const parsed = JSON.parse(data.beautyPlannerData_v1);
+        const tx = d.transaction(RECORDS_STORE, 'readwrite');
+        const store = tx.objectStore(RECORDS_STORE);
+        store.clear();
+        for (const r of parsed) {
+          const rec = { ...r, __backendId: r.__backendId || r.backendId || makeId() };
+          rec.backendId = rec.__backendId;
+          store.put(rec);
+        }
+        await new Promise((res, rej) => { tx.oncomplete = res; tx.onerror = rej; });
+      }
+      if (data.beautyJourneyEntries_v1) {
+        const photos = JSON.parse(data.beautyJourneyEntries_v1);
+        const tx = d.transaction(PHOTOS_STORE, 'readwrite');
+        const store = tx.objectStore(PHOTOS_STORE);
+        store.clear();
+        for (const p of photos) { store.put(p); }
+        await new Promise((res, rej) => { tx.oncomplete = res; tx.onerror = rej; });
+      }
+      const settingsKeys = ['medPatientName', 'sinkingFundPlan', 'beautyActiveGoalId', 'beautyPlannerTheme'];
+      const tx = d.transaction(SETTINGS_STORE, 'readwrite');
+      const store = tx.objectStore(SETTINGS_STORE);
+      store.clear();
+      for (const k of settingsKeys) {
+        if (data[k]) store.put({ key: k, value: data[k] });
+      }
+      await new Promise((res, rej) => { tx.oncomplete = res; tx.onerror = rej; });
+    } else {
+      // New format (version 2)
+      if (data.records) {
+        const tx = d.transaction(RECORDS_STORE, 'readwrite');
+        const store = tx.objectStore(RECORDS_STORE);
+        store.clear();
+        for (const r of data.records) { store.put(r); }
+        await new Promise((res, rej) => { tx.oncomplete = res; tx.onerror = rej; });
+      }
+      if (data.photos) {
+        const tx = d.transaction(PHOTOS_STORE, 'readwrite');
+        const store = tx.objectStore(PHOTOS_STORE);
+        store.clear();
+        for (const p of data.photos) { store.put(p); }
+        await new Promise((res, rej) => { tx.oncomplete = res; tx.onerror = rej; });
+      }
+      if (data.settings) {
+        const tx = d.transaction(SETTINGS_STORE, 'readwrite');
+        const store = tx.objectStore(SETTINGS_STORE);
+        store.clear();
+        for (const s of data.settings) { store.put(s); }
+        await new Promise((res, rej) => { tx.oncomplete = res; tx.onerror = rej; });
+      }
+    }
+    await emitChange();
+  };
+
   window.dataSdk = {
     async init(handler) {
       changeHandler = handler;
-      const data = loadAll();
+      await migrateFromLocalStorage();
+      const data = await getAllRecords();
       if (typeof changeHandler === 'function') {
         changeHandler(data);
       }
@@ -52,14 +264,16 @@
 
     async create(record) {
       try {
-        const all = loadAll();
-        const newRecord = {
-          ...record,
-          backendId: record.backendId || makeId(), __backendId: record.backendId || makeId()
-        };
-        all.push(newRecord);
-        saveAll(all);
-        emitChange();
+        const id = record.backendId || makeId();
+        const newRecord = { ...record, backendId: id, __backendId: id };
+        const d = await openDB();
+        await new Promise((resolve, reject) => {
+          const tx = d.transaction(RECORDS_STORE, 'readwrite');
+          tx.objectStore(RECORDS_STORE).put(newRecord);
+          tx.oncomplete = () => resolve();
+          tx.onerror = (e) => reject(e.target.error);
+        });
+        await emitChange();
         return { isOk: true, data: newRecord };
       } catch (error) {
         console.error('create failed:', error);
@@ -69,15 +283,23 @@
 
     async update(record) {
       try {
-        const all = loadAll();
-        const id = record.backendId || record.__backendId; const index = all.findIndex(item => (item.backendId || item.__backendId) === id);
-        if (index === -1) {
-          return { isOk: false, error: { message: 'Record not found' } };
-        }
-        all[index] = { ...all[index], ...record };
-        saveAll(all);
-        emitChange();
-        return { isOk: true, data: all[index] };
+        const id = record.backendId || record.__backendId;
+        const d = await openDB();
+        const existing = await new Promise((resolve, reject) => {
+          const req = d.transaction(RECORDS_STORE, 'readonly').objectStore(RECORDS_STORE).get(id);
+          req.onsuccess = () => resolve(req.result);
+          req.onerror = (e) => reject(e.target.error);
+        });
+        if (!existing) return { isOk: false, error: { message: 'Record not found' } };
+        const updated = { ...existing, ...record, __backendId: id, backendId: id };
+        await new Promise((resolve, reject) => {
+          const tx = d.transaction(RECORDS_STORE, 'readwrite');
+          tx.objectStore(RECORDS_STORE).put(updated);
+          tx.oncomplete = () => resolve();
+          tx.onerror = (e) => reject(e.target.error);
+        });
+        await emitChange();
+        return { isOk: true, data: updated };
       } catch (error) {
         console.error('update failed:', error);
         return { isOk: false, error };
@@ -86,10 +308,15 @@
 
     async delete(record) {
       try {
-        const all = loadAll();
-        const id = record.backendId || record.__backendId; const filtered = all.filter(item => (item.backendId || item.__backendId) !== id);
-        saveAll(filtered);
-        emitChange();
+        const id = record.backendId || record.__backendId;
+        const d = await openDB();
+        await new Promise((resolve, reject) => {
+          const tx = d.transaction(RECORDS_STORE, 'readwrite');
+          tx.objectStore(RECORDS_STORE).delete(id);
+          tx.oncomplete = () => resolve();
+          tx.onerror = (e) => reject(e.target.error);
+        });
+        await emitChange();
         return { isOk: true };
       } catch (error) {
         console.error('delete failed:', error);
@@ -3653,29 +3880,27 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
       if (result.isOk) e.target.reset();
     });
 
-    // Photo Log - Browser storage (uses localStorage)
-    const PHOTO_STORAGE_KEY = 'beautyJourneyEntries_v1';
+    // Photo Log - IndexedDB storage (via beautyPhotos helper)
 
-    function loadPhotoEntries() {
+    async function loadPhotoEntries() {
       try {
-        const raw = localStorage.getItem(PHOTO_STORAGE_KEY);
-        return raw ? JSON.parse(raw) : [];
+        return await window.beautyPhotos.getAll();
       } catch (e) {
         console.error('Failed to load photo entries', e);
         return [];
       }
     }
 
-    function savePhotoEntries(entries) {
+    async function savePhotoEntries(entries) {
       try {
-        localStorage.setItem(PHOTO_STORAGE_KEY, JSON.stringify(entries));
+        await window.beautyPhotos.saveAll(entries);
       } catch (e) {
         console.error('Failed to save photo entries', e);
       }
     }
 
-    function renderPhotoGrids() {
-      const entries = loadPhotoEntries();
+    async function renderPhotoGrids() {
+      const entries = await loadPhotoEntries();
       
       ['before', 'recovery', 'after'].forEach(type => {
         const gridId = `${type}-grid`;
@@ -3754,22 +3979,22 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
       const deleteBtn = modal.querySelector('#photo-delete-btn');
       const notesTextarea = modal.querySelector('#photo-notes-edit');
 
-      saveBtn.addEventListener('click', () => {
-        const entries = loadPhotoEntries();
+      saveBtn.addEventListener('click', async () => {
+        const entries = await loadPhotoEntries();
         const idx = entries.findIndex(e => e.id === entry.id);
         if (idx >= 0) {
           entries[idx].notes = notesTextarea.value;
-          savePhotoEntries(entries);
-          renderPhotoGrids();
+          await savePhotoEntries(entries);
+          await renderPhotoGrids();
         }
         modal.remove();
       });
 
-      deleteBtn.addEventListener('click', () => {
-        const entries = loadPhotoEntries();
+      deleteBtn.addEventListener('click', async () => {
+        const entries = await loadPhotoEntries();
         const filtered = entries.filter(e => e.id !== entry.id);
-        savePhotoEntries(filtered);
-        renderPhotoGrids();
+        await savePhotoEntries(filtered);
+        await renderPhotoGrids();
         modal.remove();
       });
     }
@@ -3824,7 +4049,7 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
     // Photo form submission
     const addEntryForm = document.getElementById('add-entry-form');
     if (addEntryForm) {
-      addEntryForm.addEventListener('submit', (e) => {
+      addEntryForm.addEventListener('submit', async (e) => {
         e.preventDefault();
 
         const photoType = document.getElementById('photo-type').value;
@@ -3844,10 +4069,10 @@ document.getElementById('goal-form').addEventListener('submit', async (e) => {
           image: selectedPhotoData
         };
 
-        const entries = loadPhotoEntries();
+        const entries = await loadPhotoEntries();
         entries.push(photoEntry);
-        savePhotoEntries(entries);
-        renderPhotoGrids();
+        await savePhotoEntries(entries);
+        await renderPhotoGrids();
 
         selectedPhotoData = null;
         fileInput.value = '';
@@ -4342,22 +4567,20 @@ document.addEventListener('DOMContentLoaded', function () {
     return;
   }
 
-  const STORAGE_KEY = 'beautyJourneyEntries_v1';
   let currentMode = 'upload'; // 'upload' or 'link'
 
-  function loadEntries() {
+  async function loadEntries() {
     try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      return raw ? JSON.parse(raw) : [];
+      return await window.beautyPhotos.getAll();
     } catch (e) {
-      console.error('Failed to parse saved entries', e);
+      console.error('Failed to load entries', e);
       return [];
     }
   }
 
-  function saveEntries(entries) {
+  async function saveEntries(entries) {
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
+      await window.beautyPhotos.saveAll(entries);
     } catch (e) {
       console.error('Failed to save entries', e);
     }
@@ -4459,24 +4682,24 @@ document.addEventListener('DOMContentLoaded', function () {
       typeDisplay.textContent = typeSelect.value.charAt(0).toUpperCase() + typeSelect.value.slice(1);
     });
 
-    saveBtn.addEventListener('click', () => {
-      const entries = loadEntries();
+    saveBtn.addEventListener('click', async () => {
+      const entries = await loadEntries();
       const idx = entries.findIndex(e => e.id === entry.id);
       if (idx >= 0) {
         entries[idx].type = typeSelect.value;
         entries[idx].date = dateInput.value;
         entries[idx].notes = notesTextarea.value;
-        saveEntries(entries);
-        renderEntries();
+        await saveEntries(entries);
+        await renderEntries();
       }
       modal.remove();
     });
 
-    deleteBtn.addEventListener('click', () => {
-      const entries = loadEntries();
+    deleteBtn.addEventListener('click', async () => {
+      const entries = await loadEntries();
       const filtered = entries.filter(e => e.id !== entry.id);
-      saveEntries(filtered);
-      renderEntries();
+      await saveEntries(filtered);
+      await renderEntries();
       modal.remove();
     });
   }
@@ -4692,8 +4915,8 @@ document.addEventListener('DOMContentLoaded', function () {
     imgElement.src = directUrl;
   }
 
-  function renderEntries() {
-    const entries = loadEntries();
+  async function renderEntries() {
+    const entries = await loadEntries();
     clearGrids();
 
     entries.forEach(entry => {
@@ -4737,7 +4960,7 @@ document.addEventListener('DOMContentLoaded', function () {
     setTimeout(() => messageDiv.remove(), 3000);
   }
 
-  saveBtn.addEventListener('click', function (e) {
+  saveBtn.addEventListener('click', async function (e) {
     e.preventDefault();
 
     const type = typeSelect.value || 'before';
@@ -4766,7 +4989,7 @@ document.addEventListener('DOMContentLoaded', function () {
       imageDataUrl = toDropboxImageUrl(photoLink);
     }
 
-    const entries = loadEntries();
+    const entries = await loadEntries();
     entries.push({
       id: Date.now(),
       type,
@@ -4775,8 +4998,8 @@ document.addEventListener('DOMContentLoaded', function () {
       image: imageDataUrl, // always used by thumbnails + modal
       link: photoLink      // keep original in case you ever need it
     });
-    saveEntries(entries);
-    renderEntries();
+    await saveEntries(entries);
+    await renderEntries();
 
     fileInput.value = '';
     previewImg.src = '';
@@ -4969,34 +5192,32 @@ function calcSavingsStreak(savings) {
 })();
 
 // ============ EXPORT / IMPORT DATA ============
-document.getElementById('export-data-btn').addEventListener('click', function() {
-  var keys = ['beautyPlannerData_v1', 'beautyJourneyEntries_v1', 'medPatientName', 'sinkingFundPlan', 'beautyActiveGoalId', 'beautyPlannerTheme'];
-  var data = {};
-  keys.forEach(function(k) {
-    var v = localStorage.getItem(k);
-    if (v) data[k] = v;
-  });
-  var blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-  var url = URL.createObjectURL(blob);
-  var a = document.createElement('a');
-  a.href = url;
-  a.download = 'beauty-planner-backup-' + new Date().toISOString().slice(0,10) + '.json';
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
+document.getElementById('export-data-btn').addEventListener('click', async function() {
+  try {
+    var data = await window.beautyExportAll();
+    var blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = 'beauty-planner-backup-' + new Date().toISOString().slice(0,10) + '.json';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  } catch(err) {
+    console.error('Export failed:', err);
+    alert('Export failed. Please try again.');
+  }
 });
 
 document.getElementById('import-data-input').addEventListener('change', function(e) {
   var file = e.target.files[0];
   if (!file) return;
   var reader = new FileReader();
-  reader.onload = function(evt) {
+  reader.onload = async function(evt) {
     try {
       var data = JSON.parse(evt.target.result);
-      Object.keys(data).forEach(function(k) {
-        localStorage.setItem(k, data[k]);
-      });
+      await window.beautyImportAll(data);
       alert('Data imported successfully! The page will reload.');
       window.location.reload();
     } catch(err) {
