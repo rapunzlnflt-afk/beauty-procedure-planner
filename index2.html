@@ -2836,7 +2836,14 @@ async function initializeApp() {
 
     document.getElementById('med-tracker-date').valueAsDate = new Date();
 
-    // Receipts
+    function formatCurrency(amount, currency = 'USD', locale = 'en-US') {
+  return new Intl.NumberFormat(locale, {
+    style: 'currency',
+    currency: currency
+  }).format(Number(amount) || 0);
+  }
+   
+   // Receipts
     function updateReceipts() {
       const receipts = getDataByType('receipt');
       const container = document.getElementById('receipts-container');
