@@ -1782,8 +1782,8 @@ body.dark-mode .sidebar-item.active {
 
   const result = await window.dataSdk.init(dataHandler);
   if (result.isOk) sdkInitialized = true;
-}
-    }
+  }
+    
 
     function formatCurrency(amount) {
       return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount);
