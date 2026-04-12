@@ -1767,26 +1767,53 @@ body.dark-mode .sidebar-item.active {
     let isLoading = false;
 
     const dataHandler = {
-      onDataChanged(data) {
-        allData = data;
-        updateAllDisplays();
-      }
-    };
-
-    async function initializeApp() {
-  if (!window.dataSdk) {
-    console.error('dataSdk failed to load');
-    return;
-  }
-
-  const result = await window.dataSdk.init(dataHandler);
-  if (result.isOk) sdkInitialized = true;
-  }
-    
-
-    function formatCurrency(amount) {
-      return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount);
-    }
+              let allData = [];
+        let isLoading = false;
+        const STORAGE_KEY = 'beautyPlanner_v1';
+        window.dataSdk = {
+          _save(data) { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch(e) {} },
+          _load() { try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; } catch(e) { return []; } },
+          init(handler) {
+            allData = this._load();
+            handler.onDataChanged(allData);
+            return Promise.resolve({ isOk: true });
+          },
+          create(item) {
+            allData = this._load();
+            const newItem = { ...item, __backendId: 'id_' + Date.now() + '_' + Math.random().toString(36).substr(2,9) };
+            allData.push(newItem);
+            this._save(allData);
+            allData = this._load();
+            if (typeof dataHandler !== 'undefined') dataHandler.onDataChanged(allData);
+            return Promise.resolve({ isOk: true, data: newItem });
+          },
+          delete(item) {
+            allData = this._load();
+            allData = allData.filter(i => i.__backendId !== item.__backendId);
+            this._save(allData);
+            allData = this._load();
+            if (typeof dataHandler !== 'undefined') dataHandler.onDataChanged(allData);
+            return Promise.resolve({ isOk: true });
+          },
+          update(item) {
+            allData = this._load();
+            const idx = allData.findIndex(i => i.__backendId === item.__backendId);
+            if (idx >= 0) allData[idx] = item;
+            this._save(allData);
+            allData = this._load();
+            if (typeof dataHandler !== 'undefined') dataHandler.onDataChanged(allData);
+            return Promise.resolve({ isOk: true });
+          }
+        };
+        const dataHandler = {
+          onDataChanged(data) {
+            allData = data;
+            updateAllDisplays();
+          }
+        };
+        async function initializeApp() {
+          const result = await window.dataSdk.init(dataHandler);
+        }
 
     function formatDate(dateStr) {
       const date = new Date(dateStr + 'T00:00:00');
