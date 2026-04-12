@@ -1764,56 +1764,82 @@ body.dark-mode .sidebar-item.active {
       }, 250);
     }
     let allData = [];
-    let isLoading = false;
+let isLoading = false;
 
-    const dataHandler = {
-              let allData = [];
-        let isLoading = false;
-        const STORAGE_KEY = 'beautyPlanner_v1';
-        window.dataSdk = {
-          _save(data) { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch(e) {} },
-          _load() { try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; } catch(e) { return []; } },
-          init(handler) {
-            allData = this._load();
-            handler.onDataChanged(allData);
-            return Promise.resolve({ isOk: true });
-          },
-          create(item) {
-            allData = this._load();
-            const newItem = { ...item, __backendId: 'id_' + Date.now() + '_' + Math.random().toString(36).substr(2,9) };
-            allData.push(newItem);
-            this._save(allData);
-            allData = this._load();
-            if (typeof dataHandler !== 'undefined') dataHandler.onDataChanged(allData);
-            return Promise.resolve({ isOk: true, data: newItem });
-          },
-          delete(item) {
-            allData = this._load();
-            allData = allData.filter(i => i.__backendId !== item.__backendId);
-            this._save(allData);
-            allData = this._load();
-            if (typeof dataHandler !== 'undefined') dataHandler.onDataChanged(allData);
-            return Promise.resolve({ isOk: true });
-          },
-          update(item) {
-            allData = this._load();
-            const idx = allData.findIndex(i => i.__backendId === item.__backendId);
-            if (idx >= 0) allData[idx] = item;
-            this._save(allData);
-            allData = this._load();
-            if (typeof dataHandler !== 'undefined') dataHandler.onDataChanged(allData);
-            return Promise.resolve({ isOk: true });
-          }
-        };
-        const dataHandler = {
-          onDataChanged(data) {
-            allData = data;
-            updateAllDisplays();
-          }
-        };
-        async function initializeApp() {
-          const result = await window.dataSdk.init(dataHandler);
-        }
+const STORAGE_KEY = 'beautyPlanner_v1';
+
+function saveAllData() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(allData));
+  } catch (e) {
+    console.error('Failed to save data:', e);
+  }
+}
+
+function loadAllData() {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    allData = saved ? JSON.parse(saved) : [];
+  } catch (e) {
+    allData = [];
+  }
+}
+
+function generateId() {
+  return 'id_' + Date.now() + '_' + Math.random().toString(36).slice(2, 9);
+}
+
+function normalizeItem(item) {
+  return {
+    ...item,
+    __backendId: item.__backendId || item.backendId || item.id || generateId()
+  };
+}
+
+async function createItem(item) {
+  const newItem = normalizeItem(item);
+  allData.push(newItem);
+  saveAllData();
+  updateAllDisplays();
+  return { isOk: true, data: newItem };
+}
+
+async function updateItem(item) {
+  const id = item.__backendId || item.backendId || item.id;
+  const index = allData.findIndex(i => (i.__backendId || i.backendId || i.id) === id);
+
+  if (index === -1) {
+    return { isOk: false };
+  }
+
+  allData[index] = normalizeItem(item);
+  saveAllData();
+  updateAllDisplays();
+  return { isOk: true, data: allData[index] };
+}
+
+async function deleteItem(item) {
+  const id = item.__backendId || item.backendId || item.id;
+  allData = allData.filter(i => (i.__backendId || i.backendId || i.id) !== id);
+  saveAllData();
+  updateAllDisplays();
+  return { isOk: true };
+}
+
+const dataHandler = {
+  onDataChanged(data) {
+    allData = Array.isArray(data) ? data.map(normalizeItem) : [];
+    saveAllData();
+    updateAllDisplays();
+  }
+};
+
+async function initializeApp() {
+  loadAllData();
+  allData = Array.isArray(allData) ? allData.map(normalizeItem) : [];
+  saveAllData();
+  updateAllDisplays();
+}
 
     function formatDate(dateStr) {
       const date = new Date(dateStr + 'T00:00:00');
@@ -1952,7 +1978,7 @@ body.dark-mode .sidebar-item.active {
       isLoading = true;
       showLoading(btn, 'Saving...');
 
-      const result = await window.dataSdk.create({
+      const result = await createItem({
         type: 'goal',
         procedure_name: document.getElementById('goal-procedure').value,
         target_date: document.getElementById('goal-target-date').value,
@@ -2038,7 +2064,7 @@ body.dark-mode .sidebar-item.active {
         btn.addEventListener('click', async () => {
           const id = btn.dataset.id;
           const cost = costs.find(c => c.__backendId === id);
-          if (cost) await window.dataSdk.delete(cost);
+          if (cost) await deleteItem(cost);
         });
       });
 
@@ -2074,7 +2100,7 @@ body.dark-mode .sidebar-item.active {
       isLoading = true;
       showLoading(btn, 'Adding...');
 
-      const result = await window.dataSdk.create({
+      const result = await createItem({
         type: 'cost',
         cost_item: costItem,
         item_cost: amount
@@ -2118,7 +2144,7 @@ body.dark-mode .sidebar-item.active {
         btn.addEventListener('click', async () => {
           const id = btn.dataset.id;
           const saving = savings.find(s => s.__backendId === id);
-          if (saving) await window.dataSdk.delete(saving);
+          if (saving) await deleteItem(saving);
         });
       });
 
@@ -2135,7 +2161,7 @@ body.dark-mode .sidebar-item.active {
       isLoading = true;
       showLoading(btn, 'Adding...');
 
-      const result = await window.dataSdk.create({
+      const result = await createItem({
         type: 'savings',
         amount: parseFloat(document.getElementById('savings-amount').value),
         date: document.getElementById('savings-date').value,
@@ -2171,7 +2197,7 @@ body.dark-mode .sidebar-item.active {
         btn.addEventListener('click', async () => {
           const id = btn.dataset.id;
           const fund = funds.find(f => f.__backendId === id);
-          if (fund) await window.dataSdk.delete(fund);
+          if (fund) await deleteItem(fund);
         });
       });
     }
@@ -2184,7 +2210,7 @@ body.dark-mode .sidebar-item.active {
       isLoading = true;
       showLoading(btn, 'Adding...');
 
-      const result = await window.dataSdk.create({
+      const result = await createItem({
         type: 'fund',
         source_name: document.getElementById('fund-source').value,
         amount: parseFloat(document.getElementById('fund-amount').value)
@@ -2220,7 +2246,7 @@ body.dark-mode .sidebar-item.active {
         btn.addEventListener('click', async () => {
           const id = btn.dataset.id;
           const expense = expenses.find(e => e.__backendId === id);
-          if (expense) await window.dataSdk.delete(expense);
+          if (expense) await deleteItem(expense);
         });
       });
 
@@ -2236,7 +2262,7 @@ body.dark-mode .sidebar-item.active {
       isLoading = true;
       showLoading(btn, 'Adding...');
 
-      const result = await window.dataSdk.create({
+      const result = await createItem({
         type: 'expense',
         expense_name: document.getElementById('expense-name').value,
         amount: parseFloat(document.getElementById('expense-amount').value),
@@ -2297,7 +2323,7 @@ body.dark-mode .sidebar-item.active {
       isLoading = true;
       showLoading(btn, 'Creating...');
 
-      const result = await window.dataSdk.create({
+      const result = await createItem({
         type: 'grid',
         goal_amount: goalAmount,
         amount_per_box: perBox,
@@ -2312,7 +2338,7 @@ body.dark-mode .sidebar-item.active {
 
     document.getElementById('delete-challenge-btn').addEventListener('click', async () => {
       const grid = getDataByType('grid')[0];
-      if (grid) await window.dataSdk.delete(grid);
+      if (grid) await deleteItem(grid);
     });
 
     document.getElementById('print-challenge-btn').addEventListener('click', () => {
@@ -2477,7 +2503,7 @@ body.dark-mode .sidebar-item.active {
           btn.addEventListener('click', async () => {
             const id = btn.dataset.id;
             const physician = physicians.find(p => p.__backendId === id);
-            if (physician) await window.dataSdk.delete(physician);
+            if (physician) await deleteItem(physician);
           });
         });
       }
@@ -2491,7 +2517,7 @@ body.dark-mode .sidebar-item.active {
       isLoading = true;
       showLoading(btn, 'Adding...');
 
-      const result = await window.dataSdk.create({
+      const result = await createItem({
         type: 'physician',
         physicianName: document.getElementById('physician-name').value,
         specialty: document.getElementById('physician-specialty').value || '',
@@ -2619,7 +2645,7 @@ body.dark-mode .sidebar-item.active {
         btn.addEventListener('click', async function() {
           const id = this.dataset.id;
           const expense = expenses.find(e => e.__backendId === id);
-          if (expense) await window.dataSdk.delete(expense);
+          if (expense) await deleteItem(expense);
         });
       });
     }
@@ -2632,7 +2658,7 @@ body.dark-mode .sidebar-item.active {
       isLoading = true;
       showLoading(btn, 'Saving...');
 
-      const result = await window.dataSdk.create({
+      const result = await createItem({
         type: 'travel-trip',
         travel_destination: document.getElementById('travel-destination-input').value,
         travel_procedure_name: document.getElementById('travel-procedure-name').value,
@@ -2659,7 +2685,7 @@ body.dark-mode .sidebar-item.active {
       isLoading = true;
       showLoading(btn, 'Adding...');
 
-      const result = await window.dataSdk.create({
+      const result = await createItem({
         type: 'travel-expense',
         travel_expense_category: document.getElementById('travel-expense-category').value,
         travel_expense_description: document.getElementById('travel-expense-description').value,
@@ -2742,7 +2768,7 @@ body.dark-mode .sidebar-item.active {
         btn.addEventListener('click', async () => {
           const id = btn.dataset.id;
           const med = meds.find(m => m.__backendId === id);
-          if (med) await window.dataSdk.delete(med);
+          if (med) await deleteItem(med);
         });
       });
     }
@@ -2777,7 +2803,7 @@ body.dark-mode .sidebar-item.active {
       btn.disabled = true;
       btn.textContent = 'Adding...';
 
-      const result = await window.dataSdk.create({
+      const result = await createItem({
         type: 'medication',
         medicationName: medName,
         medicationType: medType,
@@ -2848,7 +2874,7 @@ body.dark-mode .sidebar-item.active {
           btn.addEventListener('click', async () => {
             const id = btn.dataset.id;
             const receipt = receipts.find(r => r.__backendId === id);
-            if (receipt) await window.dataSdk.delete(receipt);
+            if (receipt) await deleteItem(receipt);
           });
         });
       }
@@ -2870,7 +2896,7 @@ body.dark-mode .sidebar-item.active {
       isLoading = true;
       showLoading(btn, 'Adding...');
 
-      const result = await window.dataSdk.create({
+      const result = await createItem({
         type: 'receipt',
         receipt_category: document.getElementById('receipt-category').value,
         receipt_amount: parseFloat(document.getElementById('receipt-amount').value),
@@ -3132,7 +3158,7 @@ body.dark-mode .sidebar-item.active {
           btn.addEventListener('click', async () => {
             const id = btn.dataset.id;
             const question = customQuestions.find(q => q.__backendId === id);
-            if (question) await window.dataSdk.delete(question);
+            if (question) await deleteItem(question);
           });
         });
       }
@@ -3154,7 +3180,7 @@ body.dark-mode .sidebar-item.active {
       isLoading = true;
       showLoading(btn, 'Adding...');
 
-      const result = await window.dataSdk.create({
+      const result = await createItem({
         type: 'custom-question',
         question_text: questionText
       });
@@ -3274,7 +3300,7 @@ body.dark-mode .sidebar-item.active {
         const doc = documents.find(d => d.__backendId === docId);
         if (doc) {
           e.target.disabled = true;
-          const result = await window.dataSdk.update({ ...doc, completed: e.target.checked });
+          const result = await updateItem({ ...doc, completed: e.target.checked });
           e.target.disabled = false;
         }
       }
@@ -3286,7 +3312,7 @@ body.dark-mode .sidebar-item.active {
         const doc = documents.find(d => d.__backendId === docId);
         if (doc) {
           e.target.style.opacity = '0.5';
-          const result = await window.dataSdk.update({ ...doc, important: !doc.important });
+          const result = await updateItem({ ...doc, important: !doc.important });
           e.target.style.opacity = '1';
         }
       }
@@ -3313,7 +3339,7 @@ body.dark-mode .sidebar-item.active {
         confirmBtn.disabled = true;
         confirmBtn.textContent = 'Deleting...';
 
-        const result = await window.dataSdk.delete(vaultDeleteTarget);
+        const result = await deleteItem(vaultDeleteTarget);
         
         confirmBtn.disabled = false;
         confirmBtn.textContent = 'Delete';
@@ -3362,7 +3388,7 @@ body.dark-mode .sidebar-item.active {
         completed: 0
       };
 
-      const result = await window.dataSdk.create(newDoc);
+      const result = await createItem(newDoc);
       console.log('vault create result', result);
       
       isLoading = false;
@@ -3589,7 +3615,7 @@ body.dark-mode .sidebar-item.active {
         const cleanItem = { ...item };
         delete cleanItem.__backendId;
         delete cleanItem.backendId;
-        await window.dataSdk.create(cleanItem);
+        await createItem(cleanItem);
       }
 
       showErrorMessage('Import completed successfully.');
