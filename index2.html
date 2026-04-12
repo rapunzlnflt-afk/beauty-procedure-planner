@@ -1775,10 +1775,14 @@ body.dark-mode .sidebar-item.active {
     };
 
     async function initializeApp() {
-      const result = await window.dataSdk.init(dataHandler);
-      if (result.isOk) {
-        sdkInitialized = true;
-      }
+  if (!window.dataSdk) {
+    console.error('dataSdk failed to load');
+    return;
+  }
+
+  const result = await window.dataSdk.init(dataHandler);
+  if (result.isOk) sdkInitialized = true;
+}
     }
 
     function formatCurrency(amount) {
