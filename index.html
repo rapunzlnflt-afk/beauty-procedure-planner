@@ -143,7 +143,8 @@
     .challenge-box.filled { background: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-color-2) 100%); border-color: var(--accent-color); box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3); }
 
            .tab-content { display: none !important; } .tab-content.active-tab { display: block !important; }
-    /* ===== MOBILE ===== */
+   
+   /* ===== MOBILE ===== */
     .mobile-topbar {
       display: none;
       position: fixed;
@@ -436,11 +437,7 @@
     <div class="p-4 border-b border-gray-200">
      <h1 class="font-heading text-xl font-bold text-primary">Beauty Procedure Savings Planner</h1>
 
-     <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px;">
-      <button id="export-data-btn" style="padding:7px 4px;background:transparent;color:#667eea;border:1.5px solid #667eea;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;" title="Export your data to a file">&#8681; Export</button>
-      <label id="import-data-label" style="padding:7px 4px;background:transparent;color:#667eea;border:1.5px solid #667eea;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;text-align:center;display:block;" title="Import data from a file">&#8679; Import<input type="file" id="import-data-input" accept=".json" style="display:none;"></label>
-     </div>
-     <p style="font-size:10px;color:#64748b;margin-top:5px;line-height:1.5;"><strong>Export</strong> saves your data as a file. <strong>Import</strong> loads it back — use to transfer data between devices.</p>
+    
      <button id="dark-mode-btn" style="margin-top:6px;width:100%;padding:7px 10px;background:transparent;color:#667eea;border:1.5px solid #667eea;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:6px;" title="Toggle dark mode">
       <svg id="dark-mode-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
       <span id="dark-mode-label">Dark Mode</span>
@@ -449,6 +446,11 @@
     <nav class="py-2">
      <button class="sidebar-item active w-full text-left px-4 py-3 font-body text-sm font-medium" data-tab="overview">Overview</button><button class="sidebar-item w-full text-left px-4 py-3 font-body text-sm font-medium" data-tab="cost-breakdown">Cost Breakdown</button><button class="sidebar-item w-full text-left px-4 py-3 font-body text-sm font-medium" data-tab="budget-fund">Budget &amp; Fund</button><button class="sidebar-item w-full text-left px-4 py-3 font-body text-sm font-medium" data-tab="savings-tracker">Savings Tracker</button><button class="sidebar-item w-full text-left px-4 py-3 font-body text-sm font-medium" data-tab="savings-grid">Savings Grid</button><button class="sidebar-item w-full text-left px-4 py-3 font-body text-sm font-medium" data-tab="physician-selection">Physician Selection</button><button class="sidebar-item w-full text-left px-4 py-3 font-body text-sm font-medium" data-tab="consultation-questions">Consultation Questions</button><button class="sidebar-item w-full text-left px-4 py-3 font-body text-sm font-medium" data-tab="travel-budget">Travel Budget</button><button class="sidebar-item w-full text-left px-4 py-3 font-body text-sm font-medium" data-tab="medication-tracker">Medication Tracker</button><button class="sidebar-item w-full text-left px-4 py-3 font-body text-sm font-medium" data-tab="receipt-log">Receipt Log</button><button class="sidebar-item w-full text-left px-4 py-3 font-body text-sm font-medium" data-tab="photo-log">Photo Log</button><button class="sidebar-item w-full text-left px-4 py-3 font-body text-sm font-medium" data-tab="document-vault">Document Vault</button>
     </nav>
+   <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px;">
+      <button id="export-data-btn" style="padding:7px 4px;background:transparent;color:#667eea;border:1.5px solid #667eea;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;" title="Export your data to a file">&#8681; Export</button>
+      <label id="import-data-label" style="padding:7px 4px;background:transparent;color:#667eea;border:1.5px solid #667eea;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;text-align:center;display:block;" title="Import data from a file">&#8679; Import<input type="file" id="import-data-input" accept=".json" style="display:none;"></label>
+     </div>
+     <p style="font-size:10px;color:#64748b;margin-top:5px;line-height:1.5;"><strong>Export</strong> saves your data as a file. <strong>Import</strong> loads it back — use to transfer data between devices.</p>
    </aside>
    <main class="flex-1 p-4">
     <section id="tab-overview" class="tab-content active-tab">
