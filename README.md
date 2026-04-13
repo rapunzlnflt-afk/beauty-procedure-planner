@@ -1,0 +1,3879 @@
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Beauty Procedure Savings Planner</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17" type="text/javascript"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&amp;family=Karla:wght@400;500;600&amp;display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-color: #2d3748;
+      --secondary-color: #4a5568;
+      --accent-color: #667eea;
+      --accent-color-2: #764ba2;
+      --success-color: #38a169;
+      --bg-light: #e8edf2;
+      --text-primary: #2d3748;
+      --text-secondary: #4a5568;
+      --font-heading: 'Montserrat', sans-serif;
+      --font-body: 'Karla', sans-serif;
+    }
+
+    html, body { height: 100%; }
+    body { box-sizing: border-box; margin: 0; padding: 0; }
+    .font-heading { font-family: var(--font-heading); }
+    .font-body { font-family: var(--font-body); }
+    .text-primary { color: var(--text-primary); }
+    .text-secondary { color: var(--text-secondary); }
+    .bg-primary { background-color: var(--primary-color); }
+    .bg-secondary { background-color: var(--secondary-color); }
+    .sidebar-item { transition: all 0.2s ease; color: var(--text-primary); }
+    .sidebar-item:hover { background-color: rgba(45, 55, 72, 0.1); }
+    .sidebar-item.active { background-color: var(--primary-color); color: white; }
+    .card { background: white; border-radius: 8px; box-shadow: 0 1px 2px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; }
+    .btn-primary { background-color: var(--primary-color); color: white; transition: background-color 0.2s; }
+    .btn-primary:hover:not(:disabled) { background-color: var(--secondary-color); }
+    .btn-primary:disabled { background-color: #94a3b8; cursor: not-allowed; }
+    .btn-secondary { background-color: #edf2f7; color: var(--text-primary); transition: background-color 0.2s; }
+    .btn-secondary:hover { background-color: #e2e8f0; }
+    input, textarea, select { border: 1px solid #cbd5e1; border-radius: 6px; padding: 8px 12px; font-family: var(--font-body); color: var(--text-primary); font-size: 14px; }
+    input:focus, textarea:focus, select:focus { outline: none; border-color: var(--primary-color); box-shadow: 0 0 0 3px rgba(45, 55, 72, 0.1); }
+    .progress-bar { background-color: #e2e8f0; border-radius: 9999px; overflow: hidden; }
+    .progress-fill { background: linear-gradient(90deg, var(--accent-color), var(--accent-color-2)); height: 100%; transition: width 0.3s ease; }
+    .step-number { width: 50px; height: 50px; background: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-color-2) 100%); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 24px; font-weight: 700; }
+    .step-card { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+    .step-card:hover { transform: translateY(-4px); }
+    .step-card:hover .card { box-shadow: 0 8px 16px rgba(102, 126, 234, 0.15); }
+    .challenge-box { aspect-ratio: 1; background-color: #e2e8f0; border: 2px solid #cbd5e1; border-radius: 4px; transition: all 0.3s ease; }
+    .challenge-box.filled { background: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-color-2) 100%); border-color: var(--accent-color); box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3); }
+
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full font-body" style="background-color: var(--bg-light);">
+  <div id="main-app" class="flex h-full">
+   <aside class="w-64 bg-white shadow-lg flex-shrink-0 overflow-y-auto">
+    <div class="p-4 border-b border-gray-200">
+     <h1 class="font-heading text-xl font-bold text-primary">Beauty Procedure Savings Planner</h1>
+    </div>
+    <nav class="py-2">
+     <button class="sidebar-item active w-full text-left px-4 py-3 font-body text-sm font-medium" data-tab="overview">Overview</button><button class="sidebar-item w-full text-left px-4 py-3 font-body text-sm font-medium" data-tab="cost-breakdown">Cost Breakdown</button><button class="sidebar-item w-full text-left px-4 py-3 font-body text-sm font-medium" data-tab="budget-fund">Budget &amp; Fund</button><button class="sidebar-item w-full text-left px-4 py-3 font-body text-sm font-medium" data-tab="savings-tracker">Savings Tracker</button><button class="sidebar-item w-full text-left px-4 py-3 font-body text-sm font-medium" data-tab="savings-grid">Savings Grid</button><button class="sidebar-item w-full text-left px-4 py-3 font-body text-sm font-medium" data-tab="physician-selection">Physician Selection</button><button class="sidebar-item w-full text-left px-4 py-3 font-body text-sm font-medium" data-tab="consultation-questions">Consultation Questions</button><button class="sidebar-item w-full text-left px-4 py-3 font-body text-sm font-medium" data-tab="travel-budget">Travel Budget</button><button class="sidebar-item w-full text-left px-4 py-3 font-body text-sm font-medium" data-tab="medication-tracker">Medication Tracker</button><button class="sidebar-item w-full text-left px-4 py-3 font-body text-sm font-medium" data-tab="receipt-log">Receipt Log</button><button class="sidebar-item w-full text-left px-4 py-3 font-body text-sm font-medium" data-tab="photo-log">Photo Log</button><button class="sidebar-item w-full text-left px-4 py-3 font-body text-sm font-medium" data-tab="document-vault">Document Vault</button>
+    </nav>
+   </aside>
+   <main class="flex-1 overflow-y-auto p-4">
+    <section id="tab-overview" class="tab-content">
+     <h2 class="font-heading text-2xl font-bold text-primary mb-4">Overview</h2>
+     <div class="card p-4">
+      <h3 class="font-heading text-lg font-semibold text-primary mb-3">Set Your Beauty Goal</h3>
+      <form id="goal-form" class="space-y-3">
+       <div>
+        <label for="goal-procedure" class="block font-body text-xs font-medium text-secondary mb-1">Procedure Name</label><input type="text" id="goal-procedure" class="w-full" placeholder="e.g., Rhinoplasty, Breast Augmentation" required>
+       </div>
+       <div>
+        <label for="goal-target-date" class="block font-body text-xs font-medium text-secondary mb-1">Target Date</label><input type="date" id="goal-target-date" class="w-full" required>
+       </div>
+       <div>
+        <label for="goal-amount" class="block font-body text-xs font-medium text-secondary mb-1">Total Goal Amount</label><input type="number" id="goal-amount" class="w-full" placeholder="0.00" step="0.01" min="0" required>
+       </div><button type="submit" class="btn-primary px-3 py-2 rounded font-body text-sm font-medium">Save Goal</button>
+      </form>
+      <div id="goal-display" class="hidden">
+       <div class="flex justify-between items-center mb-4">
+        <div>
+         <h3 class="font-heading text-2xl font-bold text-primary" id="display-procedure">Procedure Name</h3>
+         <p class="font-body text-xs text-secondary mt-1">Target Date: <span id="display-date">N/A</span></p>
+        </div><button id="edit-goal-btn" class="btn-secondary px-3 py-2 rounded text-xs font-medium">Edit Goal</button>
+       </div>
+       <div class="mb-4">
+        <div class="text-center mb-3">
+         <p class="font-heading text-5xl font-bold text-primary mb-1" id="display-percent">0%</p>
+         <p class="font-body text-xs text-secondary uppercase tracking-wider">Complete</p>
+        </div>
+        <div class="progress-bar h-2 mb-4">
+         <div class="progress-fill" id="display-progress" style="width: 0%"></div>
+        </div>
+        <div class="grid grid-cols-3 gap-4">
+         <div class="text-center">
+          <p class="font-body text-xs text-secondary mb-1 uppercase tracking-wide">Goal</p>
+          <p class="font-heading text-2xl font-bold text-primary" id="display-goal">$0.00</p>
+         </div>
+         <div class="text-center">
+          <p class="font-body text-xs text-secondary mb-1 uppercase tracking-wide">Saved</p>
+          <p class="font-heading text-2xl font-bold" style="color: var(--success-color);" id="display-saved">$0.00</p>
+         </div>
+         <div class="text-center">
+          <p class="font-body text-xs text-secondary mb-1 uppercase tracking-wide">Remaining</p>
+          <p class="font-heading text-2xl font-bold text-primary" id="display-remaining">$0.00</p>
+         </div>
+        </div>
+       </div>
+      </div>
+      <div class="card p-4">
+       <h3 class="font-heading text-2xl font-bold text-primary mb-8 text-center">Your Path to Success</h3>
+       <div class="grid md:grid-cols-3 gap-6">
+        <div class="step-card">
+         <div class="card p-6 h-full">
+          <div class="flex justify-center mb-4">
+           <div class="step-number">
+            1
+           </div>
+          </div>
+          <h4 class="font-heading font-bold text-primary text-center mb-3 text-lg">Set Your Goal</h4>
+          <p class="font-body text-sm text-secondary text-center leading-relaxed">Enter your procedure name, target date, and total cost. Your progress tracker activates instantly.</p>
+         </div>
+        </div>
+        <div class="step-card">
+         <div class="card p-6 h-full">
+          <div class="flex justify-center mb-4">
+           <div class="step-number">
+            2
+           </div>
+          </div>
+          <h4 class="font-heading font-bold text-primary text-center mb-3 text-lg">Break Down Costs</h4>
+          <p class="font-body text-sm text-secondary text-center leading-relaxed">Itemize every expense—surgery, consultations, travel, recovery supplies, everything.</p>
+         </div>
+        </div>
+        <div class="step-card">
+         <div class="card p-6 h-full">
+          <div class="flex justify-center mb-4">
+           <div class="step-number">
+            3
+           </div>
+          </div>
+          <h4 class="font-heading font-bold text-primary text-center mb-3 text-lg">Plan Your Budget</h4>
+          <p class="font-body text-sm text-secondary text-center leading-relaxed">Calculate exactly how much to save per paycheck using the sinking fund tool.</p>
+         </div>
+        </div>
+        <div class="step-card">
+         <div class="card p-6 h-full">
+          <div class="flex justify-center mb-4">
+           <div class="step-number">
+            4
+           </div>
+          </div>
+          <h4 class="font-heading font-bold text-primary text-center mb-3 text-lg">Track Your Savings</h4>
+          <p class="font-body text-sm text-secondary text-center leading-relaxed">Record every deposit and watch your progress bar fill up toward your dream.</p>
+         </div>
+        </div>
+        <div class="step-card">
+         <div class="card p-6 h-full">
+          <div class="flex justify-center mb-4">
+           <div class="step-number">
+            5
+           </div>
+          </div>
+          <h4 class="font-heading font-bold text-primary text-center mb-3 text-lg">Build Your Grid</h4>
+          <p class="font-body text-sm text-secondary text-center leading-relaxed">Use the savings challenge grid to visualize your progress with a fun, fillable tracker.</p>
+         </div>
+        </div>
+        <div class="step-card">
+         <div class="card p-6 h-full">
+          <div class="flex justify-center mb-4">
+           <div class="step-number">
+            6
+           </div>
+          </div>
+          <h4 class="font-heading font-bold text-primary text-center mb-3 text-lg">Document Everything</h4>
+          <p class="font-body text-sm text-secondary text-center leading-relaxed">Log receipts, track medications, store documents, keep before/after photos. Have your complete medical record in one secure location.</p>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </section>
+    <section id="tab-cost-breakdown" class="tab-content hidden">
+     <h2 class="font-heading text-2xl font-bold text-primary mb-4">Cost Breakdown</h2>
+     <div class="card p-4 mb-4">
+      <h3 class="font-heading text-lg font-semibold text-primary mb-3">Add Cost Item</h3>
+      <form id="cost-form" class="space-y-3">
+       <div>
+        <label for="cost-category" class="block font-body text-sm text-secondary mb-1">Category</label><select id="cost-category" class="w-full"><option value="procedure">Procedure</option><option value="surgeon fee">Surgeon Fee</option><option value="anesthesia">Anesthesia</option><option value="facility fee">Facility Fee</option><option value="pre-op tests">Pre-op Tests</option><option value="post-op meds">Post-op Meds</option><option value="compression garments">Compression Garments</option><option value="follow-up visits">Follow-up Visits</option><option value="travel - flights">Travel - Flights</option><option value="travel - ground">Travel - Ground</option><option value="accommodation">Accommodation</option><option value="meals">Meals</option><option value="child care">Child Care</option><option value="time off work">Time Off Work</option><option value="other">Other</option></select>
+       </div>
+       <div id="custom-category-container" class="hidden">
+        <label for="custom-category" class="block font-body text-sm text-secondary mb-1">Custom Category</label><input type="text" id="custom-category" class="w-full" placeholder="Enter custom category name">
+       </div>
+       <div>
+        <label for="cost-amount" class="block font-body text-sm text-secondary mb-1">Amount</label><input type="number" id="cost-amount" class="w-full" placeholder="0.00" step="0.01" min="0" required>
+       </div><button type="submit" class="btn-primary px-4 py-2 rounded font-body text-sm">Add Cost</button>
+      </form>
+     </div>
+     <div class="card p-5">
+      <h3 class="font-heading text-lg font-semibold text-primary mb-4">Cost Items</h3>
+      <div id="cost-list" class="space-y-3">
+       <p class="font-body text-sm text-secondary italic">No cost items added yet.</p>
+      </div>
+      <div class="mt-4 pt-4 border-t border-gray-200">
+       <div class="flex justify-between">
+        <span class="font-body font-semibold text-primary">Total Estimated Cost:</span><span class="font-heading text-xl font-bold text-primary" id="total-cost">$0.00</span>
+       </div>
+      </div>
+     </div>
+    </section>
+    <section id="tab-budget-fund" class="tab-content hidden">
+     <h2 class="font-heading text-2xl font-bold text-primary mb-6">Budget and Fund</h2>
+     <div id="calculator-results" class="hidden mb-6">
+      <div class="card p-5 mb-6" style="background: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-color-2) 100%); color: white;">
+       <div class="flex justify-between items-start mb-6">
+        <h3 class="font-heading text-2xl font-bold">Your Savings Plan</h3><button id="edit-savings-plan-btn" class="btn-secondary px-3 py-2 rounded text-xs font-medium" style="background-color: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.3);">Edit Plan</button>
+       </div>
+       <div class="grid md:grid-cols-2 gap-6">
+        <div class="text-center">
+         <p class="font-body text-sm uppercase tracking-wide opacity-90 mb-2">Per Paycheck</p>
+         <p class="font-heading text-4xl font-bold" id="result-paycheck">$0.00</p>
+         <p class="font-body text-xs opacity-75 mt-1" id="result-frequency-label">Based on your pay frequency</p>
+        </div>
+        <div class="text-center">
+         <p class="font-body text-sm uppercase tracking-wide opacity-90 mb-2">Monthly Average</p>
+         <p class="font-heading text-4xl font-bold" id="result-monthly">$0.00</p>
+        </div>
+        <div class="text-center">
+         <p class="font-body text-sm uppercase tracking-wide opacity-90 mb-2">Weekly Average</p>
+         <p class="font-heading text-3xl font-bold" id="result-weekly">$0.00</p>
+        </div>
+        <div class="text-center">
+         <p class="font-body text-sm uppercase tracking-wide opacity-90 mb-2">Daily Average</p>
+         <p class="font-heading text-3xl font-bold" id="result-daily">$0.00</p>
+        </div>
+       </div>
+      </div>
+      <div class="card p-3 mb-6">
+       <h3 class="font-heading text-sm font-semibold text-primary mb-2">Savings Breakdown</h3>
+       <div class="space-y-2">
+        <div class="flex justify-between items-center p-2 bg-gray-50 rounded text-xs">
+         <span class="font-body text-secondary">Total Goal</span><span class="font-heading font-bold text-primary" id="breakdown-goal">$0.00</span>
+        </div>
+        <div class="flex justify-between items-center p-2 bg-gray-50 rounded text-xs">
+         <span class="font-body text-secondary">Current Savings</span><span class="font-heading font-bold text-primary" id="breakdown-current">$0.00</span>
+        </div>
+        <div class="flex justify-between items-center p-2 bg-gray-50 rounded text-xs">
+         <span class="font-body text-secondary">Still Needed</span><span class="font-heading font-bold text-primary" id="breakdown-needed">$0.00</span>
+        </div>
+        <div class="flex justify-between items-center p-2 bg-gray-50 rounded text-xs">
+         <span class="font-body text-secondary">Time Until Goal</span><span class="font-heading font-bold text-primary" id="breakdown-time">0 months</span>
+        </div>
+       </div>
+      </div>
+     </div>
+     <div class="card p-4 mb-6" id="budget-fund-calculator">
+      <h3 class="font-heading text-lg font-semibold text-primary mb-3">Sinking Fund Calculator</h3>
+      <form id="calculator-form" class="space-y-3">
+       <div class="grid grid-cols-2 gap-3">
+        <div>
+         <label for="calc-goal" class="block font-body text-xs text-secondary mb-1">Goal Amount</label><input type="number" id="calc-goal" class="w-full" placeholder="10000" step="0.01" min="0" required>
+        </div>
+        <div>
+         <label for="calc-current" class="block font-body text-xs text-secondary mb-1">Current Savings</label><input type="number" id="calc-current" class="w-full" placeholder="0" step="0.01" min="0">
+        </div>
+       </div>
+       <div class="grid grid-cols-3 gap-3">
+        <div>
+         <label for="calc-start-date" class="block font-body text-xs text-secondary mb-1">Start</label><input type="date" id="calc-start-date" class="w-full" required>
+        </div>
+        <div>
+         <label for="calc-target-date" class="block font-body text-xs text-secondary mb-1">Target</label><input type="date" id="calc-target-date" class="w-full" required>
+        </div>
+        <div>
+         <label for="calc-frequency" class="block font-body text-xs text-secondary mb-1">Frequency</label><select id="calc-frequency" class="w-full" required><option value="weekly">Weekly</option><option value="biweekly">Bi-weekly</option><option value="semimonthly">Semi-monthly</option><option value="monthly">Monthly</option></select>
+        </div>
+       </div><button type="submit" class="btn-primary px-3 py-2 rounded font-body text-sm w-full">Calculate</button>
+      </form>
+     </div>
+     <div class="grid grid-cols-2 gap-4 mb-6">
+      <div class="card p-5">
+       <h3 class="font-heading text-lg font-semibold text-primary mb-4">Monthly Income</h3>
+       <form id="fund-form" class="space-y-4 mb-4">
+        <div class="grid grid-cols-2 gap-4">
+         <div>
+          <label for="fund-source" class="block font-body text-sm text-secondary mb-1">Source Name</label><input type="text" id="fund-source" class="w-full" placeholder="e.g., Monthly Income" required>
+         </div>
+         <div>
+          <label for="fund-amount" class="block font-body text-sm text-secondary mb-1">Amount</label><input type="number" id="fund-amount" class="w-full" placeholder="0.00" step="0.01" min="0" required>
+         </div>
+        </div><button type="submit" class="btn-primary px-4 py-2 rounded font-body text-sm">Add Source</button>
+       </form>
+       <div id="fund-list" class="space-y-2">
+        <p class="font-body text-sm text-secondary italic">No funding sources added yet.</p>
+       </div>
+      </div>
+      <div class="card p-5">
+       <h3 class="font-heading text-lg font-semibold text-primary mb-4">Fixed Bills/Expenses</h3>
+       <form id="expense-form" class="space-y-4 mb-4">
+        <div>
+         <label for="expense-name" class="block font-body text-sm text-secondary mb-1">Expense Name</label><input type="text" id="expense-name" class="w-full" placeholder="e.g., Rent, Car Payment" required>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+         <div>
+          <label for="expense-amount" class="block font-body text-sm text-secondary mb-1">Monthly Amount</label><input type="number" id="expense-amount" class="w-full" placeholder="0.00" step="0.01" min="0" required>
+         </div>
+         <div>
+          <label for="expense-due-date" class="block font-body text-sm text-secondary mb-1">Due Date (1-31)</label><input type="number" id="expense-due-date" class="w-full" placeholder="1" min="1" max="31">
+         </div>
+        </div><button type="submit" class="btn-primary px-4 py-2 rounded font-body text-sm">Add Expense</button>
+       </form>
+       <div id="expense-list" class="space-y-2">
+        <p class="font-body text-sm text-secondary italic">No fixed expenses added yet.</p>
+       </div>
+       <div class="mt-4 pt-4 border-t border-gray-200">
+        <div class="flex justify-between">
+         <span class="font-body font-semibold text-primary">Total Monthly Expenses:</span><span class="font-heading text-xl font-bold text-primary" id="total-expenses">$0.00</span>
+        </div>
+       </div>
+      </div>
+     </div>
+     <div class="card p-4 mb-6">
+      <h3 class="font-heading text-sm font-semibold text-primary mb-2">Savings Tips</h3>
+      <div class="space-y-2">
+       <div class="p-2 bg-gray-50 rounded border-l-4 border-blue-500">
+        <p class="font-body text-xs text-primary"><strong>Automate:</strong> Set up automatic transfers on payday.</p>
+       </div>
+       <div class="p-2 bg-gray-50 rounded border-l-4 border-blue-500">
+        <p class="font-body text-xs text-primary"><strong>Round Up:</strong> Save the difference on each purchase.</p>
+       </div>
+       <div class="p-2 bg-gray-50 rounded border-l-4 border-blue-500">
+        <p class="font-body text-xs text-primary"><strong>Cut One Expense:</strong> Redirect one recurring cost to your goal.</p>
+       </div>
+       <div class="p-2 bg-gray-50 rounded border-l-4 border-blue-500">
+        <p class="font-body text-xs text-primary"><strong>Side Hustle:</strong> Boost savings with extra income.</p>
+       </div>
+      </div>
+     </div>
+    </section>
+    <section id="tab-savings-tracker" class="tab-content hidden">
+     <h2 class="font-heading text-2xl font-bold text-primary mb-6">Savings Tracker</h2>
+     <div class="card p-5 mb-6">
+      <h3 class="font-heading text-lg font-semibold text-primary mb-4">Record Savings</h3>
+      <form id="savings-form" class="space-y-4">
+       <div class="grid grid-cols-2 gap-4">
+        <div>
+         <label for="savings-amount" class="block font-body text-sm text-secondary mb-1">Amount Saved</label><input type="number" id="savings-amount" class="w-full" placeholder="0.00" step="0.01" min="0" required>
+        </div>
+        <div>
+         <label for="savings-date" class="block font-body text-sm text-secondary mb-1">Date</label><input type="date" id="savings-date" class="w-full" required>
+        </div>
+       </div>
+       <div>
+        <label for="savings-notes" class="block font-body text-sm text-secondary mb-1">Notes</label><input type="text" id="savings-notes" class="w-full" placeholder="Optional notes...">
+       </div><button type="submit" class="btn-primary px-4 py-2 rounded font-body text-sm">Add Savings</button>
+      </form>
+     </div>
+     <div class="card p-5">
+      <h3 class="font-heading text-lg font-semibold text-primary mb-4">Savings History</h3>
+      <div id="savings-list" class="space-y-3">
+       <p class="font-body text-sm text-secondary italic">No savings recorded yet.</p>
+      </div>
+      <div class="mt-4 pt-4 border-t border-gray-200">
+       <div class="flex justify-between">
+        <span class="font-body font-semibold text-primary">Total Saved:</span><span class="font-heading text-xl font-bold text-primary" id="total-savings">$0.00</span>
+       </div>
+      </div>
+     </div>
+    </section>
+    <section id="tab-savings-grid" class="tab-content hidden">
+     <h2 class="font-heading text-2xl font-bold text-primary mb-6">Savings Grid Challenge</h2>
+     <div class="card p-4 mb-4" style="background: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-color-2) 100%); color: white;">
+      <h3 class="font-heading text-lg font-bold mb-2">How It Works</h3>
+      <div class="space-y-2">
+       <p class="font-body text-xs leading-relaxed"><strong>1. Create Your Grid:</strong> Set your total goal amount and decide how much each box represents (e.g., $10 per box for a $1,000 goal = 100 boxes).</p>
+       <p class="font-body text-xs leading-relaxed"><strong>2. Watch It Fill Automatically:</strong> As you add money in the Savings Tracker, your challenge grid fills up box by box. Each filled box brings you closer to your goal!</p>
+       <p class="font-body text-xs leading-relaxed"><strong>3. Print and Display:</strong> Click "Print Grid" to print your challenge and hang it where you'll see it daily. Visual progress is incredibly motivating!</p>
+       <p class="font-body text-sm font-semibold mt-3 text-center" style="text-shadow: 0 2px 4px rgba(0,0,0,0.2);">You've got this! Every box filled is a step closer to your dream. Small progress is still progress!</p>
+      </div>
+     </div>
+     <div id="no-grid-message" class="card p-5 mb-4 text-center">
+      <p class="font-body text-secondary mb-4">Create a savings grid to get started!</p>
+      <form id="grid-setup-form" class="space-y-4 max-w-md mx-auto">
+       <div>
+        <label for="grid-goal-amount" class="block font-body text-sm text-secondary mb-1">Total Goal Amount</label><input type="number" id="grid-goal-amount" class="w-full" placeholder="5000.00" step="0.01" min="0" required>
+       </div>
+       <div>
+        <label for="grid-per-box" class="block font-body text-sm text-secondary mb-1">Amount Per Box</label><input type="number" id="grid-per-box" class="w-full" placeholder="20.00" step="0.01" min="0.01" required>
+       </div><button type="submit" class="btn-primary px-4 py-2 rounded font-body text-sm w-full">Create Grid</button>
+      </form>
+     </div>
+     <div id="active-challenge" class="hidden">
+      <div class="card p-5 mb-4">
+       <div class="flex justify-between items-center mb-4">
+        <div>
+         <h3 class="font-heading text-xl font-bold text-primary">Your Challenge</h3>
+         <p class="font-body text-sm text-secondary mt-1">Save <span id="active-per-box" class="font-semibold">$20.00</span> per box to reach <span id="active-goal" class="font-semibold">$5,000.00</span></p>
+        </div>
+        <div class="flex gap-2" style="pointer-events: auto; z-index: 10;">
+         <button id="print-challenge-btn" class="btn-primary px-3 py-2 rounded text-xs font-medium" style="pointer-events: auto;">Print Grid</button><button id="delete-challenge-btn" class="btn-secondary px-3 py-2 rounded text-xs font-medium" style="pointer-events: auto;">Delete Grid</button>
+        </div>
+       </div>
+       <div class="mb-4">
+        <div class="flex justify-between text-sm mb-2">
+         <span class="font-body text-secondary">Progress</span><span class="font-heading font-bold text-primary"><span id="active-filled">0</span> / <span id="active-total">250</span> boxes filled</span>
+        </div>
+        <div class="progress-bar h-2">
+         <div class="progress-fill" id="active-progress" style="width: 0%;"></div>
+        </div>
+        <div class="flex justify-between mt-2">
+         <span class="font-body text-sm" style="color: var(--success-color);">Saved: <span id="active-saved" class="font-semibold">$0.00</span></span><span class="font-body text-sm text-secondary">Remaining: <span id="active-remaining" class="font-semibold">$5,000.00</span></span>
+        </div>
+       </div>
+      </div>
+      <div class="card p-5">
+       <div id="challenge-grid-container" class="grid gap-2" style="grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));"></div>
+      </div>
+     </div>
+    </section>
+    <section id="tab-physician-selection" class="tab-content hidden">
+     <h2 class="font-heading text-2xl font-bold text-primary mb-6">Physician Selection</h2>
+     <div class="card p-4 mb-4" style="background: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-color-2) 100%); color: white;">
+      <h3 class="font-heading text-lg font-bold mb-3">Preparation Tips</h3>
+      <div class="space-y-3">
+       <div class="text-sm leading-relaxed">
+        <p class="font-semibold mb-1">Before Your Consultation:</p>
+        <p class="opacity-90">Prepare a list of specific questions about the procedure, recovery timeline, and realistic expectations. Bring photos of results you admire and discuss whether your goals are achievable.</p>
+       </div>
+       <div class="text-sm leading-relaxed">
+        <p class="font-semibold mb-1">Red Flags:</p>
+        <p class="opacity-90">Avoid physicians who pressure you to decide immediately, guarantee results, or don't discuss risks. Trust your gut—comfort and confidence matter.</p>
+       </div>
+      </div>
+     </div>
+     <div class="card p-4 mb-4">
+      <h3 class="font-heading text-lg font-semibold text-primary mb-3">Add Physician</h3>
+      <form id="physician-form" class="space-y-3">
+       <div>
+        <label for="physician-name" class="block font-body text-sm text-secondary mb-1">Physician Name</label><input type="text" id="physician-name" class="w-full" placeholder="e.g., Dr. Jane Smith" required>
+       </div>
+       <div>
+        <label for="physician-specialty" class="block font-body text-sm text-secondary mb-1">Specialty</label><input type="text" id="physician-specialty" class="w-full" placeholder="e.g., Plastic Surgeon, Dermatologist">
+       </div>
+       <div>
+        <label for="physician-location" class="block font-body text-sm text-secondary mb-1">Location / Practice</label><input type="text" id="physician-location" class="w-full" placeholder="e.g., New York, NY">
+       </div>
+       <div>
+        <label for="physician-phone" class="block font-body text-sm text-secondary mb-1">Phone Number</label><input type="tel" id="physician-phone" class="w-full" placeholder="e.g., (555) 123-4567">
+       </div>
+       <div>
+        <label for="physician-website" class="block font-body text-sm text-secondary mb-1">Website</label><input type="text" id="physician-website" class="w-full" placeholder="e.g., https://www.example.com">
+       </div>
+       <div class="grid grid-cols-2 gap-4">
+        <div>
+         <label for="physician-consultation-cost" class="block font-body text-sm text-secondary mb-1">Consultation Cost</label><input type="number" id="physician-consultation-cost" class="w-full" placeholder="0.00" step="0.01" min="0">
+        </div>
+        <div>
+         <label for="physician-procedure-cost" class="block font-body text-sm text-secondary mb-1">Quoted Procedure Cost</label><input type="number" id="physician-procedure-cost" class="w-full" placeholder="0.00" step="0.01" min="0">
+        </div>
+       </div>
+       <div>
+        <label for="physician-rating" class="block font-body text-sm text-secondary mb-1">Rating</label><select id="physician-rating" class="w-full"><option value="">Not Rated</option><option value="1">1 Star</option><option value="2">2 Stars</option><option value="3">3 Stars</option><option value="4">4 Stars</option><option value="5">5 Stars</option></select>
+       </div>
+       <div>
+        <label for="physician-notes" class="block font-body text-sm text-secondary mb-1">Notes</label><textarea id="physician-notes" class="w-full" placeholder="Add any notes about this physician..." rows="3"></textarea>
+       </div><button type="submit" class="btn-primary px-4 py-2 rounded font-body text-sm font-medium w-full">Add Physician</button>
+      </form>
+     </div>
+     <div class="card p-5">
+      <h3 class="font-heading text-lg font-semibold text-primary mb-4">Your Physicians</h3>
+      <div id="physician-list" class="space-y-4">
+       <p class="font-body text-sm text-secondary italic">No physicians added yet.</p>
+      </div>
+     </div>
+    </section>
+    <section id="tab-consultation-questions" class="tab-content hidden">
+     <div class="flex justify-between items-center mb-6">
+      <h2 class="font-heading text-2xl font-bold text-primary">Consultation Questions</h2><button id="export-consultation-btn" class="btn-primary px-4 py-2 rounded font-body text-sm font-medium">Export &amp; Print</button>
+     </div>
+     <div class="card p-4 mb-4" style="background: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-color-2) 100%); color: white;">
+      <h3 class="font-heading text-lg font-bold mb-3">Before Your Consultation</h3>
+      <div class="space-y-3">
+       <div class="text-sm leading-relaxed">
+        <p class="font-semibold mb-1">Prepare Specific Questions:</p>
+        <p class="opacity-90">Write down questions about the procedure, recovery timeline, and realistic expectations. Use this tab to build your personalized question list.</p>
+       </div>
+       <div class="text-sm leading-relaxed">
+        <p class="font-semibold mb-1">Print Your Questions:</p>
+        <p class="opacity-90">Take your questions with you to the consultation. Having them written down ensures you won't forget anything important in the moment.</p>
+       </div>
+       <div class="text-sm leading-relaxed">
+        <p class="font-semibold mb-1">International Consultations Tip:</p>
+        <p class="opacity-90">For physicians located in other countries, always get estimates in their local currency because exchange rates tend to fluctuate.</p>
+       </div>
+      </div>
+     </div>
+     <div class="grid md:grid-cols-2 gap-4 mb-6">
+      <div class="card p-4">
+       <h3 class="font-heading text-lg font-semibold text-primary mb-3">About the Procedure</h3>
+       <div class="space-y-2">
+        <div class="p-2 bg-gray-50 rounded border-l-4" style="border-left-color: #0284c7;">
+         <p class="font-body text-sm text-primary">How many of these procedures have you performed?</p>
+        </div>
+        <div class="p-2 bg-gray-50 rounded border-l-4" style="border-left-color: #0284c7;">
+         <p class="font-body text-sm text-primary">What technique will you use and why?</p>
+        </div>
+        <div class="p-2 bg-gray-50 rounded border-l-4" style="border-left-color: #0284c7;">
+         <p class="font-body text-sm text-primary">How long will the procedure take?</p>
+        </div>
+        <div class="p-2 bg-gray-50 rounded border-l-4" style="border-left-color: #0284c7;">
+         <p class="font-body text-sm text-primary">What results can I realistically expect?</p>
+        </div>
+       </div>
+      </div>
+      <div class="card p-4">
+       <h3 class="font-heading text-lg font-semibold text-primary mb-3">Risks &amp; Complications</h3>
+       <div class="space-y-2">
+        <div class="p-2 bg-gray-50 rounded border-l-4 border-purple-500">
+         <p class="font-body text-sm text-primary">What are the potential risks and complications?</p>
+        </div>
+        <div class="p-2 bg-gray-50 rounded border-l-4 border-purple-500">
+         <p class="font-body text-sm text-primary">How do you handle complications if they arise?</p>
+        </div>
+        <div class="p-2 bg-gray-50 rounded border-l-4 border-purple-500">
+         <p class="font-body text-sm text-primary">What signs should I watch for after surgery?</p>
+        </div>
+       </div>
+      </div>
+      <div class="card p-4">
+       <h3 class="font-heading text-lg font-semibold text-primary mb-3">Recovery</h3>
+       <div class="space-y-2">
+        <div class="p-2 bg-gray-50 rounded border-l-4 border-gray-700">
+         <p class="font-body text-sm text-primary">What is the typical recovery timeline?</p>
+        </div>
+        <div class="p-2 bg-gray-50 rounded border-l-4 border-gray-700">
+         <p class="font-body text-sm text-primary">When can I return to work/normal activities?</p>
+        </div>
+        <div class="p-2 bg-gray-50 rounded border-l-4 border-gray-700">
+         <p class="font-body text-sm text-primary">What kind of pain or discomfort should I expect?</p>
+        </div>
+        <div class="p-2 bg-gray-50 rounded border-l-4 border-gray-700">
+         <p class="font-body text-sm text-primary">What aftercare will I need?</p>
+        </div>
+       </div>
+      </div>
+      <div class="card p-4">
+       <h3 class="font-heading text-lg font-semibold text-primary mb-3">Cost &amp; Logistics</h3>
+       <div class="space-y-2">
+        <div class="p-2 bg-gray-50 rounded border-l-4" style="border-left-color: var(--accent-color);">
+         <p class="font-body text-sm text-primary">What is included in the quoted price?</p>
+        </div>
+        <div class="p-2 bg-gray-50 rounded border-l-4" style="border-left-color: var(--accent-color);">
+         <p class="font-body text-sm text-primary">Are there any additional fees I should expect?</p>
+        </div>
+        <div class="p-2 bg-gray-50 rounded border-l-4" style="border-left-color: var(--accent-color);">
+         <p class="font-body text-sm text-primary">What is your revision policy?</p>
+        </div>
+        <div class="p-2 bg-gray-50 rounded border-l-4" style="border-left-color: var(--accent-color);">
+         <p class="font-body text-sm text-primary">How many follow-up appointments are included?</p>
+        </div>
+       </div>
+      </div>
+     </div>
+     <div id="custom-questions-display" class="card p-4 mb-4 hidden">
+      <h3 class="font-heading text-lg font-semibold text-primary mb-3">Your Custom Questions</h3>
+      <div id="custom-questions-list" class="space-y-2">
+       <p class="font-body text-sm text-secondary italic">No custom questions added yet.</p>
+      </div>
+     </div>
+     <div class="card p-4 mb-4">
+      <h3 class="font-heading text-lg font-semibold text-primary mb-3">Add Your Own Questions</h3>
+      <form id="custom-question-form" class="space-y-3">
+       <div>
+        <label for="custom-question-text" class="block font-body text-sm text-secondary mb-1">Your Question</label> <textarea id="custom-question-text" class="w-full" placeholder="Type your custom question here..." rows="2" required></textarea>
+       </div><button type="submit" class="btn-primary px-4 py-2 rounded font-body text-sm">Add Question</button>
+      </form>
+     </div>
+    </section>
+    <section id="tab-travel-budget" class="tab-content hidden">
+     <div style="background: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-color-2) 100%); padding: 1.5rem; border-radius: 12px; margin-bottom: 2rem; color: white; box-shadow: 0 8px 24px rgba(102, 126, 234, 0.15);">
+      <h2 class="font-heading text-3xl font-bold mb-1">Travel Budget</h2>
+      <p class="font-body text-sm opacity-90">Plan and track all expenses for your trip</p>
+     </div>
+     <div id="travel-trip-form" class="card p-6 mb-6 shadow-md">
+      <h3 class="font-heading text-lg font-semibold text-primary mb-4">Trip Details</h3>
+      <form id="travel-trip-details-form" class="space-y-4">
+       <div class="grid grid-cols-2 gap-4">
+        <div>
+         <label class="block font-body text-sm text-secondary mb-1">Destination</label> <input type="text" id="travel-destination-input" class="w-full" placeholder="e.g., Mexico City" required>
+        </div>
+        <div>
+         <label class="block font-body text-sm text-secondary mb-1">Procedure Name</label> <input type="text" id="travel-procedure-name" class="w-full" placeholder="e.g., Rhinoplasty" required>
+        </div>
+       </div>
+       <div class="grid grid-cols-2 gap-4">
+        <div>
+         <label class="block font-body text-sm text-secondary mb-1">Clinic/Hospital Name</label> <input type="text" id="travel-clinic-name" class="w-full" placeholder="Clinic name" required>
+        </div>
+        <div>
+         <label class="block font-body text-sm text-secondary mb-1">Travel Dates</label> <input type="text" id="travel-trip-dates" class="w-full" placeholder="e.g., May 15-20, 2024" required>
+        </div>
+       </div>
+       <div class="grid grid-cols-2 gap-4">
+        <div>
+         <label class="block font-body text-sm text-secondary mb-1">Procedure Cost</label> <input type="number" id="travel-procedure-cost-input" class="w-full" placeholder="0.00" step="0.01" min="0" required>
+        </div>
+        <div>
+         <label class="block font-body text-sm text-secondary mb-1">Total Trip Budget</label> <input type="number" id="travel-trip-budget-input" class="w-full" placeholder="0.00" step="0.01" min="0" required>
+        </div>
+       </div>
+       <div class="flex gap-3">
+        <button type="submit" class="btn-primary px-4 py-2 rounded font-body text-sm font-medium flex-1">Save Trip Details</button>
+       </div>
+      </form>
+     </div>
+     <div id="travel-trip-display" class="card p-5 mb-6 hidden">
+      <div class="flex justify-between items-start mb-4">
+       <div>
+        <h3 class="font-heading text-2xl font-bold text-primary" id="travel-display-destination">Destination</h3>
+        <p class="font-body text-sm text-secondary mt-1"><span id="travel-display-dates">N/A</span> • <span id="travel-display-clinic">Clinic</span> • <span id="travel-display-procedure">Procedure</span></p>
+       </div><button id="travel-edit-trip-btn" class="btn-secondary px-3 py-2 rounded text-xs font-medium">Edit Details</button>
+      </div>
+      <div class="mb-4">
+       <div class="flex justify-between text-sm mb-2">
+        <span class="font-body text-secondary">Budget Progress</span> <span class="font-heading font-bold text-primary"><span id="travel-display-percent">0</span>% spent</span>
+       </div>
+       <div class="progress-bar h-2">
+        <div class="progress-fill" id="travel-display-progress" style="width: 0%;"></div>
+       </div>
+       <div class="grid grid-cols-4 gap-3 mt-3">
+        <div class="text-center">
+         <p class="font-body text-xs text-secondary mb-1 uppercase tracking-wide">Procedure</p>
+         <p class="font-heading font-bold text-primary text-lg" id="travel-display-procedure-cost">$0.00</p>
+        </div>
+        <div class="text-center">
+         <p class="font-body text-xs text-secondary mb-1 uppercase tracking-wide">Budget</p>
+         <p class="font-heading font-bold text-primary text-lg" id="travel-display-budget">$0.00</p>
+        </div>
+        <div class="text-center">
+         <p class="font-body text-xs text-secondary mb-1 uppercase tracking-wide">Spent</p>
+         <p class="font-heading font-bold text-primary text-lg" id="travel-display-spent">$0.00</p>
+        </div>
+        <div class="text-center">
+         <p class="font-body text-xs text-secondary mb-1 uppercase tracking-wide">Remaining</p>
+         <p class="font-heading font-bold text-primary text-lg" id="travel-display-remaining">$0.00</p>
+        </div>
+       </div>
+      </div>
+     </div>
+     <div class="grid grid-cols-2 gap-4 mb-6">
+      <div class="card p-5">
+       <h3 class="font-heading text-lg font-semibold text-primary mb-4">Add Expense</h3>
+       <form id="travel-expense-form" class="space-y-3">
+        <div>
+         <label class="block font-body text-sm text-secondary mb-1">Category</label> <select id="travel-expense-category" class="w-full"> <option value="Flights">Flights</option> <option value="Ground Transport">Ground Transport</option> <option value="Accommodation">Accommodation</option> <option value="Meals">Meals</option> <option value="Activities">Activities</option> <option value="Medical Supplies">Medical Supplies</option> <option value="Other">Other</option> </select>
+        </div>
+        <div>
+         <label class="block font-body text-sm text-secondary mb-1">Description</label> <input type="text" id="travel-expense-description" class="w-full" placeholder="e.g., Hotel 3 nights" required>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+         <div>
+          <label class="block font-body text-sm text-secondary mb-1">Amount</label> <input type="number" id="travel-expense-amount" class="w-full" placeholder="0.00" step="0.01" min="0" required>
+         </div>
+         <div>
+          <label class="block font-body text-sm text-secondary mb-1">Currency</label> <select id="travel-expense-currency" class="w-full"> <option value="USD">USD</option> <option value="EUR">EUR</option> <option value="GBP">GBP</option> <option value="MXN">MXN</option> <option value="CAD">CAD</option> <option value="AUD">AUD</option> <option value="JPY">JPY</option> <option value="CHF">CHF</option> <option value="CNY">CNY</option> <option value="INR">INR</option> <option value="COP">COP</option> </select>
+         </div>
+        </div>
+        <div>
+         <label class="block font-body text-sm text-secondary mb-1">Date</label> <input type="date" id="travel-expense-date" class="w-full" required>
+        </div><button type="submit" class="btn-primary px-4 py-2 rounded font-body text-sm w-full">Add Expense</button>
+       </form>
+      </div>
+      <div class="card p-5">
+       <h3 class="font-heading text-lg font-semibold text-primary mb-4">Currency Converter</h3>
+       <div class="space-y-3">
+        <div>
+         <label class="block font-body text-xs font-medium text-secondary mb-1">Amount</label> <input type="number" id="converter-amount" class="w-full" placeholder="0.00" step="0.01" min="0" value="1">
+        </div>
+        <div>
+         <label class="block font-body text-xs font-medium text-secondary mb-1">From</label> <select id="converter-from" class="w-full text-sm"> <option value="USD">USD</option> <option value="EUR">EUR</option> <option value="GBP">GBP</option> <option value="MXN">MXN</option> <option value="CAD">CAD</option> <option value="AUD">AUD</option> <option value="JPY">JPY</option> <option value="CHF">CHF</option> <option value="CNY">CNY</option> <option value="INR">INR</option> <option value="COP">COP</option> </select>
+        </div>
+        <div>
+         <label class="block font-body text-xs font-medium text-secondary mb-1">To</label> <select id="converter-to" class="w-full text-sm"> <option value="USD">USD</option> <option value="EUR">EUR</option> <option value="GBP">GBP</option> <option value="MXN" selected>MXN</option> <option value="CAD">CAD</option> <option value="AUD">AUD</option> <option value="JPY">JPY</option> <option value="CHF">CHF</option> <option value="CNY">CNY</option> <option value="INR">INR</option> <option value="COP">COP</option> </select>
+        </div><button id="converter-swap-btn" class="btn-secondary px-3 py-2 rounded font-body text-xs font-medium w-full">Swap</button>
+        <div id="converter-result" class="p-3 rounded" style="background: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-color-2) 100%); color: white;">
+         <p class="font-body text-xs opacity-90 mb-1">Result</p>
+         <p class="font-heading text-2xl font-bold"><span id="converter-result-value">0.00</span> <span id="converter-result-currency">MXN</span></p>
+         <p class="font-body text-xs opacity-75 mt-1" id="converter-rate-info">Exchange rates are approximate</p>
+        </div>
+       </div>
+      </div>
+     </div>
+     <div class="card p-5 mb-6">
+      <div class="flex justify-between items-center mb-4">
+       <h3 class="font-heading text-lg font-semibold text-primary">Expenses by Category</h3><button id="travel-print-btn" class="btn-primary px-4 py-2 rounded font-body text-sm font-medium">Print Budget</button>
+      </div>
+      <div id="travel-expense-summary" class="space-y-2">
+       <p class="font-body text-sm text-secondary italic">Add expenses to see summary.</p>
+      </div>
+     </div>
+     <div class="grid md:grid-cols-2 gap-4 mb-6">
+      <div class="card p-6" style="background: linear-gradient(135deg, #f0ecff 0%, #f3f0ff 100%); border-left: 4px solid var(--accent-color); box-shadow: 0 2px 8px rgba(102, 126, 234, 0.08);">
+       <h3 class="font-heading text-lg font-semibold mb-4" style="color: var(--accent-color);">Money-Saving Tips</h3>
+       <ul class="space-y-3">
+        <li class="flex gap-3"><span style="color: var(--accent-color); flex-shrink: 0; font-weight: 600; font-size: 18px;">✓</span> <span class="font-body text-sm text-primary"><strong>Book Early:</strong> Flights and hotels are cheaper 2-3 months in advance. Set calendar reminders for deals.</span></li>
+        <li class="flex gap-3"><span style="color: var(--accent-color); flex-shrink: 0; font-weight: 600; font-size: 18px;">✓</span> <span class="font-body text-sm text-primary"><strong>Travel Off-Season:</strong> Avoid peak tourist seasons for better rates and fewer crowds during recovery.</span></li>
+        <li class="flex gap-3"><span style="color: var(--accent-color); flex-shrink: 0; font-weight: 600; font-size: 18px;">✓</span> <span class="font-body text-sm text-primary"><strong>Bundle Services:</strong> Ask clinics about package deals (procedure + pre/post-op care + follow-ups).</span></li>
+        <li class="flex gap-3"><span style="color: var(--accent-color); flex-shrink: 0; font-weight: 600; font-size: 18px;">✓</span> <span class="font-body text-sm text-primary"><strong>Use Comparison Tools:</strong> Google Flights, Hopper, and Kayak help track price trends.</span></li>
+        <li class="flex gap-3"><span style="color: var(--accent-color); flex-shrink: 0; font-weight: 600; font-size: 18px;">✓</span> <span class="font-body text-sm text-primary"><strong>Join Loyalty Programs:</strong> Earn points on flights and hotels to offset costs.</span></li>
+       </ul>
+      </div>
+      <div class="card p-6" style="background: linear-gradient(135deg, #fed7aa 0%, #fdba74 100%); border-left: 4px solid #fb923c; box-shadow: 0 2px 8px rgba(251, 146, 60, 0.12);">
+       <h3 class="font-heading text-lg font-semibold mb-4" style="color: #ea580c;">Budget Buffer Tips</h3>
+       <ul class="space-y-3">
+        <li class="flex gap-3"><span style="color: #ea580c; flex-shrink: 0; font-weight: 600; font-size: 18px;">•</span> <span class="font-body text-sm text-primary"><strong>Add 15-20% Buffer:</strong> Unexpected costs always arise. Build in extra funds for emergencies.</span></li>
+        <li class="flex gap-3"><span style="color: #ea580c; flex-shrink: 0; font-weight: 600; font-size: 18px;">•</span> <span class="font-body text-sm text-primary"><strong>Plan for Delays:</strong> Extended recovery might require longer accommodation or extra meals.</span></li>
+        <li class="flex gap-3"><span style="color: #ea580c; flex-shrink: 0; font-weight: 600; font-size: 18px;">•</span> <span class="font-body text-sm text-primary"><strong>Currency Fluctuations:</strong> Exchange rates change. Use the converter to estimate worst-case scenarios.</span></li>
+        <li class="flex gap-3"><span style="color: #ea580c; flex-shrink: 0; font-weight: 600; font-size: 18px;">•</span> <span class="font-body text-sm text-primary"><strong>Travel Insurance:</strong> Consider coverage for medical emergencies or trip cancellations.</span></li>
+        <li class="flex gap-3"><span style="color: #ea580c; flex-shrink: 0; font-weight: 600; font-size: 18px;">•</span> <span class="font-body text-sm text-primary"><strong>Separate Account:</strong> Keep travel procedure funds in a dedicated account to avoid overspending.</span></li>
+       </ul>
+      </div>
+     </div>
+     <div class="card p-6 mb-6">
+      <h3 class="font-heading text-lg font-semibold mb-4 text-primary">Loyalty Programs &amp; Travel Protection</h3>
+      <p class="font-body text-sm text-secondary mb-4 pb-4 border-b border-gray-200">Click the QR code icon next to any program to scan and join instantly, or click the program name to visit their website.</p>
+      <div class="grid md:grid-cols-3 gap-4">
+       <div class="rounded-lg p-4" style="background-color: #f0ecff;">
+        <h4 class="font-heading font-semibold mb-3 text-sm" style="color: var(--accent-color);">Hotel Loyalty Programs</h4>
+        <ul class="space-y-3">
+         <li class="flex items-center gap-2"><button id="qr-marriott" class="qr-button" style="background: none; border: none; padding: 0; cursor: pointer; flex-shrink: 0; color: #a4a3cf; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center;" title="Scan QR code">
+           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="7" height="7"></rect><path d="M14 3h7v7"></path><rect x="14" y="14" width="7" height="7"></rect><path d="M3 14h7v7"></path><path d="M11 11h2v2"></path><path d="M17 17h2v2"></path>
+           </svg></button><a href="https://www.marriott.com/loyalty.mi" target="_blank" rel="noopener noreferrer" class="font-body text-sm underline hover:opacity-75" style="color: var(--accent-color);">Marriott Bonvoy</a></li>
+         <li class="flex items-center gap-2"><button id="qr-hilton" class="qr-button" style="background: none; border: none; padding: 0; cursor: pointer; flex-shrink: 0; color: #a4a3cf; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center;" title="Scan QR code">
+           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="7" height="7"></rect><path d="M14 3h7v7"></path><rect x="14" y="14" width="7" height="7"></rect><path d="M3 14h7v7"></path><path d="M11 11h2v2"></path><path d="M17 17h2v2"></path>
+           </svg></button><a href="https://www.hiltonhonors.com" target="_blank" rel="noopener noreferrer" class="font-body text-sm underline hover:opacity-75" style="color: var(--accent-color);">Hilton Honors</a></li>
+         <li class="flex items-center gap-2"><button id="qr-ihg" class="qr-button" style="background: none; border: none; padding: 0; cursor: pointer; flex-shrink: 0; color: #a4a3cf; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center;" title="Scan QR code">
+           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="7" height="7"></rect><path d="M14 3h7v7"></path><rect x="14" y="14" width="7" height="7"></rect><path d="M3 14h7v7"></path><path d="M11 11h2v2"></path><path d="M17 17h2v2"></path>
+           </svg></button><a href="https://www.ihg.com/rewards" target="_blank" rel="noopener noreferrer" class="font-body text-sm underline hover:opacity-75" style="color: var(--accent-color);">IHG One Rewards</a></li>
+         <li class="flex items-center gap-2"><button id="qr-hyatt" class="qr-button" style="background: none; border: none; padding: 0; cursor: pointer; flex-shrink: 0; color: #a4a3cf; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center;" title="Scan QR code">
+           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="7" height="7"></rect><path d="M14 3h7v7"></path><rect x="14" y="14" width="7" height="7"></rect><path d="M3 14h7v7"></path><path d="M11 11h2v2"></path><path d="M17 17h2v2"></path>
+           </svg></button><a href="https://world.hyatt.com/content/gp/en/program-overview.html" target="_blank" rel="noopener noreferrer" class="font-body text-sm underline hover:opacity-75" style="color: var(--accent-color);">World of Hyatt</a></li>
+         <li class="flex items-center gap-2"><button id="qr-choice" class="qr-button" style="background: none; border: none; padding: 0; cursor: pointer; flex-shrink: 0; color: #a4a3cf; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center;" title="Scan QR code">
+           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="7" height="7"></rect><path d="M14 3h7v7"></path><rect x="14" y="14" width="7" height="7"></rect><path d="M3 14h7v7"></path><path d="M11 11h2v2"></path><path d="M17 17h2v2"></path>
+           </svg></button><a href="https://www.choicehotels.com/choice-privileges" target="_blank" rel="noopener noreferrer" class="font-body text-sm underline hover:opacity-75" style="color: var(--accent-color);">Choice Privileges</a></li>
+         <li class="flex items-center gap-2"><button id="qr-wyndham" class="qr-button" style="background: none; border: none; padding: 0; cursor: pointer; flex-shrink: 0; color: #a4a3cf; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center;" title="Scan QR code">
+           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="7" height="7"></rect><path d="M14 3h7v7"></path><rect x="14" y="14" width="7" height="7"></rect><path d="M3 14h7v7"></path><path d="M11 11h2v2"></path><path d="M17 17h2v2"></path>
+           </svg></button><a href="https://www.wyndhamrewards.com" target="_blank" rel="noopener noreferrer" class="font-body text-sm underline hover:opacity-75" style="color: var(--accent-color);">Wyndham Rewards</a></li>
+        </ul>
+       </div>
+       <div class="rounded-lg p-4" style="background-color: #f0ecff;">
+        <h4 class="font-heading font-semibold mb-3 text-sm" style="color: var(--accent-color);">Airline Loyalty Programs</h4>
+        <ul class="space-y-3">
+         <li class="flex items-center gap-2"><button id="qr-aa" class="qr-button" style="background: none; border: none; padding: 0; cursor: pointer; flex-shrink: 0; color: #a4a3cf; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center;" title="Scan QR code">
+           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="7" height="7"></rect><path d="M14 3h7v7"></path><rect x="14" y="14" width="7" height="7"></rect><path d="M3 14h7v7"></path><path d="M11 11h2v2"></path><path d="M17 17h2v2"></path>
+           </svg></button><a href="https://www.aa.com/AAdvantage" target="_blank" rel="noopener noreferrer" class="font-body text-sm underline hover:opacity-75" style="color: var(--accent-color);">American Airlines AAdvantage</a></li>
+         <li class="flex items-center gap-2"><button id="qr-united" class="qr-button" style="background: none; border: none; padding: 0; cursor: pointer; flex-shrink: 0; color: #a4a3cf; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center;" title="Scan QR code">
+           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="7" height="7"></rect><path d="M14 3h7v7"></path><rect x="14" y="14" width="7" height="7"></rect><path d="M3 14h7v7"></path><path d="M11 11h2v2"></path><path d="M17 17h2v2"></path>
+           </svg></button><a href="https://www.united.com/en/us/fly/mileageplus.html" target="_blank" rel="noopener noreferrer" class="font-body text-sm underline hover:opacity-75" style="color: var(--accent-color);">United MileagePlus</a></li>
+         <li class="flex items-center gap-2"><button id="qr-delta" class="qr-button" style="background: none; border: none; padding: 0; cursor: pointer; flex-shrink: 0; color: #a4a3cf; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center;" title="Scan QR code">
+           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="7" height="7"></rect><path d="M14 3h7v7"></path><rect x="14" y="14" width="7" height="7"></rect><path d="M3 14h7v7"></path><path d="M11 11h2v2"></path><path d="M17 17h2v2"></path>
+           </svg></button><a href="https://www.delta.com/skymiles" target="_blank" rel="noopener noreferrer" class="font-body text-sm underline hover:opacity-75" style="color: var(--accent-color);">Delta SkyMiles</a></li>
+         <li class="flex items-center gap-2"><button id="qr-southwest" class="qr-button" style="background: none; border: none; padding: 0; cursor: pointer; flex-shrink: 0; color: #a4a3cf; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center;" title="Scan QR code">
+           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="7" height="7"></rect><path d="M14 3h7v7"></path><rect x="14" y="14" width="7" height="7"></rect><path d="M3 14h7v7"></path><path d="M11 11h2v2"></path><path d="M17 17h2v2"></path>
+           </svg></button><a href="https://www.southwest.com/rapid-rewards" target="_blank" rel="noopener noreferrer" class="font-body text-sm underline hover:opacity-75" style="color: var(--accent-color);">Southwest Rapid Rewards</a></li>
+         <li class="flex items-center gap-2"><button id="qr-jetblue" class="qr-button" style="background: none; border: none; padding: 0; cursor: pointer; flex-shrink: 0; color: #a4a3cf; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center;" title="Scan QR code">
+           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="7" height="7"></rect><path d="M14 3h7v7"></path><rect x="14" y="14" width="7" height="7"></rect><path d="M3 14h7v7"></path><path d="M11 11h2v2"></path><path d="M17 17h2v2"></path>
+           </svg></button><a href="https://www.jetblue.com/trueblue" target="_blank" rel="noopener noreferrer" class="font-body text-sm underline hover:opacity-75" style="color: var(--accent-color);">JetBlue TrueBlue</a></li>
+         <li class="flex items-center gap-2"><button id="qr-lufthansa" class="qr-button" style="background: none; border: none; padding: 0; cursor: pointer; flex-shrink: 0; color: #a4a3cf; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center;" title="Scan QR code">
+           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="7" height="7"></rect><path d="M14 3h7v7"></path><rect x="14" y="14" width="7" height="7"></rect><path d="M3 14h7v7"></path><path d="M11 11h2v2"></path><path d="M17 17h2v2"></path>
+           </svg></button><a href="https://www.lufthansa.com/us/en/miles-and-more" target="_blank" rel="noopener noreferrer" class="font-body text-sm underline hover:opacity-75" style="color: var(--accent-color);">Lufthansa Miles &amp; More</a></li>
+        </ul>
+       </div>
+       <div class="rounded-lg p-4" style="background-color: #f0ecff;">
+        <h4 class="font-heading font-semibold mb-3 text-sm" style="color: var(--accent-color);">Travel Insurance</h4>
+        <ul class="space-y-3">
+         <li class="flex items-center gap-2"><button id="qr-worldnomads" class="qr-button" style="background: none; border: none; padding: 0; cursor: pointer; flex-shrink: 0; color: #a4a3cf; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center;" title="Scan QR code">
+           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="7" height="7"></rect><path d="M14 3h7v7"></path><rect x="14" y="14" width="7" height="7"></rect><path d="M3 14h7v7"></path><path d="M11 11h2v2"></path><path d="M17 17h2v2"></path>
+           </svg></button><a href="https://www.worldnomads.com" target="_blank" rel="noopener noreferrer" class="font-body text-sm underline hover:opacity-75" style="color: var(--accent-color);">World Nomads</a></li>
+         <li class="flex items-center gap-2"><button id="qr-allianz" class="qr-button" style="background: none; border: none; padding: 0; cursor: pointer; flex-shrink: 0; color: #a4a3cf; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center;" title="Scan QR code">
+           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="7" height="7"></rect><path d="M14 3h7v7"></path><rect x="14" y="14" width="7" height="7"></rect><path d="M3 14h7v7"></path><path d="M11 11h2v2"></path><path d="M17 17h2v2"></path>
+           </svg></button><a href="https://www.allianzassistance.com" target="_blank" rel="noopener noreferrer" class="font-body text-sm underline hover:opacity-75" style="color: var(--accent-color);">Allianz Global</a></li>
+         <li class="flex items-center gap-2"><button id="qr-squaremouth" class="qr-button" style="background: none; border: none; padding: 0; cursor: pointer; flex-shrink: 0; color: #a4a3cf; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center;" title="Scan QR code">
+           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="7" height="7"></rect><path d="M14 3h7v7"></path><rect x="14" y="14" width="7" height="7"></rect><path d="M3 14h7v7"></path><path d="M11 11h2v2"></path><path d="M17 17h2v2"></path>
+           </svg></button><a href="https://www.squaremouth.com" target="_blank" rel="noopener noreferrer" class="font-body text-sm underline hover:opacity-75" style="color: var(--accent-color);">SquareMouth</a></li>
+         <li class="flex items-center gap-2"><button id="qr-insuremytrip" class="qr-button" style="background: none; border: none; padding: 0; cursor: pointer; flex-shrink: 0; color: #a4a3cf; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center;" title="Scan QR code">
+           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="7" height="7"></rect><path d="M14 3h7v7"></path><rect x="14" y="14" width="7" height="7"></rect><path d="M3 14h7v7"></path><path d="M11 11h2v2"></path><path d="M17 17h2v2"></path>
+           </svg></button><a href="https://www.insuremytrip.com" target="_blank" rel="noopener noreferrer" class="font-body text-sm underline hover:opacity-75" style="color: var(--accent-color);">InsureMyTrip</a></li>
+         <li class="flex items-center gap-2"><button id="qr-travelguard" class="qr-button" style="background: none; border: none; padding: 0; cursor: pointer; flex-shrink: 0; color: #a4a3cf; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center;" title="Scan QR code">
+           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="7" height="7"></rect><path d="M14 3h7v7"></path><rect x="14" y="14" width="7" height="7"></rect><path d="M3 14h7v7"></path><path d="M11 11h2v2"></path><path d="M17 17h2v2"></path>
+           </svg></button><a href="https://www.travelguard.com" target="_blank" rel="noopener noreferrer" class="font-body text-sm underline hover:opacity-75" style="color: var(--accent-color);">Travel Guard</a></li>
+         <li class="flex items-center gap-2"><button id="qr-faye" class="qr-button" style="background: none; border: none; padding: 0; cursor: pointer; flex-shrink: 0; color: #a4a3cf; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center;" title="Scan QR code">
+           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="7" height="7"></rect><path d="M14 3h7v7"></path><rect x="14" y="14" width="7" height="7"></rect><path d="M3 14h7v7"></path><path d="M11 11h2v2"></path><path d="M17 17h2v2"></path>
+           </svg></button><a href="https://www.withfaye.com" target="_blank" rel="noopener noreferrer" class="font-body text-sm underline hover:opacity-75" style="color: var(--accent-color);">Faye</a></li>
+        </ul>
+       </div>
+      </div>
+      <p class="font-body text-xs text-secondary mt-4 p-3 bg-white rounded" style="border-left: 2px solid var(--accent-color);"><strong>Tip:</strong> Loyalty programs let you earn points on flights, hotels, and more. Use those points to reduce your travel expenses and stretch your budget further.</p>
+     </div>
+     <div class="card p-6 mt-6" style="background: linear-gradient(135deg, #f0ecff 0%, #f3f4f6 100%); border-left: 4px solid var(--accent-color);">
+      <h3 class="font-heading text-lg font-semibold mb-3" style="color: var(--accent-color);">Strategic Credit Card Rewards</h3>
+      <p class="font-body text-sm text-secondary mb-3">A credit card linked to a loyalty program can be a huge financial advantage—if used strategically. Here's why:</p>
+      <div class="space-y-2">
+       <div class="flex gap-2">
+        <span class="font-bold" style="color: var(--accent-color); flex-shrink: 0;">✓</span>
+        <p class="font-body text-sm text-secondary"><strong>Daily Expenses = Points:</strong> Use your rewards card for everyday expenses and bills (groceries, utilities, gas) and watch points accumulate rapidly.</p>
+       </div>
+       <div class="flex gap-2">
+        <span class="font-bold" style="color: var(--accent-color); flex-shrink: 0;">✓</span>
+        <p class="font-body text-sm text-secondary"><strong>Sign-Up Bonuses:</strong> New cards often offer thousands of bonus points for meeting minimum spending requirements—often enough to cover flights or hotel stays alone.</p>
+       </div>
+       <div class="flex gap-2">
+        <span class="font-bold" style="color: var(--accent-color); flex-shrink: 0;">✓</span>
+        <p class="font-body text-sm text-secondary"><strong>Category Bonuses:</strong> Earn extra points on travel, dining, and entertainment purchases—categories you're likely already spending on.</p>
+       </div>
+       <div class="flex gap-2">
+        <span class="font-bold" style="color: var(--accent-color); flex-shrink: 0;">✓</span>
+        <p class="font-body text-sm text-secondary"><strong>Work the System Responsibly:</strong> Pay off your balance completely each month to avoid interest charges. The points savings should never cost you more in interest than you save.</p>
+       </div>
+       <div class="flex gap-2">
+        <span class="font-bold" style="color: var(--accent-color); flex-shrink: 0;">✓</span>
+        <p class="font-body text-sm text-secondary"><strong>Real Travel Savings:</strong> Points earned over 6-12 months can cover a significant portion of your procedure's travel costs—flights, hotels, or upgrade perks—reducing the financial burden of your trip.</p>
+       </div>
+      </div>
+      <p class="font-body text-xs text-secondary mt-4 pt-3 border-t border-purple-200" style="border-top-color: rgba(102, 126, 234, 0.2);">The key: Only charge what you'd normally spend each month, pay in full, and let points work in your favor toward your beauty procedure goal!</p>
+     </div>
+    </section>
+    <section id="tab-medication-tracker" class="tab-content hidden">
+     <div style="background: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-color-2) 100%); padding: 1.5rem; border-radius: 12px; margin-bottom: 2rem; color: white; box-shadow: 0 8px 24px rgba(102, 126, 234, 0.15); text-align: center;">
+      <h2 class="font-heading text-3xl font-bold mb-2">Medication &amp; Supplement Tracker</h2>
+      <p class="font-body text-sm opacity-90">Keep a complete record of all medications, supplements, and prescriptions</p>
+     </div>
+     <div class="card p-5 mb-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+       <div>
+        <label class="block font-body text-sm text-secondary mb-1">Patient Name</label><input type="text" id="med-patient-name" class="w-full" placeholder="Enter patient name">
+       </div>
+       <div>
+        <label class="block font-body text-sm text-secondary mb-1">Date</label><input type="date" id="med-tracker-date" class="w-full">
+       </div>
+      </div>
+     </div>
+     <div class="card p-5 mb-6">
+      <h3 class="font-heading text-lg font-semibold text-primary mb-4">Add Medication or Supplement</h3>
+      <form id="med-add-form" class="space-y-4">
+       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
+        <div>
+         <label class="block font-body text-xs font-medium text-secondary mb-1">Name</label><input type="text" id="med-name-input" class="w-full" placeholder="Medication name" required>
+        </div>
+        <div>
+         <label class="block font-body text-xs font-medium text-secondary mb-1">Type</label><select id="med-type-input" class="w-full" required><option value="">Select type</option><option value="Prescription">Prescription</option><option value="Over-the-Counter">Over-the-Counter</option><option value="Supplement">Supplement</option><option value="Herbal">Herbal</option><option value="Vitamin">Vitamin</option><option value="Other">Other</option></select>
+        </div>
+        <div>
+         <label class="block font-body text-xs font-medium text-secondary mb-1">Strength</label><input type="text" id="med-strength-input" class="w-full" placeholder="e.g., 500mg">
+        </div>
+        <div>
+         <label class="block font-body text-xs font-medium text-secondary mb-1">Dosage/Frequency</label><input type="text" id="med-dosage-input" class="w-full" placeholder="e.g., 1 tablet twice daily">
+        </div>
+       </div>
+       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
+        <div>
+         <label class="block font-body text-xs font-medium text-secondary mb-1">Start Date</label><input type="date" id="med-start-date-input" class="w-full">
+        </div>
+        <div>
+         <label class="block font-body text-xs font-medium text-secondary mb-1">End Date</label><input type="date" id="med-end-date-input" class="w-full">
+        </div>
+        <div>
+         <label class="block font-body text-xs font-medium text-secondary mb-1">Purpose</label><input type="text" id="med-purpose-input" class="w-full" placeholder="e.g., Pain relief">
+        </div>
+        <div>
+         <label class="block font-body text-xs font-medium text-secondary mb-1">Notes</label><input type="text" id="med-notes-input" class="w-full" placeholder="Additional notes">
+        </div>
+       </div>
+       <div class="flex gap-3">
+        <button type="submit" class="btn-primary px-4 py-2 rounded font-body text-sm">Add Medication</button><button type="button" id="med-clear-btn" class="btn-secondary px-4 py-2 rounded font-body text-sm">Clear Form</button>
+       </div>
+      </form>
+      <div id="med-form-message" class="mt-3 text-sm font-medium hidden"></div>
+     </div>
+     <div class="card p-5 mb-6">
+      <div class="flex justify-between items-center mb-4">
+       <h3 class="font-heading text-lg font-semibold text-primary">Current Medications</h3><button id="med-print-btn" class="btn-primary px-4 py-2 rounded font-body text-sm font-medium">Export &amp; Print</button>
+      </div>
+      <div class="overflow-x-auto">
+       <table class="w-full min-w-max">
+        <thead>
+         <tr style="background: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-color-2) 100%); color: white;">
+          <th class="px-3 py-3 text-left text-xs font-semibold tracking-wide">Name</th>
+          <th class="px-3 py-3 text-left text-xs font-semibold tracking-wide">Type</th>
+          <th class="px-3 py-3 text-left text-xs font-semibold tracking-wide">Strength</th>
+          <th class="px-3 py-3 text-left text-xs font-semibold tracking-wide">Dosage</th>
+          <th class="px-3 py-3 text-left text-xs font-semibold tracking-wide">Start Date</th>
+          <th class="px-3 py-3 text-left text-xs font-semibold tracking-wide">End Date</th>
+          <th class="px-3 py-3 text-left text-xs font-semibold tracking-wide">Purpose</th>
+          <th class="px-3 py-3 text-left text-xs font-semibold tracking-wide">Notes</th>
+          <th class="px-3 py-3 text-center text-xs font-semibold tracking-wide">Action</th>
+         </tr>
+        </thead>
+        <tbody id="med-table-body">
+         <tr id="med-empty-row">
+          <td colspan="9" class="px-4 py-8 text-center text-secondary italic">No medications added yet.</td>
+         </tr>
+        </tbody>
+       </table>
+      </div>
+     </div>
+    </section>
+    <section id="tab-receipt-log" class="tab-content hidden">
+     <div style="background: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-color-2) 100%); padding: 1.5rem; border-radius: 12px; margin-bottom: 2rem; color: white; box-shadow: 0 8px 24px rgba(102, 126, 234, 0.15);">
+      <h2 class="font-heading text-3xl font-bold mb-2">Receipt Log</h2>
+      <p class="font-body text-sm opacity-90">Keep track of all your procedure-related expenses with receipts and documentation</p>
+     </div>
+     <div class="card p-5 mb-6">
+      <h3 class="font-heading text-lg font-semibold text-primary mb-4">Add New Receipt</h3>
+      <form id="receipt-form" class="space-y-4">
+       <div>
+        <label for="receipt-category" class="block font-body text-sm text-secondary mb-1">Category</label><select id="receipt-category" class="w-full"><option value="procedure">Procedure</option><option value="surgeon fee">Surgeon Fee</option><option value="anesthesia">Anesthesia</option><option value="facility fee">Facility Fee</option><option value="pre-op tests">Pre-op Tests</option><option value="post-op meds">Post-op Meds</option><option value="compression garments">Compression Garments</option><option value="follow-up visits">Follow-up Visits</option><option value="travel - flights">Travel - Flights</option><option value="travel - ground">Travel - Ground</option><option value="accommodation">Accommodation</option><option value="meals">Meals</option><option value="child care">Child Care</option><option value="time off work">Time Off Work</option><option value="other">Other</option></select>
+       </div>
+       <div class="grid grid-cols-2 gap-4">
+        <div>
+         <label for="receipt-amount" class="block font-body text-sm text-secondary mb-1">Amount Paid</label><input type="number" id="receipt-amount" class="w-full" placeholder="0.00" step="0.01" min="0" required>
+        </div>
+        <div>
+         <label for="receipt-date" class="block font-body text-sm text-secondary mb-1">Date</label><input type="date" id="receipt-date" class="w-full" required>
+        </div>
+       </div>
+       <div>
+        <label for="receipt-image-link" class="block font-body text-sm text-secondary mb-1">Receipt Image Link (Optional)</label><input type="url" id="receipt-image-link" class="w-full" placeholder="Paste image URL from Google Drive, Dropbox, etc.">
+        <p class="font-body text-xs text-secondary mt-1">Optional: Paste a link to your receipt image from cloud storage. You remain in control of the image.</p>
+       </div>
+       <div>
+        <label for="receipt-notes" class="block font-body text-sm text-secondary mb-1">Additional Notes</label><textarea id="receipt-notes" class="w-full" placeholder="Payment method, insurance details, follow-up appointments..." rows="3"></textarea>
+       </div><button type="submit" class="btn-primary px-4 py-2 rounded font-body text-sm">Add Receipt</button>
+      </form>
+     </div>
+     <div class="card p-6">
+      <div class="flex justify-between items-start mb-6">
+       <div>
+        <h3 class="font-heading text-xl font-semibold text-primary">Saved Receipts</h3>
+        <p class="font-body text-xs text-secondary mt-1" id="receipts-count">0 receipts logged</p>
+       </div>
+       <div class="text-right bg-gradient-to-br from-blue-50 to-purple-50 px-4 py-3 rounded-lg border border-blue-100">
+        <p class="font-body text-xs text-secondary mb-1 uppercase tracking-wide">Total Spent</p>
+        <p class="font-heading text-2xl font-bold text-primary" id="receipts-total-amount">$0.00</p>
+       </div>
+      </div>
+      <div id="receipts-container" class="grid gap-4" style="grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));">
+       <p class="font-body text-sm text-secondary italic col-span-full text-center py-8">No receipts saved yet.</p>
+      </div>
+      <div id="receipts-limit-warning" class="hidden mt-6 p-4 rounded-lg bg-red-50 border-l-4 border-red-500">
+       <p class="font-body text-sm text-red-700 font-medium">⚠️ Maximum limit of 999 receipts reached. Please delete some receipts to add more.</p>
+      </div>
+     </div>
+    </section>
+    <section id="tab-photo-log" class="tab-content hidden">
+     <div class="w-full min-h-full px-3 py-4 md:px-6">
+      <!-- Header Banner -->
+      <div style="background: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-color-2) 100%); padding: 2rem 1.5rem; border-radius: 12px; margin-bottom: 2rem; color: white; box-shadow: 0 8px 24px rgba(102, 126, 234, 0.15); text-align: center;">
+       <h2 class="font-heading text-3xl font-bold mb-1">My Beauty Journey</h2>
+       <p class="font-body text-sm opacity-90">Document your transformation with photos and notes</p>
+      </div><!-- Info Cards -->
+      <div class="grid md:grid-cols-2 gap-4 mb-8 max-w-3xl mx-auto">
+       <div class="card p-4 border-l-4" style="border-left-color: var(--accent-color);">
+        <h4 class="font-heading font-semibold text-primary mb-2 text-sm">How It Works</h4>
+        <p class="font-body text-xs text-secondary leading-relaxed">Upload photos directly or paste cloud storage links (Google Drive, Dropbox). Organize by Before, Recovery, or After to track your journey visually.</p>
+       </div>
+       <div class="card p-4 border-l-4" style="border-left-color: #f59e0b;">
+        <h4 class="font-heading font-semibold text-primary mb-2 text-sm">Browser Storage</h4>
+        <p class="font-body text-xs text-secondary leading-relaxed">Uploaded photos stay only in this browser. Cloud links remain accessible from any device. Clear your browser data and uploads disappear.</p>
+       </div>
+      </div><!-- Add New Photo Card -->
+      <div class="max-w-lg mx-auto mb-10 p-5 rounded-2xl shadow-md card" style="background: linear-gradient(135deg, #f9fafb 0%, #ffffff 100%); border: 2px solid #e2e8f0;">
+       <h3 class="font-heading text-lg font-semibold mb-4 text-primary text-center">Add Photo Entry</h3>
+       <form id="add-entry-form" class="space-y-3">
+        <div class="grid grid-cols-2 gap-3">
+         <div>
+          <label for="photo-type" class="block font-body text-xs font-medium mb-2 text-secondary">Photo Type</label> <select id="photo-type" class="w-full px-3 py-2 rounded-lg font-body text-xs focus:outline-none focus:ring-2 transition-all duration-300" style="background-color: var(--bg-light); color: var(--text-primary); border: 2px solid transparent;" onfocus="this.style.borderColor='var(--accent-color)'" onblur="this.style.borderColor='transparent'"> <option value="before">Before</option> <option value="recovery">Recovery</option> <option value="after">After</option> </select>
+         </div>
+         <div>
+          <label for="photo-date" class="block font-body text-xs font-medium mb-2 text-secondary">Date</label> <input type="date" id="photo-date" class="w-full px-3 py-2 rounded-lg font-body text-xs focus:outline-none focus:ring-2 transition-all duration-300" style="background-color: var(--bg-light); color: var(--text-primary); border: 2px solid transparent;" onfocus="this.style.borderColor='var(--accent-color)'" onblur="this.style.borderColor='transparent'">
+         </div>
+        </div><!-- Upload or Link Toggle -->
+        <div class="mb-3">
+         <div class="flex gap-2 mb-3">
+          <button type="button" id="upload-mode-btn" class="flex-1 py-2 px-3 rounded-lg font-body text-xs font-medium transition-all duration-300" style="background: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-color-2) 100%); color: white;">Upload Photo</button> <button type="button" id="link-mode-btn" class="flex-1 py-2 px-3 rounded-lg font-body text-xs font-medium transition-all duration-300" style="background-color: #edf2f7; color: var(--text-primary);">Use Link Instead</button>
+         </div>
+        </div><!-- Upload area -->
+        <div id="upload-section">
+         <label class="block font-body text-xs font-medium mb-2 text-secondary">Upload Photo</label>
+         <div id="upload-area" class="relative border-2 border-dashed rounded-xl p-6 text-center cursor-pointer transition-all duration-300 hover:border-opacity-100" style="border-color: #a4a3cf; background-color: var(--bg-light);">
+          <input type="file" id="photo-input" accept="image/*" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
+          <div id="upload-placeholder" style="display: block;">
+           <p class="font-body font-medium" style="color: var(--accent-color);">Click or drag to upload a photo</p>
+           <p class="font-body text-sm mt-2" style="color: #a4a3cf;">JPG, PNG or GIF</p>
+          </div>
+          <div id="preview-container" class="hidden" style="display: none;">
+           <img id="photo-preview" class="max-h-48 mx-auto rounded-lg" alt="Preview">
+           <p class="font-body text-sm mt-3" style="color: var(--accent-color);">Photo selected</p>
+          </div>
+         </div>
+        </div><!-- Link section -->
+        <div id="link-section" class="hidden">
+         <label class="block font-body text-xs font-medium mb-2 text-secondary">Cloud Storage Link</label> <input type="url" id="photo-link-input" placeholder="https://www.dropbox.com/..." class="w-full px-3 py-2 rounded-lg font-body text-xs focus:outline-none focus:ring-2 transition-all duration-300" style="background-color: var(--bg-light); color: var(--text-primary); border: 2px solid transparent;" onfocus="this.style.borderColor='var(--accent-color)'" onblur="this.style.borderColor='transparent'">
+         <p class="font-body text-xs text-secondary mt-1">For cloud links, use Dropbox <span style="font-weight: 500;">view-only share links</span>. Your photos will display directly in this log.</p>
+         <p class="font-body text-xs text-secondary mt-1">Tip: In Dropbox, right-click a photo → Copy link, then paste it here.</p>
+        </div>
+        <div>
+         <label for="notes" class="block font-body text-xs font-medium mb-2 text-secondary">Notes</label> <textarea id="notes" rows="3" placeholder="Add your thoughts..." class="w-full px-3 py-2 rounded-lg font-body text-xs resize-none focus:outline-none focus:ring-2 transition-all duration-300" style="background-color: var(--bg-light); color: var(--text-primary); border: 2px solid transparent;" onfocus="this.style.borderColor='var(--accent-color)'" onblur="this.style.borderColor='transparent'"></textarea>
+        </div><button type="submit" id="save-btn" class="btn-primary w-full py-3 rounded-lg font-body font-semibold text-sm transition-all duration-300 hover:opacity-90"> Save Entry </button>
+       </form>
+      </div><!-- Photo Grids -->
+      <div class="max-w-5xl mx-auto">
+       <div class="mb-8">
+        <h4 class="font-heading text-sm font-semibold mb-4 px-2 text-primary">Before</h4>
+        <div id="before-grid" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-3">
+         <div class="empty-state p-6 rounded-xl text-center card" style="background: linear-gradient(135deg, #f9fafb 0%, #ffffff 100%); border: 2px dashed #e2e8f0;">
+          <p class="font-body text-xs text-secondary">No before photos yet</p>
+         </div>
+        </div>
+       </div>
+       <div class="mb-8">
+        <h4 class="font-heading text-sm font-semibold mb-4 px-2 text-primary">Recovery</h4>
+        <div id="recovery-grid" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-3">
+         <div class="empty-state p-6 rounded-xl text-center card" style="background: linear-gradient(135deg, #f9fafb 0%, #ffffff 100%); border: 2px dashed #e2e8f0;">
+          <p class="font-body text-xs text-secondary">No recovery photos yet</p>
+         </div>
+        </div>
+       </div>
+       <div class="mb-8">
+        <h4 class="font-heading text-sm font-semibold mb-4 px-2 text-primary">After</h4>
+        <div id="after-grid" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-3">
+         <div class="empty-state p-6 rounded-xl text-center card" style="background: linear-gradient(135deg, #f9fafb 0%, #ffffff 100%); border: 2px dashed #e2e8f0;">
+          <p class="font-body text-xs text-secondary">No after photos yet</p>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </section>
+    <section id="tab-document-vault" class="tab-content hidden">
+     <div class="max-w-6xl mx-auto">
+      <!-- Header -->
+      <div style="background: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-color-2) 100%); padding: 1.5rem; border-radius: 12px; margin-bottom: 2rem; color: white; box-shadow: 0 8px 24px rgba(102, 126, 234, 0.15);">
+       <h2 class="font-heading text-3xl font-bold mb-1">Document Vault</h2>
+       <p class="font-body text-sm opacity-90">Organize and track your important document links securely</p>
+      </div><!-- Security Reminder -->
+      <div class="rounded-lg p-3 mb-6 border-l-4 card" style="border-left-color: #667eea;">
+       <p class="font-body text-xs text-secondary"><strong style="color: #667eea;">Security Reminder:</strong> This tracker stores links and descriptions only. Always store actual documents in secure cloud storage (Google Drive, Dropbox, etc.) and paste the sharing links here.</p>
+      </div><!-- Add Document Form -->
+      <div class="card p-6 mb-8">
+       <h2 class="font-heading text-lg font-semibold text-primary mb-4">Add Document</h2>
+       <form id="vault-add-document-form" class="space-y-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+         <div>
+          <label for="vault-doc-name" class="block font-body text-sm font-medium mb-1 text-secondary">Document Name</label> <input type="text" id="vault-doc-name" required class="w-full px-3 py-2 rounded border text-sm focus:outline-none focus:ring-2 focus:ring-blue-400" style="border-color: #cbd5e1; background-color: #ffffff;" placeholder="Enter document name">
+         </div>
+         <div>
+          <label for="vault-doc-category" class="block font-body text-sm font-medium mb-1 text-secondary">Category</label> <select id="vault-doc-category" required class="w-full px-3 py-2 rounded border text-sm focus:outline-none focus:ring-2 focus:ring-blue-400" style="border-color: #cbd5e1; background-color: #ffffff;"> <option value="">Select category</option> <option value="Pre-Procedure">Pre-Procedure</option> <option value="Financial">Financial</option> <option value="Post-Procedure">Post-Procedure</option> </select>
+         </div>
+         <div>
+          <label for="vault-doc-date" class="block font-body text-sm font-medium mb-1 text-secondary">Date</label> <input type="date" id="vault-doc-date" class="w-full px-3 py-2 rounded border text-sm focus:outline-none focus:ring-2 focus:ring-blue-400" style="border-color: #cbd5e1; background-color: #ffffff;">
+         </div>
+         <div class="md:col-span-2">
+          <label for="vault-doc-link" class="block font-body text-sm font-medium mb-1 text-secondary">Cloud Link/Location</label> <input type="url" id="vault-doc-link" class="w-full px-3 py-2 rounded border text-sm focus:outline-none focus:ring-2 focus:ring-blue-400" style="border-color: #cbd5e1; background-color: #ffffff;" placeholder="https://drive.google.com/...">
+         </div>
+         <div class="flex items-end">
+          <label class="flex items-center gap-2 cursor-pointer"> <input type="checkbox" id="vault-doc-important" class="checkbox-custom"> <span class="font-body text-sm font-medium text-primary">Mark as Important</span> </label>
+         </div>
+         <div class="md:col-span-3">
+          <label for="vault-doc-description" class="block font-body text-sm font-medium mb-1 text-secondary">Description</label> <textarea id="vault-doc-description" rows="2" class="w-full px-3 py-2 rounded border text-sm focus:outline-none focus:ring-2 focus:ring-blue-400" style="border-color: #cbd5e1; background-color: #ffffff;" placeholder="Brief description of the document"></textarea>
+         </div>
+        </div>
+        <div class="flex gap-3 pt-2">
+         <button type="submit" id="vault-submit-btn" class="btn-primary px-6 py-2 rounded font-body text-sm font-medium"> Add Document </button> <button type="reset" class="btn-secondary px-6 py-2 rounded font-body text-sm font-medium"> Clear </button>
+        </div>
+       </form>
+       <p id="vault-limit-warning" class="hidden text-sm mt-3 font-medium text-red-600">⚠️ Maximum limit of 999 documents reached. Please delete some documents first.</p>
+      </div><!-- Document Categories -->
+      <div id="vault-documents-container" class="space-y-6">
+       <!-- Pre-Procedure Section -->
+       <section class="card overflow-hidden">
+        <div class="px-5 py-4 border-b" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-color: #e2e8f0;">
+         <h3 class="font-heading font-semibold text-lg text-white">Pre-Procedure</h3>
+        </div>
+        <div id="vault-pre-procedure-list" class="divide-y" style="border-color: #e2e8f0;">
+         <!-- Documents will be rendered here -->
+        </div>
+        <div id="vault-pre-procedure-empty" class="p-5 text-center text-sm text-secondary">
+         No documents added yet
+        </div>
+       </section><!-- Financial Section -->
+       <section class="card overflow-hidden">
+        <div class="px-5 py-4 border-b" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-color: #e2e8f0;">
+         <h3 class="font-heading font-semibold text-lg text-white">Financial</h3>
+        </div>
+        <div id="vault-financial-list" class="divide-y" style="border-color: #e2e8f0;">
+         <!-- Documents will be rendered here -->
+        </div>
+        <div id="vault-financial-empty" class="p-5 text-center text-sm text-secondary">
+         No documents added yet
+        </div>
+       </section><!-- Post-Procedure Section -->
+       <section class="card overflow-hidden">
+        <div class="px-5 py-4 border-b" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-color: #e2e8f0;">
+         <h3 class="font-heading font-semibold text-lg text-white">Post-Procedure</h3>
+        </div>
+        <div id="vault-post-procedure-list" class="divide-y" style="border-color: #e2e8f0;">
+         <!-- Documents will be rendered here -->
+        </div>
+        <div id="vault-post-procedure-empty" class="p-5 text-center text-sm text-secondary">
+         No documents added yet
+        </div>
+       </section>
+      </div><!-- Reference Checklist -->
+      <div class="mt-8 card p-6">
+       <h2 class="font-heading font-semibold text-lg text-primary mb-4">Document Organization Checklist</h2>
+       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div>
+         <h4 class="font-heading font-medium mb-3 pb-2 border-b text-primary border-gray-200">Pre-Procedure</h4>
+         <ul class="space-y-2 text-sm">
+          <li class="flex items-start gap-2 cursor-pointer group hover:opacity-80 transition-opacity"><input type="checkbox" class="checkbox-custom checklist-item mt-0.5 flex-shrink-0"><span class="font-body text-primary group-hover:underline">Signed consent forms</span></li>
+          <li class="flex items-start gap-2 cursor-pointer group hover:opacity-80 transition-opacity"><input type="checkbox" class="checkbox-custom checklist-item mt-0.5 flex-shrink-0"><span class="font-body text-primary group-hover:underline">Medical history questionnaire</span></li>
+          <li class="flex items-start gap-2 cursor-pointer group hover:opacity-80 transition-opacity"><input type="checkbox" class="checkbox-custom checklist-item mt-0.5 flex-shrink-0"><span class="font-body text-primary group-hover:underline">Pre-op lab results</span></li>
+          <li class="flex items-start gap-2 cursor-pointer group hover:opacity-80 transition-opacity"><input type="checkbox" class="checkbox-custom checklist-item mt-0.5 flex-shrink-0"><span class="font-body text-primary group-hover:underline">Surgeon's contact info</span></li>
+          <li class="flex items-start gap-2 cursor-pointer group hover:opacity-80 transition-opacity"><input type="checkbox" class="checkbox-custom checklist-item mt-0.5 flex-shrink-0"><span class="font-body text-primary group-hover:underline">Anesthesia forms</span></li>
+         </ul>
+        </div>
+        <div>
+         <h4 class="font-heading font-medium mb-3 pb-2 border-b text-primary border-gray-200">Financial</h4>
+         <ul class="space-y-2 text-sm">
+          <li class="flex items-start gap-2 cursor-pointer group hover:opacity-80 transition-opacity"><input type="checkbox" class="checkbox-custom checklist-item mt-0.5 flex-shrink-0"><span class="font-body text-primary group-hover:underline">Payment receipts</span></li>
+          <li class="flex items-start gap-2 cursor-pointer group hover:opacity-80 transition-opacity"><input type="checkbox" class="checkbox-custom checklist-item mt-0.5 flex-shrink-0"><span class="font-body text-primary group-hover:underline">Insurance pre-authorization</span></li>
+          <li class="flex items-start gap-2 cursor-pointer group hover:opacity-80 transition-opacity"><input type="checkbox" class="checkbox-custom checklist-item mt-0.5 flex-shrink-0"><span class="font-body text-primary group-hover:underline">Financing agreements</span></li>
+          <li class="flex items-start gap-2 cursor-pointer group hover:opacity-80 transition-opacity"><input type="checkbox" class="checkbox-custom checklist-item mt-0.5 flex-shrink-0"><span class="font-body text-primary group-hover:underline">Itemized cost breakdown</span></li>
+         </ul>
+        </div>
+        <div>
+         <h4 class="font-heading font-medium mb-3 pb-2 border-b text-primary border-gray-200">Post-Procedure</h4>
+         <ul class="space-y-2 text-sm">
+          <li class="flex items-start gap-2 cursor-pointer group hover:opacity-80 transition-opacity"><input type="checkbox" class="checkbox-custom checklist-item mt-0.5 flex-shrink-0"><span class="font-body text-primary group-hover:underline">Post-op instructions</span></li>
+          <li class="flex items-start gap-2 cursor-pointer group hover:opacity-80 transition-opacity"><input type="checkbox" class="checkbox-custom checklist-item mt-0.5 flex-shrink-0"><span class="font-body text-primary group-hover:underline">Prescription records</span></li>
+          <li class="flex items-start gap-2 cursor-pointer group hover:opacity-80 transition-opacity"><input type="checkbox" class="checkbox-custom checklist-item mt-0.5 flex-shrink-0"><span class="font-body text-primary group-hover:underline">Follow-up appointment notes</span></li>
+          <li class="flex items-start gap-2 cursor-pointer group hover:opacity-80 transition-opacity"><input type="checkbox" class="checkbox-custom checklist-item mt-0.5 flex-shrink-0"><span class="font-body text-primary group-hover:underline">Complication records (if any)</span></li>
+          <li class="flex items-start gap-2 cursor-pointer group hover:opacity-80 transition-opacity"><input type="checkbox" class="checkbox-custom checklist-item mt-0.5 flex-shrink-0"><span class="font-body text-primary group-hover:underline">Final results documentation</span></li>
+         </ul>
+        </div>
+       </div>
+      </div>
+     </div>
+    </section><!-- Delete Confirmation Modal for Document Vault -->
+    <div id="vault-delete-modal" class="hidden fixed inset-0 flex items-center justify-center z-50" style="background-color: rgba(45, 54, 70, 0.5);">
+     <div class="rounded-lg p-6 max-w-sm mx-4 shadow-xl card">
+      <h3 class="font-heading font-semibold text-lg text-primary mb-2">Delete Document?</h3>
+      <p class="font-body text-sm text-secondary mb-4">This action cannot be undone.</p>
+      <div class="flex gap-3 justify-end">
+       <button id="vault-cancel-delete" class="btn-secondary px-4 py-2 rounded font-body text-sm font-medium">Cancel</button> <button id="vault-confirm-delete" class="btn-primary px-4 py-2 rounded font-body text-sm font-medium">Delete</button>
+      </div>
+     </div>
+    </div>
+   </main><!-- Photo Modal Overlay -->
+   <div id="photo-modal" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 hidden p-4">
+    <div class="max-w-4xl max-h-90vh">
+     <img id="photo-modal-img" class="max-h-90vh w-auto rounded-lg shadow-2xl" alt="Photo">
+    </div>
+   </div>
+  </div>
+  <script>
+    function printSavingsGrid(grid) {
+      const savings = getDataByType('savings');
+      const totalSaved = savings.reduce((sum, s) => sum + (s.amount || 0), 0);
+      const filledBoxes = Math.floor(totalSaved / (grid.amount_per_box || 1));
+      const totalBoxes = grid.total_boxes || Math.ceil((grid.goal_amount || 0) / (grid.amount_per_box || 1));
+
+      const printWindow = window.open('', '', 'height=800,width=900');
+      const today = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+
+      let html = `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <title>Savings Grid Challenge</title>
+          <style>
+            body { font-family: 'Karla', Arial, sans-serif; margin: 20px; color: #2d3748; background: white; }
+            h1 { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; margin: -20px -20px 10px -20px; padding: 20px; }
+            h2 { font-size: 18px; margin-top: 20px; margin-bottom: 15px; color: #2d3748; }
+            .header-info { margin: 20px 0; font-size: 14px; color: #4a5568; }
+            .header-info p { margin: 5px 0; }
+            .grid-container { margin: 30px 0; }
+            .grid { display: grid; grid-template-columns: repeat(10, 1fr); gap: 8px; margin-bottom: 20px; }
+            .box { aspect-ratio: 1; border: 2px solid #cbd5e1; border-radius: 4px; background-color: #e2e8f0; }
+            .box.filled { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-color: #667eea; }
+            .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin: 20px 0; padding: 15px; background-color: #f7fafc; border-radius: 8px; }
+            .stat { text-align: center; }
+            .stat-label { font-size: 12px; color: #718096; text-transform: uppercase; margin-bottom: 5px; }
+            .stat-value { font-size: 20px; font-weight: bold; color: #2d3748; }
+            .footer { margin-top: 30px; font-size: 12px; color: #718096; border-top: 1px solid #cbd5e1; padding-top: 15px; }
+          </style>
+        </head>
+        <body>
+          <h1>Savings Grid Challenge 🎯</h1>
+          <div class="header-info">
+            <p><strong>Goal Amount:</strong> $${grid.goal_amount.toFixed(2)}</p>
+            <p><strong>Amount Per Box:</strong> $${grid.amount_per_box.toFixed(2)}</p>
+            <p><strong>Date Printed:</strong> ${today}</p>
+          </div>
+          
+          <div class="stats">
+            <div class="stat">
+              <div class="stat-label">Filled</div>
+              <div class="stat-value">${filledBoxes}/${totalBoxes}</div>
+            </div>
+            <div class="stat">
+              <div class="stat-label">Saved</div>
+              <div class="stat-value">$${totalSaved.toFixed(2)}</div>
+            </div>
+            <div class="stat">
+              <div class="stat-label">Progress</div>
+              <div class="stat-value">${Math.min(100, Math.round((filledBoxes/totalBoxes)*100))}%</div>
+            </div>
+            <div class="stat">
+              <div class="stat-label">Remaining</div>
+              <div class="stat-value">$${Math.max(0, grid.goal_amount - totalSaved).toFixed(2)}</div>
+            </div>
+          </div>
+
+          <div class="grid-container">
+            <h2>Challenge Grid</h2>
+            <p style="font-size: 12px; margin-bottom: 10px;">Color in each box as you save $${grid.amount_per_box.toFixed(2)}. Print this page and track your progress!</p>
+            <div class="grid">
+      `;
+
+      for (let i = 0; i < totalBoxes; i++) {
+        html += `<div class="box${i < filledBoxes ? ' filled' : ''}"></div>`;
+      }
+
+      html += `
+            </div>
+          </div>
+
+          <div class="footer">
+            <p><strong>Motivation:</strong> Every box represents progress toward your goal. You're doing amazing! 💪</p>
+            <p style="margin-top: 10px;">Print this page monthly to stay motivated and watch your dream get closer!</p>
+          </div>
+        </body>
+        </html>
+      `;
+
+      printWindow.document.write(html);
+      printWindow.document.close();
+      setTimeout(() => {
+        printWindow.print();
+      }, 250);
+    }
+
+    function printTravelBudget(tripDetails) {
+      const expenses = getDataByType('travel-expense');
+      const totalSpent = expenses.reduce((sum, e) => sum + (e.travel_expense_amount || 0), 0);
+      const printWindow = window.open('', '', 'height=800,width=900');
+      const today = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+
+      let html = `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <title>Travel Budget</title>
+          <style>
+            body { font-family: 'Karla', Arial, sans-serif; margin: 20px; color: #2d3748; background: white; }
+            h1 { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; margin: -20px -20px 10px -20px; padding: 20px; }
+            h2 { font-size: 16px; margin-top: 20px; margin-bottom: 12px; color: #2d3748; border-bottom: 2px solid #667eea; padding-bottom: 8px; }
+            .header-info { margin: 20px 0; font-size: 14px; color: #4a5568; }
+            .header-info p { margin: 5px 0; }
+            table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+            th { background-color: #667eea; color: white; padding: 12px; text-align: left; font-weight: bold; font-size: 12px; }
+            td { padding: 10px; border-bottom: 1px solid #e2e8f0; font-size: 13px; }
+            tr:nth-child(even) { background-color: #f7fafc; }
+            .summary { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin: 20px 0; }
+            .summary-box { padding: 15px; background-color: #f7fafc; border-left: 4px solid #667eea; border-radius: 4px; }
+            .summary-label { font-size: 12px; color: #718096; text-transform: uppercase; margin-bottom: 5px; }
+            .summary-value { font-size: 18px; font-weight: bold; color: #2d3748; }
+            .footer { margin-top: 30px; font-size: 12px; color: #718096; border-top: 1px solid #cbd5e1; padding-top: 15px; }
+          </style>
+        </head>
+        <body>
+          <h1>Travel Budget Tracker</h1>
+          <div class="header-info">
+            <p><strong>Destination:</strong> ${escapeHtml(tripDetails.travel_destination)}</p>
+            <p><strong>Procedure:</strong> ${escapeHtml(tripDetails.travel_procedure_name)} at ${escapeHtml(tripDetails.travel_clinic_name)}</p>
+            <p><strong>Travel Dates:</strong> ${escapeHtml(tripDetails.travel_trip_dates)}</p>
+            <p><strong>Date Printed:</strong> ${today}</p>
+          </div>
+
+          <div class="summary">
+            <div class="summary-box">
+              <div class="summary-label">Trip Budget</div>
+              <div class="summary-value">$${(tripDetails.travel_trip_budget || 0).toFixed(2)}</div>
+            </div>
+            <div class="summary-box">
+              <div class="summary-label">Total Spent</div>
+              <div class="summary-value">$${totalSpent.toFixed(2)}</div>
+            </div>
+            <div class="summary-box">
+              <div class="summary-label">Procedure Cost</div>
+              <div class="summary-value">$${(tripDetails.travel_procedure_cost || 0).toFixed(2)}</div>
+            </div>
+            <div class="summary-box">
+              <div class="summary-label">Remaining</div>
+              <div class="summary-value">$${Math.max(0, (tripDetails.travel_trip_budget || 0) - totalSpent).toFixed(2)}</div>
+            </div>
+          </div>
+
+          <h2>Expense Breakdown</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Category</th>
+                <th>Description</th>
+                <th>Amount</th>
+                <th>Currency</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody>
+      `;
+
+      if (expenses.length === 0) {
+        html += '<tr><td colspan="5" style="text-align: center; padding: 20px;">No expenses recorded</td></tr>';
+      } else {
+        expenses.forEach(e => {
+          html += `
+            <tr>
+              <td>${escapeHtml(e.travel_expense_category)}</td>
+              <td>${escapeHtml(e.travel_expense_description)}</td>
+              <td>$${(e.travel_expense_amount || 0).toFixed(2)}</td>
+              <td>${escapeHtml(e.travel_expense_currency)}</td>
+              <td>${escapeHtml(e.travel_expense_date)}</td>
+            </tr>
+          `;
+        });
+      }
+
+      html += `
+            </tbody>
+          </table>
+
+          <div class="footer">
+            <p><strong>Pro Tip:</strong> Keep this printed copy with your travel documents for easy reference during your trip!</p>
+          </div>
+        </body>
+        </html>
+      `;
+
+      printWindow.document.write(html);
+      printWindow.document.close();
+      setTimeout(() => {
+        printWindow.print();
+      }, 250);
+    }
+
+    function printMedicationTracker(meds) {
+      if (!meds || meds.length === 0) return;
+
+      const printWindow = window.open('', '', 'height=800,width=900');
+      const patientName = document.getElementById('med-patient-name').value || 'Patient';
+      const today = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+
+      let html = `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <title>Medication & Supplement Tracker</title>
+          <style>
+            body { font-family: 'Karla', Arial, sans-serif; margin: 20px; color: #2d3748; background: white; }
+            h1 { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; margin: -20px -20px 5px -20px; padding: 20px; }
+            .header-info { margin: 20px 0; font-size: 14px; color: #4a5568; }
+            .header-info p { margin: 5px 0; }
+            table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 12px; }
+            th { background-color: #667eea; color: white; padding: 12px; text-align: left; font-weight: bold; }
+            td { padding: 10px; border-bottom: 1px solid #e2e8f0; }
+            tr:nth-child(even) { background-color: #f7fafc; }
+            .footer { margin-top: 30px; font-size: 12px; color: #718096; border-top: 1px solid #cbd5e1; padding-top: 15px; }
+          </style>
+        </head>
+        <body>
+          <h1>Medication & Supplement Tracker</h1>
+          <div class="header-info">
+            <p><strong>Patient Name:</strong> ${escapeHtml(patientName)}</p>
+            <p><strong>Date Printed:</strong> ${today}</p>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Medication Name</th>
+                <th>Type</th>
+                <th>Strength</th>
+                <th>Dosage</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Purpose</th>
+                <th>Notes</th>
+              </tr>
+            </thead>
+            <tbody>
+      `;
+
+      meds.forEach(m => {
+        const medName = m.medicationName || m.medication_name || '';
+        const medType = m.medicationType || m.medication_type || '-';
+        const medStrength = m.medicationStrength || m.medication_strength || '-';
+        const medDosage = m.medicationDosage || m.medication_dosage || '-';
+        const medStartDate = m.medicationStartDate || m.medication_start_date || '-';
+        const medEndDate = m.medicationEndDate || m.medication_end_date || '-';
+        const medPurpose = m.medicationPurpose || m.medication_purpose || '-';
+        const medNotes = m.medicationNotes || m.medication_notes || '-';
+
+        html += `
+          <tr>
+            <td>${escapeHtml(medName)}</td>
+            <td>${escapeHtml(medType)}</td>
+            <td>${escapeHtml(medStrength)}</td>
+            <td>${escapeHtml(medDosage)}</td>
+            <td>${medStartDate !== '-' ? formatDate(medStartDate) : '-'}</td>
+            <td>${medEndDate !== '-' ? formatDate(medEndDate) : '-'}</td>
+            <td>${escapeHtml(medPurpose)}</td>
+            <td>${escapeHtml(medNotes)}</td>
+          </tr>
+        `;
+      });
+
+      html += `
+            </tbody>
+          </table>
+          <div class="footer">
+            <p><strong>Privacy Notice:</strong> This document contains sensitive personal health information. Please keep it confidential and secure. Do not share with unauthorized individuals.</p>
+            <p>Provide this tracker to your healthcare provider during your appointment.</p>
+          </div>
+        </body>
+        </html>
+      `;
+
+      printWindow.document.write(html);
+      printWindow.document.close();
+      setTimeout(() => {
+        printWindow.print();
+      }, 250);
+    }
+
+    function printConsultationQuestions() {
+      const customQuestions = getDataByType('custom-question');
+      const printWindow = window.open('', '', 'height=800,width=900');
+      
+      let html = `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <title>Consultation Questions</title>
+          <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Karla:wght@400;500;600&display=swap" rel="stylesheet">
+          <style>
+            * { margin: 0; padding: 0; box-sizing: border-box; }
+            body { font-family: 'Karla', Arial, sans-serif; color: #2d3748; background: white; }
+            .container { max-width: 8.5in; margin: 0 auto; padding: 0.35in; }
+            .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 0.2in 0.15in; margin: -0.35in -0.35in 0.2in -0.35in; border-radius: 4px; }
+            h1 { font-family: 'Montserrat', sans-serif; font-size: 24px; font-weight: 800; margin-bottom: 0.04in; letter-spacing: -0.5px; }
+            .subtitle { font-size: 11px; opacity: 0.95; margin: 0; }
+            .section { margin-bottom: 0.18in; page-break-inside: avoid; }
+            .section-header { display: flex; align-items: center; gap: 0.08in; margin-bottom: 0.08in; }
+            .section-icon { width: 0.18in; height: 0.18in; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 3px; flex-shrink: 0; }
+            .section-title { font-family: 'Montserrat', sans-serif; font-size: 11px; font-weight: 700; color: #2d3748; text-transform: uppercase; letter-spacing: 0.5px; margin: 0; }
+            .questions-list { display: grid; grid-template-columns: 1fr 1fr; gap: 0.1in 0.12in; }
+            .single-col { grid-template-columns: 1fr; }
+            .question-item { page-break-inside: avoid; display: flex; gap: 0.08in; align-items: flex-start; }
+            .checkbox { width: 0.16in; height: 0.16in; min-width: 0.16in; border: 1.5px solid #667eea; border-radius: 2px; margin-top: 0.01in; flex-shrink: 0; }
+            .q-text { font-size: 13px; line-height: 1.5; color: #2d3748; }
+            .notes-section { margin-top: 0.18in; page-break-inside: avoid; }
+            .notes-header { display: flex; align-items: center; gap: 0.08in; margin-bottom: 0.1in; }
+            .notes-icon { width: 0.18in; height: 0.18in; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 3px; }
+            .notes-title { font-family: 'Montserrat', sans-serif; font-size: 11px; font-weight: 700; color: #2d3748; text-transform: uppercase; letter-spacing: 0.5px; margin: 0; }
+            .notes-lines { display: flex; flex-direction: column; gap: 0.09in; }
+            .note-line { border-bottom: 1px solid #cbd5e1; height: 0.22in; }
+            .footer { margin-top: 0.15in; padding-top: 0.1in; border-top: 2px solid #e2e8f0; font-size: 9.5px; color: #718096; line-height: 1.4; }
+            .footer p { margin: 0; margin-bottom: 0.04in; }
+            .footer strong { color: #2d3748; }
+            @media print {
+              body { margin: 0; padding: 0; }
+              .container { padding: 0.3in; }
+              .header { margin: -0.3in -0.3in 0.2in -0.3in; }
+            }
+          </style>
+        </head>
+        <body>
+          <div class="container">
+            <div class="header">
+              <h1>Consultation Questions</h1>
+              <p class="subtitle">Bring this to your appointment and check off each question as you ask it</p>
+            </div>
+      `;
+
+      const sections = [
+        {
+          title: 'About the Procedure',
+          questions: [
+            'How many of these procedures have you performed?',
+            'What technique will you use and why?',
+            'How long will the procedure take?',
+            'What results can I realistically expect?'
+          ]
+        },
+        {
+          title: 'Risks & Complications',
+          questions: [
+            'What are the potential risks and complications?',
+            'How do you handle complications if they arise?',
+            'What signs should I watch for after surgery?'
+          ]
+        },
+        {
+          title: 'Recovery',
+          questions: [
+            'What is the typical recovery timeline?',
+            'When can I return to work/normal activities?',
+            'What kind of pain or discomfort should I expect?',
+            'What aftercare will I need?'
+          ]
+        },
+        {
+          title: 'Cost & Logistics',
+          questions: [
+            'What is included in the quoted price?',
+            'Are there any additional fees I should expect?',
+            'What is your revision policy?',
+            'How many follow-up appointments are included?'
+          ]
+        }
+      ];
+
+      sections.forEach(section => {
+        const isTwoCol = section.questions.length >= 3;
+        html += `
+          <div class="section">
+            <div class="section-header">
+              <div class="section-icon"></div>
+              <h3 class="section-title">${section.title}</h3>
+            </div>
+            <div class="questions-list ${!isTwoCol ? 'single-col' : ''}">
+        `;
+        section.questions.forEach(q => {
+          html += `
+            <div class="question-item">
+              <div class="checkbox"></div>
+              <div class="q-text">${escapeHtml(q)}</div>
+            </div>
+          `;
+        });
+        html += `
+            </div>
+          </div>
+        `;
+      });
+
+      if (customQuestions.length > 0) {
+        html += `
+          <div class="section">
+            <div class="section-header">
+              <div class="section-icon"></div>
+              <h3 class="section-title">Your Custom Questions</h3>
+            </div>
+            <div class="questions-list single-col">
+        `;
+        customQuestions.forEach(q => {
+          html += `
+            <div class="question-item">
+              <div class="checkbox"></div>
+              <div class="q-text">${escapeHtml(q.question_text)}</div>
+            </div>
+          `;
+        });
+        html += `
+            </div>
+          </div>
+        `;
+      }
+
+      html += `
+            <div class="notes-section">
+              <div class="notes-header">
+                <div class="notes-icon"></div>
+                <h3 class="notes-title">Notes from Consultation</h3>
+              </div>
+              <div class="notes-lines">
+                <div class="note-line"></div>
+                <div class="note-line"></div>
+                <div class="note-line"></div>
+                <div class="note-line"></div>
+                <div class="note-line"></div>
+                <div class="note-line"></div>
+              </div>
+            </div>
+
+            <div class="footer">
+              <p><strong>✓ Preparation Tip:</strong> Review your questions the night before to feel confident and organized.</p>
+              <p><strong>✓ During Your Appointment:</strong> Check off questions as you ask them and take notes on responses in the space above.</p>
+              <p><strong>✓ Follow-Up:</strong> Keep this checklist with your procedure documents for your records.</p>
+            </div>
+          </div>
+        </body>
+        </html>
+      `;
+
+      printWindow.document.write(html);
+      printWindow.document.close();
+      setTimeout(() => {
+        printWindow.print();
+      }, 250);
+    }
+    let allData = [];
+    let isLoading = false;
+
+    const dataHandler = {
+      onDataChanged(data) {
+        allData = data;
+        updateAllDisplays();
+      }
+    };
+
+    async function initializeApp() {
+      const result = await window.dataSdk.init(dataHandler);
+      if (result.isOk) {
+        sdkInitialized = true;
+      }
+    }
+
+    function formatCurrency(amount) {
+      return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount);
+    }
+
+    function formatDate(dateStr) {
+      const date = new Date(dateStr + 'T00:00:00');
+      return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+    }
+
+    function getDataByType(type) {
+      return allData.filter(item => item.type === type);
+    }
+
+    function showLoading(btn, text) {
+      btn.dataset.originalText = btn.textContent;
+      btn.textContent = text;
+      btn.disabled = true;
+    }
+
+    function hideLoading(btn) {
+      btn.textContent = btn.dataset.originalText || 'Submit';
+      btn.disabled = false;
+    }
+
+    function escapeHtml(text) {
+      if (!text) return '';
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    function showErrorMessage(message) {
+      const errorModal = document.createElement('div');
+      errorModal.className = 'fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 p-4';
+      errorModal.innerHTML = `
+        <div class="bg-white rounded-xl shadow-2xl max-w-sm w-full">
+          <div class="p-6">
+            <div class="flex items-start gap-4">
+              <div class="flex-shrink-0 w-12 h-12 rounded-lg flex items-center justify-center" style="background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);">
+                <span style="font-size: 24px;">ℹ️</span>
+              </div>
+              <div class="flex-1">
+                <p class="font-body text-sm text-secondary leading-relaxed">${escapeHtml(message)}</p>
+              </div>
+            </div>
+            <button class="modal-close w-full mt-6 px-4 py-2.5 rounded-lg font-body text-sm font-medium transition-all hover:opacity-90" style="background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); color: white;">Close</button>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(errorModal);
+      const closeBtn = errorModal.querySelector('.modal-close');
+      if (closeBtn) {
+        closeBtn.addEventListener('click', () => errorModal.remove());
+      }
+      errorModal.addEventListener('click', (e) => {
+        if (e.target === errorModal) errorModal.remove();
+      });
+    }
+
+    // Tab switching
+    function initializeTabs() {
+      const buttons = document.querySelectorAll('.sidebar-item');
+      buttons.forEach(btn => {
+        btn.addEventListener('click', function(e) {
+          e.preventDefault();
+          const tabName = this.getAttribute('data-tab');
+          document.querySelectorAll('.tab-content').forEach(tab => tab.classList.add('hidden'));
+          buttons.forEach(b => b.classList.remove('active'));
+          const targetTab = document.getElementById(`tab-${tabName}`);
+          if (targetTab) {
+            targetTab.classList.remove('hidden');
+            this.classList.add('active');
+          }
+        });
+      });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initializeTabs);
+    } else {
+      initializeTabs();
+    }
+
+    // Initialize app
+    initializeApp();
+
+    // All data update functions
+    function updateAllDisplays() {
+      updateGoal();
+      updateCosts();
+      updateSavings();
+      updateFunds();
+      updateExpenses();
+      updatePhysicians();
+      updateTravelBudget();
+      updateMedications();
+      updateReceipts();
+      updatePhotoLog();
+      updateConsultationQuestions();
+      updateGrid();
+      updateDocumentVault();
+    }
+
+    // Goal
+    function updateGoal() {
+      const goal = getDataByType('goal')[0];
+      const savings = getDataByType('savings');
+      const totalSaved = savings.reduce((sum, s) => sum + (s.amount || 0), 0);
+
+      if (!goal) {
+        document.getElementById('goal-form').classList.remove('hidden');
+        document.getElementById('goal-display').classList.add('hidden');
+        return;
+      }
+
+      document.getElementById('goal-form').classList.add('hidden');
+      document.getElementById('goal-display').classList.remove('hidden');
+
+      const goalAmount = goal.goal_amount || 0;
+      const saved = Math.min(totalSaved, goalAmount);
+      const percent = goalAmount > 0 ? Math.round((saved / goalAmount) * 100) : 0;
+
+      document.getElementById('display-procedure').textContent = goal.procedure_name || 'Procedure';
+      document.getElementById('display-date').textContent = goal.target_date ? formatDate(goal.target_date) : 'N/A';
+      document.getElementById('display-percent').textContent = percent + '%';
+      document.getElementById('display-progress').style.width = percent + '%';
+      document.getElementById('display-goal').textContent = formatCurrency(goalAmount);
+      document.getElementById('display-saved').textContent = formatCurrency(saved);
+      document.getElementById('display-remaining').textContent = formatCurrency(Math.max(0, goalAmount - saved));
+    }
+
+
+
+    document.getElementById('goal-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (isLoading) return;
+
+      const btn = e.target.querySelector('button[type="submit"]');
+      isLoading = true;
+      showLoading(btn, 'Saving...');
+
+      const result = await window.dataSdk.create({
+        type: 'goal',
+        procedure_name: document.getElementById('goal-procedure').value,
+        target_date: document.getElementById('goal-target-date').value,
+        goal_amount: parseFloat(document.getElementById('goal-amount').value)
+      });
+
+      isLoading = false;
+      hideLoading(btn);
+
+      if (result.isOk) {
+        const photoType = document.getElementById('photo-type').value;
+        const gridId = `${photoType}-grid`;
+        const grid = document.getElementById(gridId);
+
+        if (grid && currentPhotoData) {
+          const empty = grid.querySelector('.empty-state');
+          if (empty) empty.remove();
+
+          const wrapper = document.createElement('div');
+          wrapper.className = 'overflow-hidden rounded-lg photo-thumbnail cursor-pointer hover:opacity-75 transition-opacity';
+          wrapper.dataset.photoId = result.data.__backendId || 'temp';
+
+          const img = document.createElement('img');
+          img.src = currentPhotoData;
+          img.className = 'w-full h-full object-cover rounded-lg';
+
+          wrapper.appendChild(img);
+          grid.appendChild(wrapper);
+          
+          // Add click listener to new thumbnail
+          wrapper.addEventListener('click', function() {
+            const photoId = this.dataset.photoId;
+            const photos = getDataByType('photo-entry');
+            const photo = photos.find(p => p.__backendId === photoId);
+            if (photo && this.querySelector('img')) {
+              const imageData = this.querySelector('img').src;
+              showPhotoDetailsModal(photo, imageData);
+            }
+          });
+        }
+
+        currentPhotoData = null;
+        fileInput.value = '';
+        document.getElementById('notes').value = '';
+        document.getElementById('photo-type').value = 'before';
+        document.getElementById('photo-date').valueAsDate = new Date();
+        uploadPlaceholder.classList.remove('hidden');
+        previewContainer.classList.add('hidden');
+      } else {
+        showErrorMessage('Failed to save photo entry. Please try again.');
+      }
+    });
+
+    document.getElementById('edit-goal-btn').addEventListener('click', () => {
+      document.getElementById('goal-form').classList.remove('hidden');
+      document.getElementById('goal-display').classList.add('hidden');
+    });
+
+    // Cost breakdown
+    function updateCosts() {
+      const costs = getDataByType('cost');
+      const list = document.getElementById('cost-list');
+
+      if (costs.length === 0) {
+        list.innerHTML = '<p class="font-body text-sm text-secondary italic">No cost items added yet.</p>';
+        document.getElementById('total-cost').textContent = '$0.00';
+        return;
+      }
+
+      list.innerHTML = costs.map(c => `
+        <div class="flex justify-between items-center p-3 bg-gray-50 rounded">
+          <div>
+            <p class="font-body font-semibold text-primary text-sm">${c.cost_item || 'Item'}</p>
+          </div>
+          <div class="flex items-center gap-3">
+            <p class="font-heading font-bold text-primary">${formatCurrency(c.item_cost || 0)}</p>
+            <button class="delete-cost btn-secondary px-2 py-1 rounded text-xs" data-id="${c.__backendId}">Delete</button>
+          </div>
+        </div>
+      `).join('');
+
+      document.querySelectorAll('.delete-cost').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          const id = btn.dataset.id;
+          const cost = costs.find(c => c.__backendId === id);
+          if (cost) await window.dataSdk.delete(cost);
+        });
+      });
+
+      const total = costs.reduce((sum, c) => sum + (c.item_cost || 0), 0);
+      document.getElementById('total-cost').textContent = formatCurrency(total);
+    }
+
+    document.getElementById('cost-category').addEventListener('change', (e) => {
+      const customContainer = document.getElementById('custom-category-container');
+      if (e.target.value === 'other') {
+        customContainer.classList.remove('hidden');
+      } else {
+        customContainer.classList.add('hidden');
+      }
+    });
+
+    document.getElementById('cost-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (isLoading) return;
+
+      const categoryValue = document.getElementById('cost-category').value;
+      const customValue = document.getElementById('custom-category').value;
+      const amount = parseFloat(document.getElementById('cost-amount').value);
+
+      const costItem = categoryValue === 'other' ? customValue : categoryValue;
+
+      if (!costItem || !amount) {
+        alert('Please fill in all fields');
+        return;
+      }
+
+      const btn = e.target.querySelector('button[type="submit"]');
+      isLoading = true;
+      showLoading(btn, 'Adding...');
+
+      const result = await window.dataSdk.create({
+        type: 'cost',
+        cost_item: costItem,
+        item_cost: amount
+      });
+
+      isLoading = false;
+      hideLoading(btn);
+
+      if (result.isOk) {
+        e.target.reset();
+        document.getElementById('custom-category-container').classList.add('hidden');
+      }
+    });
+
+    // Savings tracker
+    function updateSavings() {
+      const savings = getDataByType('savings');
+      const list = document.getElementById('savings-list');
+
+      if (savings.length === 0) {
+        list.innerHTML = '<p class="font-body text-sm text-secondary italic">No savings recorded yet.</p>';
+        document.getElementById('total-savings').textContent = '$0.00';
+        return;
+      }
+
+      const sorted = [...savings].sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));
+      list.innerHTML = sorted.map(s => `
+        <div class="flex justify-between items-center p-3 bg-gray-50 rounded">
+          <div>
+            <p class="font-body font-semibold text-primary text-sm">${s.date ? formatDate(s.date) : 'No date'}</p>
+            ${s.notes ? `<p class="font-body text-xs text-secondary mt-1">${s.notes}</p>` : ''}
+          </div>
+          <div class="flex items-center gap-3">
+            <p class="font-heading font-bold" style="color: var(--success-color);">${formatCurrency(s.amount || 0)}</p>
+            <button class="delete-savings btn-secondary px-2 py-1 rounded text-xs" data-id="${s.__backendId}">Delete</button>
+          </div>
+        </div>
+      `).join('');
+
+      document.querySelectorAll('.delete-savings').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          const id = btn.dataset.id;
+          const saving = savings.find(s => s.__backendId === id);
+          if (saving) await window.dataSdk.delete(saving);
+        });
+      });
+
+      const total = savings.reduce((sum, s) => sum + (s.amount || 0), 0);
+      document.getElementById('total-savings').textContent = formatCurrency(total);
+      updateGoal();
+    }
+
+    document.getElementById('savings-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (isLoading) return;
+
+      const btn = e.target.querySelector('button[type="submit"]');
+      isLoading = true;
+      showLoading(btn, 'Adding...');
+
+      const result = await window.dataSdk.create({
+        type: 'savings',
+        amount: parseFloat(document.getElementById('savings-amount').value),
+        date: document.getElementById('savings-date').value,
+        notes: document.getElementById('savings-notes').value
+      });
+
+      isLoading = false;
+      hideLoading(btn);
+
+      if (result.isOk) e.target.reset();
+    });
+
+    // Calculator and budget functions
+    // Removed old calculator-form listener - see updated version below
+
+    // Funds and expenses
+    function updateFunds() {
+      const funds = getDataByType('fund');
+      const list = document.getElementById('fund-list');
+
+      if (funds.length === 0) {
+        list.innerHTML = '<p class="font-body text-sm text-secondary italic">No funding sources added yet.</p>';
+        return;
+      }
+
+      list.innerHTML = '';
+      funds.forEach(f => {
+        const itemHtml = '<div class="flex justify-between items-center p-2 bg-gray-50 rounded text-sm"><span class="font-body text-primary">' + (f.source_name || 'Source') + '</span><div class="flex items-center gap-2"><span class="font-heading font-bold text-primary">' + formatCurrency(f.amount || 0) + '</span><button class="delete-fund btn-secondary px-1 py-0 rounded text-xs" data-id="' + f.__backendId + '">×</button></div></div>';
+        list.innerHTML += itemHtml;
+      });
+
+      document.querySelectorAll('.delete-fund').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          const id = btn.dataset.id;
+          const fund = funds.find(f => f.__backendId === id);
+          if (fund) await window.dataSdk.delete(fund);
+        });
+      });
+    }
+
+    document.getElementById('fund-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (isLoading) return;
+
+      const btn = e.target.querySelector('button[type="submit"]');
+      isLoading = true;
+      showLoading(btn, 'Adding...');
+
+      const result = await window.dataSdk.create({
+        type: 'fund',
+        source_name: document.getElementById('fund-source').value,
+        amount: parseFloat(document.getElementById('fund-amount').value)
+      });
+
+      isLoading = false;
+      hideLoading(btn);
+
+      if (result.isOk) e.target.reset();
+    });
+
+    function updateExpenses() {
+      const expenses = getDataByType('expense');
+      const list = document.getElementById('expense-list');
+
+      if (expenses.length === 0) {
+        list.innerHTML = '<p class="font-body text-sm text-secondary italic">No fixed expenses added yet.</p>';
+        document.getElementById('total-expenses').textContent = '$0.00';
+        return;
+      }
+
+      list.innerHTML = '';
+      expenses.forEach(e => {
+        let dueText = '';
+        if (e.due_date) {
+          dueText = '<p class="font-body text-xs text-secondary">Due: Day ' + e.due_date + '</p>';
+        }
+        const itemHtml = '<div class="flex justify-between items-center p-2 bg-gray-50 rounded text-sm"><div><p class="font-body text-primary font-semibold">' + (e.expense_name || 'Expense') + '</p>' + dueText + '</div><div class="flex items-center gap-2"><span class="font-heading font-bold text-primary">' + formatCurrency(e.amount || 0) + '</span><button class="delete-expense btn-secondary px-1 py-0 rounded text-xs" data-id="' + e.__backendId + '">×</button></div></div>';
+        list.innerHTML += itemHtml;
+      });
+
+      document.querySelectorAll('.delete-expense').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          const id = btn.dataset.id;
+          const expense = expenses.find(e => e.__backendId === id);
+          if (expense) await window.dataSdk.delete(expense);
+        });
+      });
+
+      const total = expenses.reduce((sum, e) => sum + (e.amount || 0), 0);
+      document.getElementById('total-expenses').textContent = formatCurrency(total);
+    }
+
+    document.getElementById('expense-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (isLoading) return;
+
+      const btn = e.target.querySelector('button[type="submit"]');
+      isLoading = true;
+      showLoading(btn, 'Adding...');
+
+      const result = await window.dataSdk.create({
+        type: 'expense',
+        expense_name: document.getElementById('expense-name').value,
+        amount: parseFloat(document.getElementById('expense-amount').value),
+        due_date: document.getElementById('expense-due-date').value
+      });
+
+      isLoading = false;
+      hideLoading(btn);
+
+      if (result.isOk) e.target.reset();
+    });
+
+    // Grid challenge
+    function updateGrid() {
+      const grid = getDataByType('grid')[0];
+      if (!grid) {
+        document.getElementById('no-grid-message').classList.remove('hidden');
+        document.getElementById('active-challenge').classList.add('hidden');
+        return;
+      }
+
+      const savings = getDataByType('savings');
+      const totalSaved = savings.reduce((sum, s) => sum + (s.amount || 0), 0);
+      const filledBoxes = Math.floor(totalSaved / (grid.amount_per_box || 1));
+      const totalBoxes = grid.total_boxes || Math.ceil((grid.goal_amount || 0) / (grid.amount_per_box || 1));
+
+      document.getElementById('no-grid-message').classList.add('hidden');
+      document.getElementById('active-challenge').classList.remove('hidden');
+      
+      document.getElementById('active-per-box').textContent = formatCurrency(grid.amount_per_box || 0);
+      document.getElementById('active-goal').textContent = formatCurrency(grid.goal_amount || 0);
+      document.getElementById('active-filled').textContent = Math.min(filledBoxes, totalBoxes);
+      document.getElementById('active-total').textContent = totalBoxes;
+      document.getElementById('active-saved').textContent = formatCurrency(Math.min(totalSaved, grid.goal_amount || 0));
+      document.getElementById('active-remaining').textContent = formatCurrency(Math.max(0, (grid.goal_amount || 0) - totalSaved));
+
+      const progressPercent = totalBoxes > 0 ? Math.min(100, (filledBoxes / totalBoxes) * 100) : 0;
+      document.getElementById('active-progress').style.width = progressPercent + '%';
+
+      const container = document.getElementById('challenge-grid-container');
+      container.innerHTML = '';
+      for (let i = 0; i < totalBoxes; i++) {
+        const box = document.createElement('div');
+        box.className = 'challenge-box' + (i < filledBoxes ? ' filled' : '');
+        container.appendChild(box);
+      }
+    }
+
+    document.getElementById('grid-setup-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (isLoading) return;
+
+      const goalAmount = parseFloat(document.getElementById('grid-goal-amount').value);
+      const perBox = parseFloat(document.getElementById('grid-per-box').value);
+      const totalBoxes = Math.ceil(goalAmount / perBox);
+
+      const btn = e.target.querySelector('button[type="submit"]');
+      isLoading = true;
+      showLoading(btn, 'Creating...');
+
+      const result = await window.dataSdk.create({
+        type: 'grid',
+        goal_amount: goalAmount,
+        amount_per_box: perBox,
+        total_boxes: totalBoxes
+      });
+
+      isLoading = false;
+      hideLoading(btn);
+
+      if (result.isOk) e.target.reset();
+    });
+
+    document.getElementById('delete-challenge-btn').addEventListener('click', async () => {
+      const grid = getDataByType('grid')[0];
+      if (grid) await window.dataSdk.delete(grid);
+    });
+
+    document.getElementById('print-challenge-btn').addEventListener('click', () => {
+      const grid = getDataByType('grid')[0];
+      if (!grid) return;
+      printSavingsGrid(grid);
+    });
+
+    document.getElementById('travel-print-btn').addEventListener('click', () => {
+      const tripDetails = getDataByType('travel-trip')[0];
+      if (!tripDetails) {
+        showErrorMessage('Please add trip details first.');
+        return;
+      }
+      
+      const modal = document.createElement('div');
+      modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4';
+      modal.innerHTML = `
+        <div class="bg-white rounded-lg shadow-xl max-w-md w-full">
+          <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 1.5rem; border-radius: 8px 8px 0 0;">
+            <h3 class="font-heading font-bold text-xl">Print Instructions</h3>
+            <p class="font-body text-sm opacity-90 mt-1">Your travel budget is ready to print!</p>
+          </div>
+          
+          <div class="p-6 space-y-4">
+            <div class="space-y-3">
+              <div class="flex gap-3">
+                <span class="font-heading font-bold text-primary flex-shrink-0">1.</span>
+                <p class="font-body text-sm text-secondary">A new window will open with your budget formatted for printing</p>
+              </div>
+              <div class="flex gap-3">
+                <span class="font-heading font-bold text-primary flex-shrink-0">2.</span>
+                <p class="font-body text-sm text-secondary">Use your browser's print function <span class="font-semibold">(Ctrl+P or Cmd+P)</span></p>
+              </div>
+              <div class="flex gap-3">
+                <span class="font-heading font-bold text-primary flex-shrink-0">3.</span>
+                <p class="font-body text-sm text-secondary">Select your printer and adjust settings as needed</p>
+              </div>
+              <div class="flex gap-3">
+                <span class="font-heading font-bold text-primary flex-shrink-0">4.</span>
+                <p class="font-body text-sm text-secondary">Click <span class="font-semibold">"Print"</span> to print or <span class="font-semibold">"Save as PDF"</span> to save the document</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex gap-3 px-6 pb-6">
+            <button class="modal-cancel btn-secondary px-4 py-2 rounded font-body text-sm font-medium flex-1">Cancel</button>
+            <button class="modal-continue btn-primary px-4 py-2 rounded font-body text-sm font-medium flex-1">Continue to Print</button>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(modal);
+
+      modal.querySelector('.modal-cancel').addEventListener('click', () => {
+        modal.remove();
+      });
+
+      modal.querySelector('.modal-continue').addEventListener('click', () => {
+        modal.remove();
+        printTravelBudget(tripDetails);
+      });
+
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) modal.remove();
+      });
+    });
+
+    document.getElementById('med-print-btn').addEventListener('click', () => {
+      const meds = getDataByType('medication');
+      if (!meds || meds.length === 0) {
+        showErrorMessage('Please add medications first.');
+        return;
+      }
+      printMedicationTracker(meds);
+    });
+
+    document.getElementById('export-consultation-btn').addEventListener('click', () => {
+      const modal = document.createElement('div');
+      modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
+      modal.innerHTML = `
+        <div class="bg-white rounded-lg shadow-xl max-w-md w-full mx-4">
+          <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 1.5rem; border-radius: 8px 8px 0 0;">
+            <h3 class="font-heading font-bold text-xl">Print Instructions</h3>
+            <p class="font-body text-sm opacity-90 mt-1">Your questions are ready to print!</p>
+          </div>
+          
+          <div class="p-6 space-y-4">
+            <div class="space-y-3">
+              <p class="font-body text-sm text-secondary">
+                <span class="font-semibold text-primary">1. A new window will open</span> with your questions formatted for printing
+              </p>
+              <p class="font-body text-sm text-secondary">
+                <span class="font-semibold text-primary">2. Use your browser's print function</span> (Ctrl+P or Cmd+P)
+              </p>
+              <p class="font-body text-sm text-secondary">
+                <span class="font-semibold text-primary">3. Select your printer</span> and adjust settings as needed
+              </p>
+              <p class="font-body text-sm text-secondary">
+                <span class="font-semibold text-primary">4. Click "Print"</span> to print or "Save as PDF" to save the document
+              </p>
+            </div>
+          </div>
+
+          <div class="flex gap-3 px-6 pb-6">
+            <button class="modal-cancel btn-secondary px-4 py-2 rounded font-body text-sm font-medium flex-1">Cancel</button>
+            <button class="modal-continue btn-primary px-4 py-2 rounded font-body text-sm font-medium flex-1">Continue to Print</button>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(modal);
+
+      modal.querySelector('.modal-cancel').addEventListener('click', () => {
+        modal.remove();
+      });
+
+      modal.querySelector('.modal-continue').addEventListener('click', () => {
+        modal.remove();
+        printConsultationQuestions();
+      });
+    });
+
+    // Physicians
+    function updatePhysicians() {
+      const physicians = getDataByType('physician');
+      const container = document.getElementById('physician-list');
+
+      if (physicians.length === 0) {
+        container.innerHTML = '<p class="font-body text-sm text-secondary italic">No physicians added yet.</p>';
+      } else {
+        container.innerHTML = physicians.map(p => {
+          let websiteHtml = '';
+          if (p.website) {
+            const websiteUrl = p.website.startsWith('http://') || p.website.startsWith('https://') 
+              ? p.website 
+              : 'https://' + p.website;
+            websiteHtml = `<div class="mt-3 pt-3 border-t border-gray-200"><p class="font-body text-xs text-secondary mb-1 uppercase tracking-wide">Website</p><a href="${websiteUrl}" target="_blank" rel="noopener noreferrer" class="font-body text-sm text-blue-600 underline">Visit website</a></div>`;
+          }
+
+          return `
+            <div class="card p-4 border-l-4" style="border-left-color: var(--accent-color);">
+              <div class="flex justify-between items-start mb-3">
+                <div>
+                  <h4 class="font-heading font-bold text-lg text-primary">${p.physicianName || 'Physician'}</h4>
+                  ${p.specialty ? `<p class="font-body text-sm text-secondary">${p.specialty}</p>` : ''}
+                  ${p.rating ? `<div class="flex items-center gap-1 mt-1"><span class="font-body text-xs text-secondary">Rating:</span><span class="font-body text-sm font-semibold" style="color: #f59e0b;">${'★'.repeat(p.rating)}${'☆'.repeat(5-p.rating)}</span></div>` : ''}
+                </div>
+                <button class="delete-physician btn-secondary px-2 py-1 rounded text-xs" data-id="${p.__backendId}">Delete</button>
+              </div>
+              <div class="grid grid-cols-2 gap-3 text-sm">
+                ${p.location ? `<div><p class="font-body text-xs text-secondary uppercase tracking-wide mb-1">Location</p><p class="font-body text-primary">${p.location}</p></div>` : ''}
+                ${p.phone ? `<div><p class="font-body text-xs text-secondary uppercase tracking-wide mb-1">Phone</p><p class="font-body text-primary"><a href="tel:${p.phone}" style="color: var(--accent-color); text-decoration: none;">${p.phone}</a></p></div>` : ''}
+                ${p.consultationCost ? `<div><p class="font-body text-xs text-secondary uppercase tracking-wide mb-1">Consultation</p><p class="font-body text-primary">${formatCurrency(p.consultationCost)}</p></div>` : ''}
+                ${p.procedureCost ? `<div><p class="font-body text-xs text-secondary uppercase tracking-wide mb-1">Procedure Quote</p><p class="font-heading font-bold text-primary">${formatCurrency(p.procedureCost)}</p></div>` : ''}
+              </div>
+              ${websiteHtml}
+              ${p.notes ? `<div class="mt-3 pt-3 border-t border-gray-200"><p class="font-body text-xs text-secondary mb-1 uppercase tracking-wide">Notes</p><p class="font-body text-sm text-primary whitespace-pre-wrap">${p.notes}</p></div>` : ''}
+            </div>
+          `;
+        }).join('');
+
+        document.querySelectorAll('.delete-physician').forEach(btn => {
+          btn.addEventListener('click', async () => {
+            const id = btn.dataset.id;
+            const physician = physicians.find(p => p.__backendId === id);
+            if (physician) await window.dataSdk.delete(physician);
+          });
+        });
+      }
+    }
+
+    document.getElementById('physician-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (isLoading) return;
+
+      const btn = e.target.querySelector('button[type="submit"]');
+      isLoading = true;
+      showLoading(btn, 'Adding...');
+
+      const result = await window.dataSdk.create({
+        type: 'physician',
+        physicianName: document.getElementById('physician-name').value,
+        specialty: document.getElementById('physician-specialty').value || '',
+        location: document.getElementById('physician-location').value || '',
+        phone: document.getElementById('physician-phone').value || '',
+        website: document.getElementById('physician-website').value || '',
+        consultationCost: parseFloat(document.getElementById('physician-consultation-cost').value) || 0,
+        procedureCost: parseFloat(document.getElementById('physician-procedure-cost').value) || 0,
+        rating: document.getElementById('physician-rating').value ? parseInt(document.getElementById('physician-rating').value) : 0,
+        notes: document.getElementById('physician-notes').value || ''
+      });
+
+      isLoading = false;
+      hideLoading(btn);
+
+      if (result.isOk) e.target.reset();
+    });
+
+    // Travel budget
+    function updateTravelBudget() {
+      const tripDetails = getDataByType('travel-trip')[0];
+      const expenses = getDataByType('travel-expense');
+      const totalSpent = expenses.reduce((sum, e) => sum + (e.travel_expense_amount || 0), 0);
+
+      if (!tripDetails) {
+        if (document.getElementById('travel-trip-display')) document.getElementById('travel-trip-display').classList.add('hidden');
+      } else {
+        const displayDiv = document.getElementById('travel-trip-display');
+        if (displayDiv) displayDiv.classList.remove('hidden');
+
+        const tripBudget = tripDetails.travel_trip_budget || 0;
+        const remaining = Math.max(0, tripBudget - totalSpent);
+        const percent = tripBudget > 0 ? Math.round((totalSpent / tripBudget) * 100) : 0;
+
+        const els = {
+          'travel-display-destination': tripDetails.travel_destination || 'Destination',
+          'travel-display-dates': tripDetails.travel_trip_dates || 'N/A',
+          'travel-display-clinic': tripDetails.travel_clinic_name || 'Clinic',
+          'travel-display-procedure': tripDetails.travel_procedure_name || 'Procedure',
+          'travel-display-procedure-cost': formatCurrency(tripDetails.travel_procedure_cost || 0),
+          'travel-display-budget': formatCurrency(tripBudget),
+          'travel-display-spent': formatCurrency(totalSpent),
+          'travel-display-remaining': formatCurrency(remaining),
+          'travel-display-percent': percent
+        };
+
+        Object.entries(els).forEach(([id, value]) => {
+          const el = document.getElementById(id);
+          if (el) {
+            if (id === 'travel-display-percent') {
+              el.textContent = value;
+              document.getElementById('travel-display-progress').style.width = value + '%';
+            } else {
+              el.textContent = value;
+            }
+          }
+        });
+      }
+
+      const summary = document.getElementById('travel-expense-summary');
+      if (!summary) return;
+      
+      if (expenses.length === 0) {
+        summary.innerHTML = '<p class="font-body text-sm text-secondary italic">Add expenses to see summary.</p>';
+        return;
+      }
+
+      const summaryByCategory = {};
+      expenses.forEach(e => {
+        const category = e.travel_expense_category || 'Other';
+        if (!summaryByCategory[category]) {
+          summaryByCategory[category] = [];
+        }
+        summaryByCategory[category].push(e);
+      });
+
+      let html = '';
+      Object.entries(summaryByCategory).forEach(([category, categoryExpenses]) => {
+        const categoryTotal = categoryExpenses.reduce((sum, e) => sum + (e.travel_expense_amount || 0), 0);
+        const categoryId = `expense-category-${category.replace(/\s+/g, '-')}`;
+        
+        html += `
+          <div class="border-b border-gray-200 last:border-b-0">
+            <button class="category-toggle w-full flex justify-between items-center p-3 hover:bg-gray-50 transition-colors rounded" data-category-id="${categoryId}" style="background: none; border: none; cursor: pointer;">
+              <div class="flex items-center gap-3 text-left">
+                <span class="chevron-icon" style="display: inline-block; width: 20px; height: 20px; transition: transform 0.3s ease; transform: rotate(0deg);">▼</span>
+                <span class="font-body font-medium text-primary">${escapeHtml(category)}</span>
+              </div>
+              <span class="font-heading font-semibold text-primary">${formatCurrency(categoryTotal)}</span>
+            </button>
+            <div id="${categoryId}" class="category-details hidden bg-gray-50 px-3 pb-3 space-y-2">
+              ${categoryExpenses.map(e => `
+                <div class="flex justify-between items-start p-2 bg-white rounded border border-gray-200">
+                  <div class="flex-1">
+                    <p class="font-body text-sm text-primary font-medium">${escapeHtml(e.travel_expense_description)}</p>
+                    <p class="font-body text-xs text-secondary">${e.travel_expense_date} • ${e.travel_expense_currency}</p>
+                  </div>
+                  <div class="flex items-center gap-3 ml-3">
+                    <p class="font-heading font-bold text-primary whitespace-nowrap">${formatCurrency(e.travel_expense_amount)}</p>
+                    <button class="delete-travel-expense text-red-500 hover:text-red-700 font-medium text-xs" data-id="${e.__backendId}" style="background: none; border: none; cursor: pointer;">Delete</button>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      });
+      
+      summary.innerHTML = html;
+
+      summary.querySelectorAll('.category-toggle').forEach(btn => {
+        btn.addEventListener('click', function() {
+          const categoryId = this.dataset.categoryId;
+          const detailsContainer = document.getElementById(categoryId);
+          const chevron = this.querySelector('.chevron-icon');
+          
+          if (detailsContainer && chevron) {
+            detailsContainer.classList.toggle('hidden');
+            chevron.style.transform = detailsContainer.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)';
+          }
+        });
+      });
+
+      summary.querySelectorAll('.delete-travel-expense').forEach(btn => {
+        btn.addEventListener('click', async function() {
+          const id = this.dataset.id;
+          const expense = expenses.find(e => e.__backendId === id);
+          if (expense) await window.dataSdk.delete(expense);
+        });
+      });
+    }
+
+    document.getElementById('travel-trip-details-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (isLoading) return;
+
+      const btn = e.target.querySelector('button[type="submit"]');
+      isLoading = true;
+      showLoading(btn, 'Saving...');
+
+      const result = await window.dataSdk.create({
+        type: 'travel-trip',
+        travel_destination: document.getElementById('travel-destination-input').value,
+        travel_procedure_name: document.getElementById('travel-procedure-name').value,
+        travel_clinic_name: document.getElementById('travel-clinic-name').value,
+        travel_trip_dates: document.getElementById('travel-trip-dates').value,
+        travel_procedure_cost: parseFloat(document.getElementById('travel-procedure-cost-input').value),
+        travel_trip_budget: parseFloat(document.getElementById('travel-trip-budget-input').value)
+      });
+
+      isLoading = false;
+      hideLoading(btn);
+
+      if (result.isOk) {
+        e.target.reset();
+        document.getElementById('travel-trip-form').classList.add('hidden');
+      }
+    });
+
+    document.getElementById('travel-expense-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (isLoading) return;
+
+      const btn = e.target.querySelector('button[type="submit"]');
+      isLoading = true;
+      showLoading(btn, 'Adding...');
+
+      const result = await window.dataSdk.create({
+        type: 'travel-expense',
+        travel_expense_category: document.getElementById('travel-expense-category').value,
+        travel_expense_description: document.getElementById('travel-expense-description').value,
+        travel_expense_amount: parseFloat(document.getElementById('travel-expense-amount').value),
+        travel_expense_currency: document.getElementById('travel-expense-currency').value,
+        travel_expense_date: document.getElementById('travel-expense-date').value
+      });
+
+      isLoading = false;
+      hideLoading(btn);
+
+      if (result.isOk) e.target.reset();
+    });
+
+    // Currency converter
+    const exchangeRates = {
+      'USD': 1, 'EUR': 0.95, 'GBP': 0.87, 'MXN': 20.5, 'CAD': 1.36,
+      'AUD': 1.52, 'JPY': 149.5, 'CHF': 0.88, 'CNY': 7.24, 'INR': 83.1, 'COP': 4100
+    };
+
+    function updateCurrencyConverter() {
+      const amount = parseFloat(document.getElementById('converter-amount').value) || 1;
+      const from = document.getElementById('converter-from').value;
+      const to = document.getElementById('converter-to').value;
+      
+      const amountInUSD = amount / exchangeRates[from];
+      const result = amountInUSD * exchangeRates[to];
+      
+      document.getElementById('converter-result-value').textContent = result.toFixed(2);
+      document.getElementById('converter-result-currency').textContent = to;
+      document.getElementById('converter-rate-info').textContent = `1 ${from} = ${(exchangeRates[to] / exchangeRates[from]).toFixed(4)} ${to}`;
+    }
+
+    document.getElementById('converter-amount').addEventListener('input', updateCurrencyConverter);
+    document.getElementById('converter-from').addEventListener('change', updateCurrencyConverter);
+    document.getElementById('converter-to').addEventListener('change', updateCurrencyConverter);
+
+    document.getElementById('converter-swap-btn').addEventListener('click', () => {
+      const from = document.getElementById('converter-from').value;
+      const to = document.getElementById('converter-to').value;
+      document.getElementById('converter-from').value = to;
+      document.getElementById('converter-to').value = from;
+      updateCurrencyConverter();
+    });
+
+    // Medications
+    function updateMedications() {
+      const meds = getDataByType('medication');
+      const tableBody = document.getElementById('med-table-body');
+
+      if (!tableBody) return;
+
+      if (meds.length === 0) {
+        tableBody.innerHTML = '<tr id="med-empty-row"><td colspan="9" class="px-4 py-8 text-center text-secondary italic">No medications added yet.</td></tr>';
+        return;
+      }
+
+      let html = '';
+      meds.forEach(m => {
+        html += `
+          <tr style="border-bottom: 1px solid #e2e8f0;">
+            <td class="px-3 py-2 text-sm font-body text-primary font-medium">${m.medicationName || '-'}</td>
+            <td class="px-3 py-2 text-sm font-body text-secondary">${m.medicationType || '-'}</td>
+            <td class="px-3 py-2 text-sm font-body text-secondary">${m.medicationStrength || '-'}</td>
+            <td class="px-3 py-2 text-sm font-body text-secondary">${m.medicationDosage || '-'}</td>
+            <td class="px-3 py-2 text-sm font-body text-secondary">${m.medicationStartDate || '-'}</td>
+            <td class="px-3 py-2 text-sm font-body text-secondary">${m.medicationEndDate || '-'}</td>
+            <td class="px-3 py-2 text-sm font-body text-secondary">${m.medicationPurpose || '-'}</td>
+            <td class="px-3 py-2 text-sm font-body text-secondary">${m.medicationNotes || '-'}</td>
+            <td class="px-3 py-2 text-center">
+              <button class="delete-medication text-red-500 hover:text-red-700 font-medium text-sm" data-id="${m.__backendId}">Delete</button>
+            </td>
+          </tr>
+        `;
+      });
+      
+      tableBody.innerHTML = html;
+
+      tableBody.querySelectorAll('.delete-medication').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          const id = btn.dataset.id;
+          const med = meds.find(m => m.__backendId === id);
+          if (med) await window.dataSdk.delete(med);
+        });
+      });
+    }
+
+    document.getElementById('med-add-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (isLoading) return;
+
+      const medications = getDataByType('medication');
+      if (medications.length >= 999) {
+        const msg = document.getElementById('med-form-message');
+        msg.textContent = 'Maximum limit of 999 medications reached. Please delete some first.';
+        msg.style.color = '#dc2626';
+        msg.classList.remove('hidden');
+        return;
+      }
+
+      const medName = document.getElementById('med-name-input').value.trim();
+      const medType = document.getElementById('med-type-input').value.trim();
+      
+      if (!medName || !medType) {
+        const msg = document.getElementById('med-form-message');
+        msg.textContent = 'Please fill in medication name and type.';
+        msg.style.color = '#dc2626';
+        msg.classList.remove('hidden');
+        return;
+      }
+
+      const btn = e.target.querySelector('button[type="submit"]');
+      const originalText = btn.textContent;
+      isLoading = true;
+      btn.disabled = true;
+      btn.textContent = 'Adding...';
+
+      const result = await window.dataSdk.create({
+        type: 'medication',
+        medicationName: medName,
+        medicationType: medType,
+        medicationStrength: document.getElementById('med-strength-input').value.trim(),
+        medicationDosage: document.getElementById('med-dosage-input').value.trim(),
+        medicationStartDate: document.getElementById('med-start-date-input').value,
+        medicationEndDate: document.getElementById('med-end-date-input').value,
+        medicationPurpose: document.getElementById('med-purpose-input').value.trim(),
+        medicationNotes: document.getElementById('med-notes-input').value.trim()
+      });
+
+      isLoading = false;
+      btn.disabled = false;
+      btn.textContent = originalText;
+
+      if (result.isOk) {
+        e.target.reset();
+        const msg = document.getElementById('med-form-message');
+        msg.textContent = '✓ Medication added! Ready to add another.';
+        msg.style.color = '#16a34a';
+        msg.classList.remove('hidden');
+        setTimeout(() => msg.classList.add('hidden'), 2500);
+      }
+    });
+
+    document.getElementById('med-clear-btn').addEventListener('click', () => {
+      document.getElementById('med-add-form').reset();
+      document.getElementById('med-form-message').classList.add('hidden');
+    });
+
+    document.getElementById('med-tracker-date').valueAsDate = new Date();
+
+    // Receipts
+    function updateReceipts() {
+      const receipts = getDataByType('receipt');
+      const container = document.getElementById('receipts-container');
+      const limitWarning = document.getElementById('receipts-limit-warning');
+      const countDisplay = document.getElementById('receipts-count');
+      const total = receipts.reduce((sum, r) => sum + (r.receipt_amount || 0), 0);
+
+      if (receipts.length >= 999) {
+        limitWarning.classList.remove('hidden');
+      } else {
+        limitWarning.classList.add('hidden');
+      }
+
+      if (countDisplay) {
+        countDisplay.textContent = `${receipts.length} receipt${receipts.length !== 1 ? 's' : ''} logged`;
+      }
+
+      if (receipts.length === 0) {
+        container.innerHTML = '<p class="font-body text-sm text-secondary italic col-span-full text-center py-8">No receipts saved yet.</p>';
+      } else {
+        container.innerHTML = receipts.map(r => `
+          <div class="card p-4 border-l-4 hover:shadow-lg transition-shadow duration-300 relative" style="border-left-color: var(--accent-color);">
+            <div class="flex items-start justify-between gap-2 mb-2">
+              <p class="font-body text-xs font-medium text-white uppercase tracking-wide px-2.5 py-1 rounded-full" style="background: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-color-2) 100%);">${r.receipt_category || 'Other'}</p>
+            </div>
+            <p class="font-heading font-bold text-primary text-xl mb-1">${formatCurrency(r.receipt_amount)}</p>
+            <p class="font-body text-xs text-secondary mb-3">${r.receipt_date || 'No date'}</p>
+            ${r.receipt_notes ? `<p class="font-body text-xs text-secondary leading-relaxed mb-3">${r.receipt_notes}</p>` : ''}
+            ${r.receipt_image_link ? `<div class="pt-3 border-t border-gray-200"><a href="${r.receipt_image_link}" target="_blank" rel="noopener noreferrer" class="font-body text-xs font-medium inline-flex items-center gap-1 px-2 py-1 rounded transition-all hover:opacity-75" style="background-color: #f3f4f6; color: var(--accent-color);">📎 View Receipt Image</a></div>` : ''}
+            <button class="delete-receipt absolute bottom-3 right-3 flex items-center justify-center font-bold transition-all duration-300 hover:scale-110" style="color: #dc2626; background: none; border: none; padding: 0; width: 24px; height: 24px; font-size: 20px; line-height: 1; cursor: pointer;" data-id="${r.__backendId}" title="Delete receipt">×</button>
+          </div>
+        `).join('');
+
+        document.querySelectorAll('.delete-receipt').forEach(btn => {
+          btn.addEventListener('click', async () => {
+            const id = btn.dataset.id;
+            const receipt = receipts.find(r => r.__backendId === id);
+            if (receipt) await window.dataSdk.delete(receipt);
+          });
+        });
+      }
+
+      document.getElementById('receipts-total-amount').textContent = formatCurrency(total);
+    }
+
+    document.getElementById('receipt-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (isLoading) return;
+
+      const receipts = getDataByType('receipt');
+      if (receipts.length >= 999) {
+        alert('Maximum limit of 999 receipts reached. Please delete some first.');
+        return;
+      }
+
+      const btn = e.target.querySelector('button[type="submit"]');
+      isLoading = true;
+      showLoading(btn, 'Adding...');
+
+      const result = await window.dataSdk.create({
+        type: 'receipt',
+        receipt_category: document.getElementById('receipt-category').value,
+        receipt_amount: parseFloat(document.getElementById('receipt-amount').value),
+        receipt_date: document.getElementById('receipt-date').value,
+        receipt_image_link: document.getElementById('receipt-image-link').value,
+        receipt_notes: document.getElementById('receipt-notes').value
+      });
+
+      isLoading = false;
+      hideLoading(btn);
+
+      if (result.isOk) e.target.reset();
+    });
+
+    // Photo Log - Browser storage (uses localStorage)
+    const PHOTO_STORAGE_KEY = 'beautyJourneyEntries_v1';
+
+    function loadPhotoEntries() {
+      try {
+        const raw = localStorage.getItem(PHOTO_STORAGE_KEY);
+        return raw ? JSON.parse(raw) : [];
+      } catch (e) {
+        console.error('Failed to load photo entries', e);
+        return [];
+      }
+    }
+
+    function savePhotoEntries(entries) {
+      try {
+        localStorage.setItem(PHOTO_STORAGE_KEY, JSON.stringify(entries));
+      } catch (e) {
+        console.error('Failed to save photo entries', e);
+      }
+    }
+
+    function renderPhotoGrids() {
+      const entries = loadPhotoEntries();
+      
+      ['before', 'recovery', 'after'].forEach(type => {
+        const gridId = `${type}-grid`;
+        const grid = document.getElementById(gridId);
+        if (!grid) return;
+
+        const typePhotos = entries.filter(e => e.type === type);
+        grid.innerHTML = '';
+
+        if (typePhotos.length === 0) {
+          grid.innerHTML = `<div class="empty-state p-8 rounded-xl text-center card">
+            <p class="font-body text-xs text-secondary">No ${type} photos yet</p>
+          </div>`;
+        } else {
+          typePhotos.forEach(entry => {
+            const wrapper = document.createElement('div');
+            wrapper.className =
+              'rounded-lg overflow-hidden shadow-md cursor-pointer hover:opacity-80 transition-opacity card';
+            wrapper.dataset.entryId = entry.id;
+
+            const img = document.createElement('img');
+            img.src = entry.image;       // works for uploads + converted cloud links
+            img.className = 'w-full h-full object-cover';
+            img.loading = 'lazy';
+            img.alt = 'Photo entry';
+
+            wrapper.appendChild(img);
+            wrapper.addEventListener('click', () => showPhotoModal(entry));
+            grid.appendChild(wrapper);
+          });
+        }
+      });
+    }
+
+    function showPhotoModal(entry) {
+      const modal = document.createElement('div');
+      modal.className = 'fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4';
+      modal.innerHTML = `
+        <div class="bg-white rounded-lg shadow-2xl max-w-2xl w-full max-h-90vh overflow-y-auto">
+          <div style="background: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-color-2) 100%); color: white; padding: 1.5rem; border-radius: 8px 8px 0 0; display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <h3 class="font-heading font-bold text-lg">Photo Details</h3>
+              <p class="font-body text-xs opacity-90 mt-1">${entry.type.charAt(0).toUpperCase() + entry.type.slice(1)} • ${entry.date || 'No date'}</p>
+            </div>
+            <button class="modal-close" style="background: none; border: none; color: white; font-size: 28px; cursor: pointer; padding: 0; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;">×</button>
+          </div>
+          <div class="p-6">
+            <img src="${entry.image}" alt="Photo" class="w-full rounded-lg mb-4 max-h-96 object-cover">
+            <div class="space-y-4">
+              <div>
+                <label class="block font-body text-sm font-medium text-secondary mb-2">Date</label>
+                <p class="font-body text-primary">${entry.date || 'Not specified'}</p>
+              </div>
+              <div>
+                <label class="block font-body text-sm font-medium text-secondary mb-2">Notes</label>
+                <textarea id="photo-notes-edit" class="w-full px-3 py-2 rounded border text-sm focus:outline-none focus:ring-2 focus:ring-blue-400" style="border-color: #cbd5e1; background-color: #ffffff; min-height: 100px;">${entry.notes || ''}</textarea>
+              </div>
+              <div class="flex gap-3 pt-4 border-t border-gray-200">
+                <button id="photo-delete-btn" class="btn-secondary px-4 py-2 rounded font-body text-sm font-medium flex-1">Delete Photo</button>
+                <button id="photo-save-btn" class="btn-primary px-4 py-2 rounded font-body text-sm font-medium flex-1">Save Changes</button>
+                <button class="modal-close btn-secondary px-4 py-2 rounded font-body text-sm font-medium">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+
+      document.body.appendChild(modal);
+
+      const closeBtn = modal.querySelector('.modal-close');
+      closeBtn.addEventListener('click', () => modal.remove());
+
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) modal.remove();
+      });
+
+      const saveBtn = modal.querySelector('#photo-save-btn');
+      const deleteBtn = modal.querySelector('#photo-delete-btn');
+      const notesTextarea = modal.querySelector('#photo-notes-edit');
+
+      saveBtn.addEventListener('click', () => {
+        const entries = loadPhotoEntries();
+        const idx = entries.findIndex(e => e.id === entry.id);
+        if (idx >= 0) {
+          entries[idx].notes = notesTextarea.value;
+          savePhotoEntries(entries);
+          renderPhotoGrids();
+        }
+        modal.remove();
+      });
+
+      deleteBtn.addEventListener('click', () => {
+        const entries = loadPhotoEntries();
+        const filtered = entries.filter(e => e.id !== entry.id);
+        savePhotoEntries(filtered);
+        renderPhotoGrids();
+        modal.remove();
+      });
+    }
+
+    // Photo upload handling
+    const fileInput = document.getElementById('photo-input');
+    const uploadArea = document.getElementById('upload-area');
+    const uploadPlaceholder = document.getElementById('upload-placeholder');
+    const previewContainer = document.getElementById('preview-container');
+    const photoPreview = document.getElementById('photo-preview');
+    let selectedPhotoData = null;
+
+    if (fileInput && uploadArea) {
+      fileInput.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = (event) => {
+            selectedPhotoData = event.target.result;
+            photoPreview.src = selectedPhotoData;
+            uploadPlaceholder.classList.add('hidden');
+            previewContainer.classList.remove('hidden');
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+
+      uploadArea.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        uploadArea.style.borderColor = '#6f64c5';
+        uploadArea.style.backgroundColor = 'rgba(111, 100, 197, 0.05)';
+      });
+
+      uploadArea.addEventListener('dragleave', () => {
+        uploadArea.style.borderColor = '#a4a3cf';
+        uploadArea.style.backgroundColor = 'var(--bg-light)';
+      });
+
+      uploadArea.addEventListener('drop', (e) => {
+        e.preventDefault();
+        uploadArea.style.borderColor = '#a4a3cf';
+        uploadArea.style.backgroundColor = 'var(--bg-light)';
+        const files = e.dataTransfer.files;
+        if (files.length > 0) {
+          fileInput.files = files;
+          const changeEvent = new Event('change', { bubbles: true });
+          fileInput.dispatchEvent(changeEvent);
+        }
+      });
+    }
+
+    // Photo form submission
+    const addEntryForm = document.getElementById('add-entry-form');
+    if (addEntryForm) {
+      addEntryForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        const photoType = document.getElementById('photo-type').value;
+        const photoDate = document.getElementById('photo-date').value;
+        const notes = document.getElementById('notes').value.trim();
+
+        if (!selectedPhotoData) {
+          showErrorMessage('Please select a photo first');
+          return;
+        }
+
+        const photoEntry = {
+          id: Date.now(),
+          type: photoType,
+          date: photoDate || new Date().toISOString().split('T')[0],
+          notes: notes,
+          image: selectedPhotoData
+        };
+
+        const entries = loadPhotoEntries();
+        entries.push(photoEntry);
+        savePhotoEntries(entries);
+        renderPhotoGrids();
+
+        selectedPhotoData = null;
+        fileInput.value = '';
+        document.getElementById('notes').value = '';
+        document.getElementById('photo-type').value = 'before';
+        document.getElementById('photo-date').valueAsDate = new Date();
+        uploadPlaceholder.classList.remove('hidden');
+        previewContainer.classList.add('hidden');
+        photoPreview.src = '';
+      });
+    }
+
+    // Initialize photo grids on load
+    renderPhotoGrids();
+
+    // Set today's date
+    if (document.getElementById('photo-date')) {
+      document.getElementById('photo-date').valueAsDate = new Date();
+    }
+
+    // Documents removed
+
+    // Consultation questions
+    function updatePhotoLog() {
+      // intentionally left blank for now
+    }
+
+    function updateConsultationQuestions() {
+      const customQuestions = getDataByType('custom-question');
+      const listContainer = document.getElementById('custom-questions-list');
+      const customQuestionsCard = document.getElementById('custom-questions-display');
+
+      if (customQuestions.length === 0) {
+        customQuestionsCard.classList.add('hidden');
+        listContainer.innerHTML = '<p class="font-body text-sm text-secondary italic">No custom questions added yet.</p>';
+      } else {
+        customQuestionsCard.classList.remove('hidden');
+        listContainer.innerHTML = customQuestions.map(q => `
+          <div class="p-2 bg-gray-50 rounded border-l-4 border-orange-500">
+            <div class="flex justify-between items-start gap-3">
+              <p class="font-body text-sm text-primary flex-1">${escapeHtml(q.question_text)}</p>
+              <button class="delete-custom-question text-red-500 text-xs font-medium whitespace-nowrap hover:text-red-700" data-id="${q.__backendId}">Delete</button>
+            </div>
+          </div>
+        `).join('');
+
+        document.querySelectorAll('.delete-custom-question').forEach(btn => {
+          btn.addEventListener('click', async () => {
+            const id = btn.dataset.id;
+            const question = customQuestions.find(q => q.__backendId === id);
+            if (question) await window.dataSdk.delete(question);
+          });
+        });
+      }
+    }
+
+    async function submitCustomQuestion() {
+      if (isLoading) return;
+
+      const customQuestions = getDataByType('custom-question');
+      if (customQuestions.length >= 999) {
+        alert('Maximum limit of 999 custom questions reached.');
+        return;
+      }
+
+      const questionText = document.getElementById('custom-question-text').value.trim();
+      if (!questionText) return;
+
+      const btn = document.getElementById('custom-question-form').querySelector('button[type="submit"]');
+      isLoading = true;
+      showLoading(btn, 'Adding...');
+
+      const result = await window.dataSdk.create({
+        type: 'custom-question',
+        question_text: questionText
+      });
+
+      isLoading = false;
+      hideLoading(btn);
+
+      if (result.isOk) {
+        document.getElementById('custom-question-form').reset();
+        document.getElementById('custom-question-text').focus();
+      }
+    }
+
+    document.getElementById('custom-question-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      submitCustomQuestion();
+    });
+
+    document.getElementById('custom-question-text').addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        submitCustomQuestion();
+      }
+    });
+
+    document.getElementById('export-consultation-btn').addEventListener('click', () => {
+      window.print();
+    });
+
+    // Document Vault Functions
+    function updateDocumentVault() {
+      const documents = getDataByType('document');
+      const categories = {
+        'Pre-Procedure': { list: 'vault-pre-procedure-list', empty: 'vault-pre-procedure-empty' },
+        'Financial': { list: 'vault-financial-list', empty: 'vault-financial-empty' },
+        'Post-Procedure': { list: 'vault-post-procedure-list', empty: 'vault-post-procedure-empty' }
+      };
+
+      // Clear all lists
+      Object.values(categories).forEach(cat => {
+        const listEl = document.getElementById(cat.list);
+        const emptyEl = document.getElementById(cat.empty);
+        if (listEl) listEl.innerHTML = '';
+        if (emptyEl) emptyEl.classList.add('hidden');
+      });
+
+      // Group documents by category
+      const grouped = {};
+      Object.keys(categories).forEach(cat => grouped[cat] = []);
+      
+      documents.forEach(doc => {
+        if (grouped[doc.category]) {
+          grouped[doc.category].push(doc);
+        }
+      });
+
+      // Render each category
+      Object.entries(categories).forEach(([category, elements]) => {
+        const listEl = document.getElementById(elements.list);
+        const emptyEl = document.getElementById(elements.empty);
+        const categoryDocs = grouped[category];
+
+        if (!listEl || !emptyEl) return;
+
+        if (categoryDocs.length === 0) {
+          emptyEl.classList.remove('hidden');
+        } else {
+          emptyEl.classList.add('hidden');
+          categoryDocs.forEach(doc => {
+            const row = document.createElement('div');
+            row.className = 'p-4 flex flex-col md:flex-row md:items-center gap-3 hover:bg-gray-50 transition-all';
+            row.dataset.docId = doc.__backendId;
+
+            const importantClass = doc.important ? 'active' : '';
+            const completedClass = doc.completed ? 'line-through opacity-60' : '';
+            const linkDisplay = doc.link ? `<a href="${doc.link}" target="_blank" rel="noopener noreferrer" class="font-body text-sm underline hover:opacity-80" style="color: #667eea;">Open Link</a>` : '<span class="font-body text-sm" style="color: #a4a3cf;">No link</span>';
+
+            row.innerHTML = `
+              <div class="flex items-center gap-3 flex-shrink-0">
+                <input type="checkbox" class="vault-complete-checkbox" ${doc.completed ? 'checked' : ''} data-id="${doc.__backendId}">
+                <span class="vault-important-star ${importantClass}" data-id="${doc.__backendId}" title="Toggle important" style="cursor: pointer; font-size: 18px; ${doc.important ? 'color: #667eea;' : 'color: #cbd5e1;'}">★</span>
+              </div>
+              <div class="flex-1 min-w-0">
+                <h4 class="font-body font-medium ${completedClass} text-primary">${escapeHtml(doc.name)}</h4>
+                ${doc.description ? `<p class="font-body text-sm mt-1 ${completedClass} text-secondary">${escapeHtml(doc.description)}</p>` : ''}
+              </div>
+              <div class="flex items-center gap-4 text-sm flex-shrink-0">
+                ${doc.date ? `<span class="font-body text-secondary">${formatDate(doc.date)}</span>` : ''}
+                ${linkDisplay}
+                <button class="vault-delete-btn font-body px-3 py-1 rounded text-sm transition-all hover:opacity-80" style="background-color: #e2e8f0; color: #2d3646;" data-id="${doc.__backendId}">Delete</button>
+              </div>
+            `;
+
+            listEl.appendChild(row);
+          });
+        }
+      });
+
+      // Update limit warning
+      const warning = document.getElementById('vault-limit-warning');
+      if (warning) {
+        if (documents.length >= 999) {
+          warning.classList.remove('hidden');
+        } else {
+          warning.classList.add('hidden');
+        }
+      }
+    }
+
+    let vaultDeleteTarget = null;
+
+    document.addEventListener('click', async (e) => {
+      // Document Vault checkbox toggle
+      if (e.target.classList.contains('vault-complete-checkbox')) {
+        const docId = e.target.dataset.id;
+        const documents = getDataByType('document');
+        const doc = documents.find(d => d.__backendId === docId);
+        if (doc) {
+          e.target.disabled = true;
+          const result = await window.dataSdk.update({ ...doc, completed: e.target.checked });
+          e.target.disabled = false;
+        }
+      }
+
+      // Document Vault important star toggle
+      if (e.target.classList.contains('vault-important-star')) {
+        const docId = e.target.dataset.id;
+        const documents = getDataByType('document');
+        const doc = documents.find(d => d.__backendId === docId);
+        if (doc) {
+          e.target.style.opacity = '0.5';
+          const result = await window.dataSdk.update({ ...doc, important: !doc.important });
+          e.target.style.opacity = '1';
+        }
+      }
+
+      // Document Vault delete button
+      if (e.target.classList.contains('vault-delete-btn')) {
+        const docId = e.target.dataset.id;
+        const documents = getDataByType('document');
+        vaultDeleteTarget = documents.find(d => d.__backendId === docId);
+        if (vaultDeleteTarget) {
+          document.getElementById('vault-delete-modal').classList.remove('hidden');
+        }
+      }
+    });
+
+    document.getElementById('vault-cancel-delete').addEventListener('click', () => {
+      vaultDeleteTarget = null;
+      document.getElementById('vault-delete-modal').classList.add('hidden');
+    });
+
+    document.getElementById('vault-confirm-delete').addEventListener('click', async () => {
+      if (vaultDeleteTarget) {
+        const confirmBtn = document.getElementById('vault-confirm-delete');
+        confirmBtn.disabled = true;
+        confirmBtn.textContent = 'Deleting...';
+
+        const result = await window.dataSdk.delete(vaultDeleteTarget);
+        
+        confirmBtn.disabled = false;
+        confirmBtn.textContent = 'Delete';
+        vaultDeleteTarget = null;
+        document.getElementById('vault-delete-modal').classList.add('hidden');
+      }
+    });
+
+    document.getElementById('vault-delete-modal').addEventListener('click', (e) => {
+      if (e.target.id === 'vault-delete-modal') {
+        vaultDeleteTarget = null;
+        document.getElementById('vault-delete-modal').classList.add('hidden');
+      }
+    });
+
+    document.getElementById('vault-add-document-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (isLoading) return;
+
+      const documents = getDataByType('document');
+      if (documents.length >= 999) {
+        showErrorMessage('Maximum limit of 999 documents reached. Please delete some first.');
+        return;
+      }
+
+      const name = document.getElementById('vault-doc-name').value.trim();
+      const category = document.getElementById('vault-doc-category').value;
+
+      if (!name || !category) {
+        showErrorMessage('Please fill in document name and category.');
+        return;
+      }
+
+      const submitBtn = document.getElementById('vault-submit-btn');
+      isLoading = true;
+      showLoading(submitBtn, 'Adding...');
+
+      const newDoc = {
+        type: 'document',
+        name: name,
+        category: category,
+        date: document.getElementById('vault-doc-date').value || '',
+        link: document.getElementById('vault-doc-link').value.trim() || '',
+        description: document.getElementById('vault-doc-description').value.trim() || '',
+        important: document.getElementById('vault-doc-important').checked ? 1 : 0,
+        completed: 0
+      };
+
+      const result = await window.dataSdk.create(newDoc);
+      console.log('vault create result', result);
+      
+      isLoading = false;
+      hideLoading(submitBtn);
+
+      if (result.isOk) {
+        // Optional: merge the new item into allData if result.value exists
+        if (result.data) {
+          allData = [...allData, result.data];
+        }
+
+        // Force the vault UI to refresh so the new doc appears
+        updateDocumentVault();
+
+        const form = document.getElementById('vault-add-document-form');
+        form.reset();
+        document.getElementById('vault-doc-name').focus();
+
+        const successMsg = document.createElement('div');
+        successMsg.className = 'fixed top-4 right-4 rounded-lg shadow-lg p-4 z-50 max-w-sm';
+        successMsg.style.background = 'linear-gradient(135deg, #16a34a 0%, #15803d 100%)';
+        successMsg.style.color = 'white';
+        successMsg.innerHTML = '<p class="font-body text-sm font-medium">✓ Document added successfully!</p>';
+        document.body.appendChild(successMsg);
+        setTimeout(() => successMsg.remove(), 3000);
+      } else {
+        showErrorMessage('Failed to add document. Please try again.');
+      }
+    });
+
+    // Set default dates
+    document.getElementById('goal-target-date').valueAsDate = new Date();
+    document.getElementById('savings-date').valueAsDate = new Date();
+    document.getElementById('receipt-date').valueAsDate = new Date();
+    document.getElementById('calc-start-date').valueAsDate = new Date();
+    document.getElementById('photo-date').valueAsDate = new Date();
+
+    // Travel print button
+    document.getElementById('travel-print-btn').addEventListener('click', (e) => {
+      e.preventDefault();
+      window.print();
+    });
+
+    // Photo modal handlers
+    function showPhotoModal(entry) {
+      const modal = document.getElementById('photo-modal');
+      const imgElement = document.getElementById('photo-modal-img');
+      if (entry && entry.image) {
+        imgElement.src = entry.image;
+      }
+      modal.classList.remove('hidden');
+    }
+
+    document.getElementById('photo-modal').addEventListener('click', (e) => {
+      if (e.target.id === 'photo-modal') {
+        document.getElementById('photo-modal').classList.add('hidden');
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        document.getElementById('photo-modal').classList.add('hidden');
+      }
+    });
+
+    // QR Code functionality
+    const qrData = {
+      'marriott': 'https://www.marriott.com/loyalty.mi',
+      'hilton': 'https://www.hiltonhonors.com',
+      'ihg': 'https://www.ihg.com/rewards',
+      'hyatt': 'https://world.hyatt.com/content/gp/en/program-overview.html',
+      'choice': 'https://www.choicehotels.com/choice-privileges',
+      'wyndham': 'https://www.wyndhamrewards.com',
+      'aa': 'https://www.aa.com/AAdvantage',
+      'united': 'https://www.united.com/en/us/fly/mileageplus.html',
+      'delta': 'https://www.delta.com/skymiles',
+      'southwest': 'https://www.southwest.com/rapid-rewards',
+      'jetblue': 'https://www.jetblue.com/trueblue',
+      'lufthansa': 'https://www.lufthansa.com/us/en/miles-and-more',
+      'worldnomads': 'https://www.worldnomads.com',
+      'allianz': 'https://www.allianzassistance.com',
+      'squaremouth': 'https://www.squaremouth.com',
+      'insuremytrip': 'https://www.insuremytrip.com',
+      'travelguard': 'https://www.travelguard.com',
+      'faye': 'https://www.withfaye.com'
+    };
+
+    const qrLabels = {
+      'marriott': 'Marriott Bonvoy',
+      'hilton': 'Hilton Honors',
+      'ihg': 'IHG One Rewards',
+      'hyatt': 'World of Hyatt',
+      'choice': 'Choice Privileges',
+      'wyndham': 'Wyndham Rewards',
+      'aa': 'American Airlines AAdvantage',
+      'united': 'United MileagePlus',
+      'delta': 'Delta SkyMiles',
+      'southwest': 'Southwest Rapid Rewards',
+      'jetblue': 'JetBlue TrueBlue',
+      'lufthansa': 'Lufthansa Miles & More',
+      'worldnomads': 'World Nomads',
+      'allianz': 'Allianz Global',
+      'squaremouth': 'SquareMouth',
+      'insuremytrip': 'InsureMyTrip',
+      'travelguard': 'Travel Guard',
+      'faye': 'Faye'
+    };
+
+    function generateQRCode(text) {
+      const encodedText = encodeURIComponent(text);
+      return `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodedText}`;
+    }
+
+    function showQRModal(programId) {
+      const url = qrData[programId];
+      const label = qrLabels[programId];
+      const qrImageUrl = generateQRCode(url);
+
+      const modal = document.createElement('div');
+      modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4';
+      modal.innerHTML = `
+        <div class="bg-white rounded-lg shadow-2xl max-w-sm w-full">
+          <div style="background: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-color-2) 100%); color: white; padding: 1.5rem; border-radius: 8px 8px 0 0; text-align: center;">
+            <h3 class="font-heading font-bold text-lg">${label}</h3>
+            <p class="font-body text-xs opacity-90 mt-1">Scan to join or learn more</p>
+          </div>
+          <div class="p-6 text-center">
+            <img src="${qrImageUrl}" alt="QR Code for ${label}" class="w-64 h-64 mx-auto mb-4" loading="lazy">
+            <p class="font-body text-xs text-secondary mb-4">Scan with your phone camera to open the program</p>
+            <a href="${url}" target="_blank" rel="noopener noreferrer" class="btn-primary px-4 py-2 rounded font-body text-sm font-medium inline-block">Open Website →</a>
+          </div>
+          <div class="px-6 pb-4 border-t border-gray-200 text-center">
+            <button class="modal-close font-body text-sm text-secondary hover:text-primary transition-colors" style="background: none; border: none; cursor: pointer;">Close</button>
+          </div>
+        </div>
+      `;
+
+      document.body.appendChild(modal);
+      modal.querySelector('.modal-close').addEventListener('click', () => modal.remove());
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) modal.remove();
+      });
+    }
+
+    Object.keys(qrData).forEach(programId => {
+      const btn = document.getElementById(`qr-${programId}`);
+      if (btn) {
+        btn.addEventListener('click', (e) => {
+          e.preventDefault();
+          showQRModal(programId);
+        });
+      }
+    });
+
+    // Calculator visibility logic
+    document.getElementById('edit-savings-plan-btn').addEventListener('click', () => {
+      document.getElementById('calculator-results').classList.add('hidden');
+      document.getElementById('budget-fund-calculator').classList.remove('hidden');
+    });
+
+    // Override the original calculator form submission to hide the calculator card
+    const originalCalculatorForm = document.getElementById('calculator-form');
+    originalCalculatorForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const goal = parseFloat(document.getElementById('calc-goal').value);
+      const current = parseFloat(document.getElementById('calc-current').value) || 0;
+      const startDate = new Date(document.getElementById('calc-start-date').value);
+      const targetDate = new Date(document.getElementById('calc-target-date').value);
+      const frequency = document.getElementById('calc-frequency').value;
+
+      const needed = goal - current;
+      const daysUntil = Math.max(1, Math.ceil((targetDate - startDate) / (1000 * 60 * 60 * 24)));
+      const months = Math.ceil(daysUntil / 30.44);
+
+      const payPeriodsUntil = {
+        'weekly': daysUntil / 7,
+        'biweekly': daysUntil / 14,
+        'semimonthly': daysUntil / 15.22,
+        'monthly': daysUntil / 30.44
+      };
+
+      const perPaycheck = needed / payPeriodsUntil[frequency];
+      const monthlyAvg = needed / months;
+      const weeklyAvg = needed / (daysUntil / 7);
+      const dailyAvg = needed / daysUntil;
+
+      document.getElementById('result-paycheck').textContent = formatCurrency(perPaycheck);
+      document.getElementById('result-monthly').textContent = formatCurrency(monthlyAvg);
+      document.getElementById('result-weekly').textContent = formatCurrency(weeklyAvg);
+      document.getElementById('result-daily').textContent = formatCurrency(dailyAvg);
+      document.getElementById('result-frequency-label').textContent = `Based on ${frequency} pay schedule`;
+      document.getElementById('breakdown-goal').textContent = formatCurrency(goal);
+      document.getElementById('breakdown-current').textContent = formatCurrency(current);
+      document.getElementById('breakdown-needed').textContent = formatCurrency(needed);
+      document.getElementById('breakdown-time').textContent = months + ' month' + (months !== 1 ? 's' : '');
+      document.getElementById('calculator-results').classList.remove('hidden');
+      document.getElementById('budget-fund-calculator').classList.add('hidden');
+    });
+  </script>
+  <script>
+document.addEventListener('DOMContentLoaded', function () {
+  const fileInput = document.getElementById('photo-input');
+  const previewImg = document.getElementById('photo-preview');
+  const previewContainer = document.getElementById('preview-container');
+  const uploadPlaceholder = document.getElementById('upload-placeholder');
+  const saveBtn = document.getElementById('save-btn');
+
+  const typeSelect = document.getElementById('photo-type');
+  const dateInput = document.getElementById('photo-date');
+  const notesInput = document.getElementById('notes');
+  const photoLinkInput = document.getElementById('photo-link-input');
+
+  const uploadModeBtn = document.getElementById('upload-mode-btn');
+  const linkModeBtn = document.getElementById('link-mode-btn');
+  const uploadSection = document.getElementById('upload-section');
+  const linkSection = document.getElementById('link-section');
+
+  const beforeGrid = document.getElementById('before-grid');
+  const recoveryGrid = document.getElementById('recovery-grid');
+  const afterGrid = document.getElementById('after-grid');
+
+  if (!fileInput || !saveBtn || !typeSelect || !dateInput || !notesInput || !beforeGrid || !recoveryGrid || !afterGrid) {
+    return;
+  }
+
+  const STORAGE_KEY = 'beautyJourneyEntries_v1';
+  let currentMode = 'upload'; // 'upload' or 'link'
+
+  function loadEntries() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      return raw ? JSON.parse(raw) : [];
+    } catch (e) {
+      console.error('Failed to parse saved entries', e);
+      return [];
+    }
+  }
+
+  function saveEntries(entries) {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
+    } catch (e) {
+      console.error('Failed to save entries', e);
+    }
+  }
+
+  function setMode(mode) {
+    currentMode = mode;
+    if (mode === 'upload') {
+      uploadSection.classList.remove('hidden');
+      linkSection.classList.add('hidden');
+      uploadModeBtn.style.background = 'linear-gradient(135deg, var(--accent-color) 0%, var(--accent-color-2) 100%)';
+      uploadModeBtn.style.color = 'white';
+      linkModeBtn.style.backgroundColor = '#edf2f7';
+      linkModeBtn.style.color = 'var(--text-primary)';
+      photoLinkInput.value = '';
+    } else {
+      uploadSection.classList.add('hidden');
+      linkSection.classList.remove('hidden');
+      linkModeBtn.style.background = 'linear-gradient(135deg, var(--accent-color) 0%, var(--accent-color-2) 100%)';
+      linkModeBtn.style.color = 'white';
+      uploadModeBtn.style.backgroundColor = '#edf2f7';
+      uploadModeBtn.style.color = 'var(--text-primary)';
+      fileInput.value = '';
+      previewImg.src = '';
+      previewContainer.classList.add('hidden');
+      uploadPlaceholder.style.display = 'block';
+    }
+  }
+
+  uploadModeBtn.addEventListener('click', () => setMode('upload'));
+  linkModeBtn.addEventListener('click', () => setMode('link'));
+
+  function clearGrids() {
+    beforeGrid.innerHTML = '';
+    recoveryGrid.innerHTML = '';
+    afterGrid.innerHTML = '';
+  }
+
+  function showEditModal(entry) {
+    const modal = document.createElement('div');
+    modal.className = 'fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4';
+    modal.innerHTML = `
+      <div class="bg-white rounded-lg shadow-2xl max-w-sm w-full max-h-96 overflow-y-auto">
+        <div style="background: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-color-2) 100%); color: white; padding: 1rem; border-radius: 8px 8px 0 0; display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <h3 class="font-heading font-bold text-base">Edit Photo</h3>
+            <p class="font-body text-xs opacity-90 mt-0.5" id="modal-type-display">${entry.type.charAt(0).toUpperCase() + entry.type.slice(1)}</p>
+          </div>
+          <button class="modal-close" style="background: none; border: none; color: white; font-size: 24px; cursor: pointer; padding: 0; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;">×</button>
+        </div>
+        <div class="p-4">
+          ${entry.image ? `<img src="${entry.image}" alt="Photo" class="w-full rounded-lg mb-3 max-h-40 object-cover">` : (entry.link ? `<div class="w-full h-40 rounded-lg mb-3 flex items-center justify-center" style="background-color: #edf2f7;"><a href="${entry.link}" target="_blank" rel="noopener noreferrer" class="font-body text-sm underline" style="color: var(--accent-color);">Open Link</a></div>` : '')}
+          <div class="space-y-3">
+            <div>
+              <label class="block font-body text-xs font-medium text-secondary mb-1">Photo Type</label>
+              <select id="edit-photo-type" class="w-full px-2 py-1.5 rounded border text-xs focus:outline-none focus:ring-2 focus:ring-blue-400" style="border-color: #cbd5e1; background-color: #ffffff;">
+                <option value="before" ${entry.type === 'before' ? 'selected' : ''}>Before</option>
+                <option value="recovery" ${entry.type === 'recovery' ? 'selected' : ''}>Recovery</option>
+                <option value="after" ${entry.type === 'after' ? 'selected' : ''}>After</option>
+              </select>
+            </div>
+            <div>
+              <label class="block font-body text-xs font-medium text-secondary mb-1">Date</label>
+              <input type="date" id="edit-photo-date" class="w-full px-2 py-1.5 rounded border text-xs focus:outline-none focus:ring-2 focus:ring-blue-400" style="border-color: #cbd5e1; background-color: #ffffff;" value="${entry.date || ''}">
+            </div>
+            <div>
+              <label class="block font-body text-xs font-medium text-secondary mb-1">Notes</label>
+              <textarea id="edit-photo-notes" class="w-full px-2 py-1.5 rounded border text-xs focus:outline-none focus:ring-2 focus:ring-blue-400" style="border-color: #cbd5e1; background-color: #ffffff; min-height: 60px; resize: none;">${entry.notes || ''}</textarea>
+            </div>
+            <div class="flex gap-2 pt-3 border-t border-gray-200">
+              <button type="button" id="photo-delete-btn" class="btn-secondary px-3 py-1.5 rounded font-body text-xs font-medium flex-1">Delete</button>
+              <button type="button" id="photo-save-btn" class="btn-primary px-3 py-1.5 rounded font-body text-xs font-medium flex-1">Save</button>
+              <button type="button" class="modal-close btn-secondary px-3 py-1.5 rounded font-body text-xs font-medium">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+
+    document.body.appendChild(modal);
+
+    const closeButtons = modal.querySelectorAll('.modal-close');
+    closeButtons.forEach(btn => {
+      btn.addEventListener('click', () => modal.remove());
+    });
+
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) modal.remove();
+    });
+
+    const typeSelect = modal.querySelector('#edit-photo-type');
+    const typeDisplay = modal.querySelector('#modal-type-display');
+    const saveBtn = modal.querySelector('#photo-save-btn');
+    const deleteBtn = modal.querySelector('#photo-delete-btn');
+    const dateInput = modal.querySelector('#edit-photo-date');
+    const notesTextarea = modal.querySelector('#edit-photo-notes');
+
+    typeSelect.addEventListener('change', () => {
+      typeDisplay.textContent = typeSelect.value.charAt(0).toUpperCase() + typeSelect.value.slice(1);
+    });
+
+    saveBtn.addEventListener('click', () => {
+      const entries = loadEntries();
+      const idx = entries.findIndex(e => e.id === entry.id);
+      if (idx >= 0) {
+        entries[idx].type = typeSelect.value;
+        entries[idx].date = dateInput.value;
+        entries[idx].notes = notesTextarea.value;
+        saveEntries(entries);
+        renderEntries();
+      }
+      modal.remove();
+    });
+
+    deleteBtn.addEventListener('click', () => {
+      const entries = loadEntries();
+      const filtered = entries.filter(e => e.id !== entry.id);
+      saveEntries(filtered);
+      renderEntries();
+      modal.remove();
+    });
+  }
+
+  function makeCard(entry) {
+    const wrapper = document.createElement('div');
+    wrapper.className = 'photo-card rounded-xl overflow-hidden shadow-lg cursor-pointer hover:shadow-xl transition-shadow';
+    wrapper.style.backgroundColor = 'rgb(255,255,255)';
+
+    const imgWrap = document.createElement('div');
+    imgWrap.className = 'aspect-square overflow-hidden bg-gray-200 relative';
+
+    if (entry.image) {
+      const img = document.createElement('img');
+      img.className = 'w-full h-full object-cover';
+      img.loading = 'lazy';
+      img.src = entry.image;
+      img.alt = 'Photo entry';
+      imgWrap.appendChild(img);
+    } else if (entry.link) {
+      const linkIcon = document.createElement('div');
+      linkIcon.style.display = 'flex';
+      linkIcon.style.alignItems = 'center';
+      linkIcon.style.justifyContent = 'center';
+      linkIcon.style.width = '100%';
+      linkIcon.style.height = '100%';
+      linkIcon.style.fontSize = '28px';
+      linkIcon.textContent = '🔗';
+      
+      const linkText = document.createElement('p');
+      linkText.className = 'font-body text-xs';
+      linkText.style.position = 'absolute';
+      linkText.style.bottom = '8px';
+      linkText.style.left = '0';
+      linkText.style.right = '0';
+      linkText.style.textAlign = 'center';
+      linkText.style.color = '#667eea';
+      linkText.style.fontWeight = '500';
+      linkText.textContent = 'Click to view';
+      
+      imgWrap.appendChild(linkIcon);
+      imgWrap.appendChild(linkText);
+    }
+
+    const info = document.createElement('div');
+    info.className = 'p-4';
+
+    const notesP = document.createElement('p');
+    notesP.className = 'font-body notes-text mb-2 line-clamp-2 hover:opacity-75 transition-opacity';
+    notesP.style.color = '#2d3646';
+    notesP.style.fontSize = '11px';
+    notesP.style.lineHeight = '1.3';
+    notesP.textContent = entry.notes || (entry.type.charAt(0).toUpperCase() + entry.type.slice(1));
+
+    const bottom = document.createElement('div');
+    bottom.className = 'flex justify-between items-center gap-2';
+
+    const dateP = document.createElement('p');
+    dateP.className = 'font-heading text-xs';
+    dateP.style.color = '#a4a3cf';
+    dateP.style.fontSize = '10px';
+    dateP.textContent = entry.date || '';
+
+    const editBtn = document.createElement('button');
+    editBtn.className = 'edit-photo-btn';
+    editBtn.style.background = 'none';
+    editBtn.style.border = 'none';
+    editBtn.style.cursor = 'pointer';
+    editBtn.style.padding = '0';
+    editBtn.style.color = '#667eea';
+    editBtn.style.fontSize = '14px';
+    editBtn.style.lineHeight = '1';
+    editBtn.textContent = '✎';
+    editBtn.title = 'Edit photo';
+    editBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      showEditModal(entry);
+    });
+
+    bottom.appendChild(dateP);
+    bottom.appendChild(editBtn);
+
+    info.appendChild(notesP);
+    info.appendChild(bottom);
+
+    wrapper.appendChild(imgWrap);
+    wrapper.appendChild(info);
+
+    wrapper.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (entry.link) {
+        showLinkImageModal(entry);
+      } else if (entry.image) {
+        showEditModal(entry);
+      }
+    });
+
+    return wrapper;
+  }
+
+  function toDirectImageUrl(rawLink) {
+    // Dropbox: ...?dl=0 -> ...?raw=1
+    if (rawLink.includes('dropbox.com')) {
+      return rawLink.replace('dl=0', 'raw=1');
+    }
+
+    // Google Drive typical format:
+    // https://drive.google.com/file/d/FILE_ID/view?usp=sharing
+    if (rawLink.includes('drive.google.com')) {
+      const match = rawLink.match(/\/file\/d\/([^/]+)\//);
+      if (match && match[1]) {
+        const fileId = match[1];
+        return `https://drive.google.com/uc?export=view&id=${fileId}`;
+      }
+    }
+
+    // Fallback: return as-is (will only work if it's already a direct image URL)
+    return rawLink;
+  }
+
+  function toDropboxImageUrl(rawLink) {
+    if (!rawLink) return '';
+
+    try {
+      const url = new URL(rawLink);
+
+      if (!url.hostname.includes('dropbox.com')) {
+        // Not a Dropbox link; return as-is (might already be direct)
+        return rawLink;
+      }
+
+      // Common pattern: ...?dl=0 → ...?raw=1
+      url.searchParams.delete('dl');
+      url.searchParams.set('raw', '1');
+
+      return url.toString();
+    } catch (e) {
+      // If URL parsing fails, fall back to original
+      return rawLink;
+    }
+  }
+
+  function showLinkImageModal(entry) {
+    const modal = document.createElement('div');
+    modal.className = 'fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4';
+    modal.innerHTML = `
+      <div class="bg-white rounded-lg shadow-2xl max-w-md w-full">
+        <div style="background: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-color-2) 100%); color: white; padding: 1rem; border-radius: 8px 8px 0 0; display: flex; justify-content: space-between; align-items: center;">
+          <h3 class="font-heading font-bold text-base">Photo Preview</h3>
+          <button class="modal-close" style="background: none; border: none; color: white; font-size: 24px; cursor: pointer; padding: 0; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;">×</button>
+        </div>
+        <div class="p-4 text-center">
+          <div id="link-image-container" style="position: relative; min-height: 200px; display: flex; align-items: center; justify-content: center;">
+            <div id="link-image-loading" style="display: flex; flex-direction: column; align-items: center; gap: 1rem;">
+              <div style="width: 40px; height: 40px; border: 4px solid #e2e8f0; border-top-color: var(--accent-color); border-radius: 50%; animation: spin 1s linear infinite;"></div>
+              <p class="font-body text-xs text-secondary">Loading image...</p>
+            </div>
+            <img id="link-image" alt="Photo from link" class="max-w-full max-h-64 rounded-lg mx-auto object-contain" style="display: none;">
+            <div id="link-image-error" style="display: none; padding: 2rem 1rem; text-align: center;">
+              <p class="font-body text-sm text-secondary mb-3">Unable to load image from this link</p>
+              <p class="font-body text-xs text-secondary mb-3">The link may be:</p>
+              <ul class="font-body text-xs text-secondary space-y-1 mb-3">
+                <li>• Expired or revoked</li>
+                <li>• Not publicly accessible</li>
+                <li>• From an unsupported service</li>
+              </ul>
+              <a href="${entry.link}" target="_blank" rel="noopener noreferrer" class="font-body text-xs underline inline-block" style="color: var(--accent-color);">Try opening in new tab →</a>
+            </div>
+          </div>
+          <p class="font-body text-xs text-secondary mt-3">Photo stored in: ${entry.link.includes('drive.google.com') ? 'Google Drive' : entry.link.includes('dropbox.com') ? 'Dropbox' : entry.link.includes('onedrive') ? 'OneDrive' : 'Cloud Storage'}</p>
+          <div class="flex gap-2 mt-4 border-t border-gray-200 pt-4">
+            <button class="modal-close btn-secondary px-3 py-1.5 rounded font-body text-xs font-medium flex-1">Close</button>
+            <button class="edit-from-modal btn-primary px-3 py-1.5 rounded font-body text-xs font-medium flex-1">Edit</button>
+          </div>
+        </div>
+      </div>
+    `;
+
+    document.body.appendChild(modal);
+
+    const closeButtons = modal.querySelectorAll('.modal-close');
+    closeButtons.forEach(btn => {
+      btn.addEventListener('click', () => modal.remove());
+    });
+
+    modal.querySelector('.edit-from-modal').addEventListener('click', () => {
+      modal.remove();
+      showEditModal(entry);
+    });
+
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) modal.remove();
+    });
+
+    // Handle image load state
+    const imgElement = modal.querySelector('#link-image');
+    const errorDiv = modal.querySelector('#link-image-error');
+    const loadingDiv = modal.querySelector('#link-image-loading');
+    
+    imgElement.onload = () => {
+      imgElement.style.display = 'block';
+      loadingDiv.style.display = 'none';
+      errorDiv.style.display = 'none';
+    };
+    
+    imgElement.onerror = () => {
+      imgElement.style.display = 'none';
+      loadingDiv.style.display = 'none';
+      errorDiv.style.display = 'block';
+    };
+    
+    const directUrl = toDirectImageUrl(entry.link);
+    imgElement.src = directUrl;
+  }
+
+  function renderEntries() {
+    const entries = loadEntries();
+    clearGrids();
+
+    entries.forEach(entry => {
+      const card = makeCard(entry);
+      if (entry.type === 'before') {
+        beforeGrid.prepend(card);
+      } else if (entry.type === 'recovery') {
+        recoveryGrid.prepend(card);
+      } else if (entry.type === 'after') {
+        afterGrid.prepend(card);
+      }
+    });
+  }
+
+  fileInput.addEventListener('change', function () {
+    const file = fileInput.files && fileInput.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      const dataUrl = e.target.result;
+      previewImg.src = dataUrl;
+      previewContainer.classList.remove('hidden');
+      previewContainer.style.display = 'block';
+      if (uploadPlaceholder) {
+        uploadPlaceholder.style.display = 'none';
+      }
+    };
+    reader.readAsDataURL(file);
+  });
+
+  function showPhotoMessage(message, isError = false) {
+    const messageDiv = document.createElement('div');
+    messageDiv.className = 'fixed top-4 right-4 rounded-lg shadow-lg p-4 z-50 max-w-sm';
+    messageDiv.style.background = isError 
+      ? 'linear-gradient(135deg, #dc2626 0%, #991b1b 100%)'
+      : 'linear-gradient(135deg, #16a34a 0%, #15803d 100%)';
+    messageDiv.style.color = 'white';
+    messageDiv.innerHTML = `<p class="font-body text-sm font-medium">${message}</p>`;
+    document.body.appendChild(messageDiv);
+    setTimeout(() => messageDiv.remove(), 3000);
+  }
+
+  saveBtn.addEventListener('click', function (e) {
+    e.preventDefault();
+
+    const type = typeSelect.value || 'before';
+    const date = dateInput.value;
+    const notes = notesInput.value.trim();
+
+    let imageDataUrl = null;
+    let photoLink = null;
+
+    if (currentMode === 'upload') {
+      imageDataUrl = previewImg.src;
+      if (!imageDataUrl) {
+        showPhotoMessage('Please select a photo first.', true);
+        return;
+      }
+    }
+
+    if (currentMode === 'link') {
+      photoLink = photoLinkInput.value.trim();
+      if (!photoLink) {
+        showPhotoMessage('Please enter a cloud storage link.', true);
+        return;
+      }
+
+      // Convert Dropbox share link → direct image URL
+      imageDataUrl = toDropboxImageUrl(photoLink);
+    }
+
+    const entries = loadEntries();
+    entries.push({
+      id: Date.now(),
+      type,
+      date,
+      notes,
+      image: imageDataUrl, // always used by thumbnails + modal
+      link: photoLink      // keep original in case you ever need it
+    });
+    saveEntries(entries);
+    renderEntries();
+
+    fileInput.value = '';
+    previewImg.src = '';
+    previewContainer.style.display = 'none';
+    previewContainer.classList.add('hidden');
+    if (uploadPlaceholder) {
+      uploadPlaceholder.style.display = 'block';
+    }
+    notesInput.value = '';
+    photoLinkInput.value = '';
+    setMode('upload');
+    showPhotoMessage('Entry saved to this browser.');
+  });
+
+  renderEntries();
+});
+</script>
