@@ -687,6 +687,31 @@
     <section id="tab-overview" class="tab-content active-tab">
      <h2 class="font-heading text-2xl font-bold text-primary mb-4">Overview</h2>
 
+     <!-- First-visit local-storage notice (one-time) -->
+     <div id="first-visit-notice" class="card p-4 mb-4" style="display:none;border-left:4px solid #667eea;background:rgba(102,126,234,0.06);">
+      <div style="display:flex;align-items:flex-start;gap:12px;">
+       <div style="font-size:22px;line-height:1;flex-shrink:0;">💾</div>
+       <div style="flex:1;">
+        <p class="font-heading text-sm font-bold text-primary mb-1">Your data lives on this device</p>
+        <p class="font-body text-sm text-secondary" style="line-height:1.5;">This planner saves everything locally on your phone or browser — nothing is sent to a server. If you uninstall the app or clear your browser data, your records will be lost. <strong>Tap Export every week or two</strong> to save a backup file you can re-import later or move to another device.</p>
+        <button id="first-visit-dismiss" style="margin-top:10px;padding:7px 14px;background:#667eea;color:white;border:none;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;">Got it</button>
+       </div>
+      </div>
+     </div>
+
+     <!-- Backup reminder banner -->
+     <div id="backup-reminder" class="card p-4 mb-4" style="display:none;">
+      <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+       <div id="backup-reminder-icon" style="font-size:22px;line-height:1;flex-shrink:0;">💾</div>
+       <div style="flex:1;min-width:180px;">
+        <p id="backup-reminder-title" class="font-heading text-sm font-bold text-primary" style="margin-bottom:2px;"></p>
+        <p id="backup-reminder-body" class="font-body text-xs text-secondary" style="line-height:1.4;"></p>
+       </div>
+       <button id="backup-reminder-export" style="padding:8px 16px;background:#667eea;color:white;border:none;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;flex-shrink:0;">Export now</button>
+       <button id="backup-reminder-dismiss" title="Remind me later" style="padding:6px 10px;background:none;border:none;color:#94a3b8;font-size:18px;cursor:pointer;line-height:1;flex-shrink:0;">×</button>
+      </div>
+     </div>
+
      <!-- Multi-goal header -->
      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
       <div style="display:flex;align-items:center;gap:10px;">
@@ -5192,7 +5217,7 @@ function calcSavingsStreak(savings) {
 })();
 
 // ============ EXPORT / IMPORT DATA ============
-document.getElementById('export-data-btn').addEventListener('click', async function() {
+async function exportPlannerData() {
   try {
     var data = await window.beautyExportAll();
     var blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
@@ -5204,11 +5229,79 @@ document.getElementById('export-data-btn').addEventListener('click', async funct
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
+    localStorage.setItem('beautyPlannerLastExport', new Date().toISOString().slice(0,10));
+    localStorage.removeItem('beautyBackupReminderSnoozed');
+    renderBackupReminder();
   } catch(err) {
     console.error('Export failed:', err);
     alert('Export failed. Please try again.');
   }
+}
+document.getElementById('export-data-btn').addEventListener('click', exportPlannerData);
+
+// ============ BACKUP REMINDER + FIRST-VISIT NOTICE ============
+async function beautyHasData() {
+  try {
+    var data = await window.beautyExportAll();
+    return (data.records && data.records.length > 0) || (data.photos && data.photos.length > 0);
+  } catch(_) { return false; }
+}
+function todayISO_bp() { return new Date().toISOString().slice(0,10); }
+async function renderFirstVisitNotice() {
+  var el = document.getElementById('first-visit-notice');
+  if(!el) return;
+  var seen = localStorage.getItem('beautyPlannerSeenWelcome');
+  var hasData = await beautyHasData();
+  el.style.display = (!seen && hasData) ? 'block' : 'none';
+}
+var fvDismiss_bp = document.getElementById('first-visit-dismiss');
+if(fvDismiss_bp) fvDismiss_bp.addEventListener('click', function() {
+  localStorage.setItem('beautyPlannerSeenWelcome', todayISO_bp());
+  document.getElementById('first-visit-notice').style.display = 'none';
 });
+async function renderBackupReminder() {
+  var el = document.getElementById('backup-reminder');
+  if(!el) return;
+  var hasData = await beautyHasData();
+  if(!hasData) { el.style.display = 'none'; return; }
+  var firstSeen = localStorage.getItem('beautyPlannerFirstSeen');
+  if(!firstSeen) { firstSeen = todayISO_bp(); localStorage.setItem('beautyPlannerFirstSeen', firstSeen); }
+  var lastExport = localStorage.getItem('beautyPlannerLastExport');
+  var baseline = lastExport || firstSeen;
+  var daysSince = Math.floor((Date.now() - new Date(baseline).getTime()) / 86400000);
+  var snoozed = localStorage.getItem('beautyBackupReminderSnoozed');
+  if(snoozed === todayISO_bp()) { el.style.display = 'none'; return; }
+  if(daysSince < 3) { el.style.display = 'none'; return; }
+  var color, bg, title, body;
+  if(daysSince >= 30) {
+    color = '#dc2626'; bg = 'rgba(220,38,38,0.08)';
+    title = lastExport ? "It's been " + daysSince + " days since your last backup" : "You haven't backed up your data yet";
+    body = "Export now so you don't lose your records if you uninstall the app or clear browser data.";
+  } else if(daysSince >= 7) {
+    color = '#d97706'; bg = 'rgba(217,119,6,0.08)';
+    title = lastExport ? "Time for a backup — " + daysSince + " days since last export" : "Save a backup of your data";
+    body = "Tap Export to download a backup file you can re-import later or move to another device.";
+  } else {
+    color = '#667eea'; bg = 'rgba(102,126,234,0.06)';
+    title = "Save a backup of your data";
+    body = "It's been " + daysSince + " days. Tap Export to keep your records safe.";
+  }
+  el.style.borderLeft = '4px solid ' + color;
+  el.style.background = bg;
+  document.getElementById('backup-reminder-title').textContent = title;
+  document.getElementById('backup-reminder-body').textContent = body;
+  document.getElementById('backup-reminder-export').style.background = color;
+  el.style.display = 'block';
+}
+var brExport_bp = document.getElementById('backup-reminder-export');
+if(brExport_bp) brExport_bp.addEventListener('click', exportPlannerData);
+var brDismiss_bp = document.getElementById('backup-reminder-dismiss');
+if(brDismiss_bp) brDismiss_bp.addEventListener('click', function() {
+  localStorage.setItem('beautyBackupReminderSnoozed', todayISO_bp());
+  document.getElementById('backup-reminder').style.display = 'none';
+});
+// Render banners after the DB is ready
+setTimeout(function() { renderBackupReminder(); renderFirstVisitNotice(); }, 800);
 
 document.getElementById('import-data-input').addEventListener('change', function(e) {
   var file = e.target.files[0];
