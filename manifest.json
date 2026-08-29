@@ -1,6 +1,6 @@
 {
-  "name": "Beauty Procedure Savings Planner",
-  "short_name": "Beauty Planner",
+  "name": "Cosmetic Surgery Planner",
+  "short_name": "Cosmetic Planner",
   "description": "Plan and track savings for your beauty procedures. Private, offline, and simple.",
   "start_url": "./index.html",
   "display": "standalone",

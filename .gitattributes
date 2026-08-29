@@ -1,0 +1,3 @@
+# This repo has mixed CRLF/LF line endings. Disable all end-of-line conversion so
+# an edit can never silently renormalize a whole file into a huge diff.
+* -text
