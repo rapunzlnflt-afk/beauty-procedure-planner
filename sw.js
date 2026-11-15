@@ -1,4 +1,6 @@
-const CACHE_NAME = 'beauty-planner-v3';
+const CACHE_NAME = 'beauty-planner-v4';
+// Only this app's own caches. Every CleartrackApps app shares cleartrackapps.com, so they all share one cache store.
+const isOwnCache = k => k.startsWith('beauty-planner-') && !k.startsWith('beauty-planner-demo');
 const ASSETS = [
   './',
   './index.html',
@@ -17,7 +19,7 @@ self.addEventListener('install', event => {
 self.addEventListener('activate', event => {
   event.waitUntil(
     caches.keys().then(keys =>
-      Promise.all(keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k)))
+      Promise.all(keys.filter(k => isOwnCache(k) && k !== CACHE_NAME).map(k => caches.delete(k)))
     )
   );
   self.clients.claim();
