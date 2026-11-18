@@ -1,4 +1,4 @@
-const CACHE_NAME = 'beauty-planner-v5';
+const CACHE_NAME = 'beauty-planner-v6';
 // Only this app's own caches. Every CleartrackApps app shares cleartrackapps.com, so they all share one cache store.
 const isOwnCache = k => k.startsWith('beauty-planner-') && !k.startsWith('beauty-planner-demo');
 const ASSETS = [
